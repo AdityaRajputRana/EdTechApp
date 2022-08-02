@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.EdTechApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/color_primary_txt</item>
+        <item name="colorPrimaryDark">@color/color_bg</item>
+        <item name="colorAccent">@color/color_accent1_blue</item>
+        <item name="android:statusBarColor">@color/color_bg</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+</resources>

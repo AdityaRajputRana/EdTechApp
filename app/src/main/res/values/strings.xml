@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">EdTechApp</string>
+    <string name="onboarding_header">Discover your\nnext skill with us</string>
+    <string name="onboarding_body">We have designed our course with video lessons, tests and assignments</string>
+    <string name="cont">Continue</string>
+    <string name="login_txt">You need to login</string>
+    <string name="login_why">Why?</string>
+</resources>
