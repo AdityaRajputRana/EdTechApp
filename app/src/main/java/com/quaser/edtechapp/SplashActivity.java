@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.quaser.edtechapp.Auth.AuthUtils;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -16,10 +18,10 @@ public class SplashActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         SharedPreferences preferences =  this.getSharedPreferences("EdTech", MODE_PRIVATE);
-        Boolean isOnboarded = preferences.getBoolean("isOnboarded",false);
+        boolean isOnboarded = preferences.getBoolean("isOnboarded",false);
 
         if (isOnboarded){
-            Boolean isLoggedIn = preferences.getBoolean("user/isLoggedIn", false);
+            boolean isLoggedIn = AuthUtils.getInstance(this).isLoggedIn();
             if (isLoggedIn) {
                 startActivity(new Intent(this, MainActivity.class));
             } else {

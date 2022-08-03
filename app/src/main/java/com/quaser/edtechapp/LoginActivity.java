@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.rest.api.API;
 import com.quaser.edtechapp.rest.api.HashUtils;
 import com.quaser.edtechapp.rest.api.VolleyClient;
@@ -92,12 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startMainActivity(String userId, String name, String userType) {
-        SharedPreferences.Editor editor = this.getSharedPreferences("EdTech", MODE_PRIVATE).edit();
-        editor.putBoolean("user/isLoggedIn", true);
-        editor.putString("user/id", userId);
-        editor.putString("user/name", name);
-        editor.putString("user/type", userType);
-        editor.commit();
+        AuthUtils.getInstance(this).setUser(userId, userType, name);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         this.finish();
