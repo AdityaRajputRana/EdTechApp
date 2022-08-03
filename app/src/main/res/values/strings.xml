@@ -5,4 +5,6 @@
     <string name="cont">Continue</string>
     <string name="login_txt">You need to login</string>
     <string name="login_why">Why?</string>
+    <string name="skip">Skip</string>
+    <string name="tnc_txt"><![CDATA[By signing in you agree to our Privacy Policy and Terms & Conditions]]></string>
 </resources>

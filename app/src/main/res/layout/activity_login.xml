@@ -6,10 +6,38 @@
     android:background="@color/color_bg"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:animateLayoutChanges="true"
     tools:context=".LoginActivity">
+
+<!--    Todo: Add an error textview-->
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:textAlignment="center"
+        android:textColor="@color/color_primary_txt"
+        android:id="@+id/messageTxt"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="Please wait while we are sending otp to your number" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:visibility="visible"
         android:layout_height="match_parent"
         android:id="@+id/phoneLayout">
 
@@ -31,6 +59,7 @@
 
             <TextView
                 android:id="@+id/whyTxt"
+                android:onClick="showWhyPopUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_light"
@@ -38,13 +67,15 @@
                 android:textColor="@color/color_secondary_txt"
                 android:textSize="16sp" />
 
-<!--            TODO: 1. add onclick to why and show why txt-->
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/centerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/tncTxt"
+            app:layout_constraintVertical_bias="0.2"
             app:layout_constraintTop_toBottomOf="@id/textLayout"
             android:orientation="vertical">
 
@@ -58,8 +89,115 @@
                 android:textColor="@color/color_primary_txt"
                 android:textSize="24sp" />
 
-            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edittext"
+                android:padding="14dp"
+                android:layout_marginTop="16sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/countryCodeTxt"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="16sp"
+                    android:drawablePadding="8dp"
+                    android:layout_marginStart="2dp"
+                    android:drawableLeft="@drawable/ic_call"
+                    android:textColor="@color/color_primary_txt"
+                    android:text="+91 |" />
+
+<!--                Todo: implement multiple country codes-->
+
+                <EditText
+                    android:id="@+id/phoneNumberEt"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone number"
+                    android:inputType="phone"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/color_primary_txt"
+                    android:textColorHint="@color/color_secondary_txt"
+                    android:backgroundTint="@android:color/transparent" />
+
+<!--Todo: Add max and min lengh on off to continue btn-->
+
+            </LinearLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/continueBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:backgroundTint="@color/color_cta"
+                android:text="@string/cont"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:fontFamily="@font/poppins"
+                android:layout_marginTop="16dp"
+                android:drawableRight="@drawable/ic_cont_arrow"
+                app:cornerRadius="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/skipBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/skip"
+                android:background="@android:color/transparent"
+                android:textColor="@color/color_primary_txt"
+                android:textAllCaps="false"
+                android:fontFamily="@font/poppins"
+                android:layout_marginTop="16dp"
+                app:cornerRadius="16dp" />
+
+
         </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/tnc_txt"
+            android:textAlignment="center"
+            android:textColor="@color/color_secondary_txt"
+            android:fontFamily="@font/poppins_light"
+            android:textSize="14sp"
+            android:id="@+id/tncTxt" />
+
+<!--        Todo: Add Link colors to tnc textview-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/otpLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/topLayout"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_arrow_back"
+                android:drawableTint="@color/color_primary_txt"
+                android:id="@+id/backBtn" />
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

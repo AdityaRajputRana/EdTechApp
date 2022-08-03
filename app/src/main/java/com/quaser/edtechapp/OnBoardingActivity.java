@@ -29,7 +29,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         sharedPreferences.edit()
                 .putBoolean("isOnboarded", true)
                 .commit();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         this.finish();
     }

@@ -2,10 +2,10 @@
     <!-- Base application theme. -->
     <style name="Theme.EdTechApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color_primary_txt</item>
+        <item name="colorPrimary">@color/color_cta</item>
         <item name="colorPrimaryDark">@color/color_bg</item>
         <item name="colorAccent">@color/color_accent1_blue</item>
-        <item name="android:statusBarColor">@color/color_bg</item>
+        <item name="android:statusBarColor">@color/color_fg</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
