@@ -2,6 +2,7 @@ package com.quaser.edtechapp.rest.api;
 
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 
 public class API {
 
@@ -27,10 +29,8 @@ public class API {
             String url = VolleyClient.getBaseUrl() + endpoint;
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                     (Request.Method.GET, url, request, new Response.Listener<JSONObject>() {
-
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.i("eta reponse", data.toString());
                             try {
                                 Boolean successful = response.getBoolean("success");
                                 if (successful) {
@@ -49,31 +49,28 @@ public class API {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            if (error != null) {
-                                if (error.networkResponse != null) {
-                                    String message = "";
-                                    if (error.networkResponse.data != null) {
-                                        try {
-                                            NetworkResponse networkResponse = error.networkResponse;
-                                            if (networkResponse != null && networkResponse.data != null) {
-                                                String errorStr = new String(networkResponse.data);
-                                                JSONObject jsonObject = new JSONObject(errorStr);
-                                                message = message + " " + jsonObject.getString("message");
-                                            }
-                                        } catch (Exception e){
-                                            e.printStackTrace();
-                                            message = message+" Json Conversion error.";
-                                        }
+                            if (error.networkResponse != null) {
+                                String message = "";
+                                if (error.networkResponse.data != null) {
+                                    try {
+                                        NetworkResponse networkResponse = error.networkResponse;
+                                        String errorStr = new String(networkResponse.data);
+                                        JSONObject jsonObject = new JSONObject(errorStr);
+                                        message = message + " " + jsonObject.getString("message");
+                                    } catch (Exception e){
+                                        e.printStackTrace();
+                                        message = message+" Json Conversion error.";
                                     }
-                                    if (error != null && error.getMessage() != null
-                                    && !error.getMessage().isEmpty()) {
-                                        message = message + " " + error.getMessage();
-                                    }
-                                    listener.fail(String.valueOf(error.networkResponse.statusCode), message, "", true, false);
                                 }
+                                if (error.getMessage() != null && !error.getMessage().isEmpty()) {
+                                    message = message + " " + error.getMessage();
+                                }
+                                listener.fail(String.valueOf(error.networkResponse.statusCode), message, "", true, false);
                             }
                         }
-                    });
+                    }){
+
+            };
 
             VolleyClient.getRequestQueue().add(jsonObjectRequest);
 
@@ -96,7 +93,6 @@ public class API {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.i("eta reponse", data.toString());
                             try {
                                 Boolean successful = response.getBoolean("success");
                                 if (successful) {
@@ -132,7 +128,15 @@ public class API {
                                 }
                             }
                         }
-                    });
+                    }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    return params;
+                }
+
+            };
 
             VolleyClient.getRequestQueue().add(jsonObjectRequest);
 

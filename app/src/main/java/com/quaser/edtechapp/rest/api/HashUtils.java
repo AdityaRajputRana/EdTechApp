@@ -15,28 +15,32 @@ import java.util.Random;
 
 public class HashUtils {
     private final static String APP_SECRET = "abcd";
+    private static final boolean isHashingEnabled = false;
 
     private static String getRandomSalt() {
         Random random = new Random();
         return String.valueOf(random.nextInt(900));
     }
     public static String getHashedData(Object obj){
-
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        String salt = getRandomSalt();
-        long timestamp = System.currentTimeMillis();
-        String input = salt + gson.toJson(obj) + String.valueOf(timestamp) + APP_SECRET;
-        String hash = md5(input);
+        if (isHashingEnabled) {
+            String salt = getRandomSalt();
+            long timestamp = System.currentTimeMillis();
+            String input = salt + gson.toJson(obj) + String.valueOf(timestamp) + APP_SECRET;
+            String hash = md5(input);
 
-        InputRequest inputRequest = new InputRequest(salt, obj, timestamp, hash);
-        String inputReqStr = gson.toJson(inputRequest);
-        String encodedInput = toBase64(inputReqStr);
-        Log.i("eta encoded", encodedInput);
-        AppRequest appRequest = new AppRequest(encodedInput);
-        Log.i("eta app Request data", appRequest.getData());
-        String requestData = gson.toJson(new AppRequest(encodedInput));
-        Log.i("eta request data", requestData);
-        return requestData;
+            InputRequest inputRequest = new InputRequest(salt, obj, timestamp, hash);
+            String inputReqStr = gson.toJson(inputRequest);
+            String encodedInput = toBase64(inputReqStr);
+            Log.i("eta encoded", encodedInput);
+            AppRequest appRequest = new AppRequest(encodedInput);
+            Log.i("eta app Request data", appRequest.getData());
+            String requestData = gson.toJson(new AppRequest(encodedInput));
+            Log.i("eta request data", requestData);
+            return requestData;
+        } else {
+            return gson.toJson(obj);
+        }
     }
 
     private static String md5(String input) {
@@ -58,6 +62,8 @@ public class HashUtils {
     }
 
     public static String toBase64(String input) {
+        if (!isHashingEnabled)
+            return input;
         try {
             String encodeValue = Base64.encodeToString(input.getBytes("UTF-8"), Base64.NO_WRAP);
             return encodeValue;
@@ -69,6 +75,8 @@ public class HashUtils {
     }
 
     public static String fromBase64(String input) {
+        if (!isHashingEnabled)
+            return input;
         try {
             byte[] data = Base64.decode(input, Base64.NO_PADDING);
             return new String(data);

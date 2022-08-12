@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_home_card"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginStart="16dp"
+    android:padding="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/headlineTxt"
+        app:layout_constraintEnd_toStartOf="@id/illusLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Digital Marketing"
+        android:fontFamily="@font/poppins"
+        android:textSize="14sp"
+        android:textColor="@color/color_secondary_txt" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        app:layout_constraintEnd_toStartOf="@id/illusLayout"
+        app:layout_constraintTop_toBottomOf="@id/headlineTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Running creative Ads"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="20sp"
+        android:textColor="@color/color_primary_txt" />
+
+    <TextView
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@id/illusLayout"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressTxt"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="10 of 40 lessons"
+        android:fontFamily="@font/poppins"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        android:textColor="@color/color_secondary_txt" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/illusLayout"
+        android:orientation="vertical">
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:trackCornerRadius="40dp"
+        android:progress="0"
+        app:indicatorColor="@color/color_highlight_txt"
+        app:trackColor="@color/progress_gray" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/lockImg"
+        app:layout_constraintStart_toStartOf="@id/progressBar"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:trackCornerRadius="40dp"
+        android:src="@drawable/ic_lock"
+        android:progress="18"
+        app:indicatorColor="@color/color_highlight_txt"
+        app:trackColor="@color/progress_gray" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

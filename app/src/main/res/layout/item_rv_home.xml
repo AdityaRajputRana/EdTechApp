@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_bg"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/mainTitleTopCard">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/quoteLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75">
+
+            <TextView
+                android:id="@+id/nameTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello, Aditya!"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/color_highlight_txt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/quoteTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins_extrabold"
+                android:text="Keep up the good work."
+                android:textColor="@color/color_primary_txt"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameTxt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageButton
+                app:layout_constraintTop_toTopOf="@id/nameTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/notificationBtn"
+                android:background="@drawable/bg_edittext"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:cornerRadius="10dp"
+                android:src="@drawable/ic_bell"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/headingCard"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/quoteLayout"
+        android:background="@drawable/bg_home_card"
+        android:padding="16dp">
+
+        <LinearLayout
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/headingLinear"
+            android:gravity="center_vertical"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.75"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/headlineTxt"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="Digital Marketing"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_secondary_txt" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/courseTitle"
+                    app:layout_constraintTop_toBottomOf="@id/headlineTxt"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="Running creative Ads"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:textSize="24sp"
+                    android:textColor="@color/color_primary_txt" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:src="@drawable/il_home"
+                android:layout_weight="0.25"
+                android:scaleType="centerCrop" />
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lessonProgressTxt"
+            android:text="7 of 23 lesson done"
+            android:textColor="@color/color_primary_txt"
+            android:fontFamily="@font/poppins"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp" />
+        
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:id="@+id/lessonProgressBar"
+            app:trackCornerRadius="40dp"
+            android:progress="0"
+            app:indicatorColor="@color/color_highlight_txt"
+            app:trackColor="@color/progress_gray" />
+
+
+    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    Todo: Develop tag list and its required filters-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tagRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainTitleTopCard" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,7 @@ public class APIMethods {
     public static void getHomeData(APIResponseListener<HomeRP> listener, Activity context){
         HomeReq req = new HomeReq(context);
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        API.getData(listener, req,  EndPoints.home, HomeRP.class);
+        API.postData(listener, req,  EndPoints.home, HomeRP.class);
     }
 
 
