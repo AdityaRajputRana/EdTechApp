@@ -6,22 +6,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.rest.api.API;
+import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.HashUtils;
 import com.quaser.edtechapp.rest.api.VolleyClient;
-import com.quaser.edtechapp.rest.api.interfaces.AnonymousResListener;
+import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.utils.Method;
 
@@ -76,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     private void loginAnonymously() {
         startProgress("Signing you in anonymously");
         phoneLayout.setVisibility(View.GONE);
-        API.signInAnonymously(new AnonymousResListener() {
+        APIMethods.signInAnonymously(new APIResponseListener<AnonymousRP>() {
             @Override
             public void success(AnonymousRP response) {
                 Toast.makeText(LoginActivity.this, "Signed in anonymously", Toast.LENGTH_SHORT).show();
@@ -85,11 +83,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
-                Method.showFailedAlert(LoginActivity.this, message);
+                Method.showFailedAlert(LoginActivity.this, code+ "-" + message);
                 phoneLayout.setVisibility(View.VISIBLE);
                 stopProgress();
             }
-        }, HashUtils.getHashedData("{}"));
+        });
     }
 
     private void startMainActivity(String userId, String name, String userType) {
