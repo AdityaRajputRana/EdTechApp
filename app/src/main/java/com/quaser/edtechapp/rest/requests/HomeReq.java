@@ -5,19 +5,19 @@ import android.app.Activity;
 import com.quaser.edtechapp.Auth.AuthUtils;
 
 public class HomeReq {
-    String userId;
+    String user_id;
     public HomeReq(Activity activity){
-        userId = AuthUtils.getInstance(activity).getUserId();
+        user_id = AuthUtils.getInstance(activity).getUserId();
     }
 
     public HomeReq() {
     }
 
     public String getUserId() {
-        return userId;
+        return user_id;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this.user_id = userId;
     }
 }

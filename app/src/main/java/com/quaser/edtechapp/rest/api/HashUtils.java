@@ -20,15 +20,15 @@ public class HashUtils {
         Random random = new Random();
         return String.valueOf(random.nextInt(900));
     }
-    public static String getHashedData(String data){
+    public static String getHashedData(Object obj){
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         String salt = getRandomSalt();
         long timestamp = System.currentTimeMillis();
-        String input = salt + data + String.valueOf(timestamp) + APP_SECRET;
+        String input = salt + gson.toJson(obj) + String.valueOf(timestamp) + APP_SECRET;
         String hash = md5(input);
 
-        InputRequest inputRequest = new InputRequest(salt, data, timestamp, hash);
+        InputRequest inputRequest = new InputRequest(salt, obj, timestamp, hash);
         String inputReqStr = gson.toJson(inputRequest);
         String encodedInput = toBase64(inputReqStr);
         Log.i("eta encoded", encodedInput);

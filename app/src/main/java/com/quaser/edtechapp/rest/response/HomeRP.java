@@ -5,7 +5,7 @@ import com.quaser.edtechapp.models.Prerequisite;
 import java.util.ArrayList;
 
 public class HomeRP {
-    boolean isAnonymous;
+    boolean isAnonymousLogin;
     String quote;
     String name;
     int completedLessons;
@@ -18,8 +18,8 @@ public class HomeRP {
     boolean isLocked;
     boolean isPaid;
 
-    public boolean isAnonymous() {
-        return isAnonymous;
+    public boolean isAnonymousLogin() {
+        return isAnonymousLogin;
     }
 
     public String getQuote() {
