@@ -2,27 +2,27 @@ package com.quaser.edtechapp.models;
 
 public class ShortLesson {
     String id;
-    String name;
-    String short_description;
+    String title;
+    String description;
     Prerequisite pre_requisite;
     String type;
     boolean is_complete = false;
     boolean is_locked;
 
     public String getName() {
-        return name;
+        return title;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.title = name;
     }
 
     public String getShort_description() {
-        return short_description;
+        return description;
     }
 
     public void setShort_description(String short_description) {
-        this.short_description = short_description;
+        this.description = short_description;
     }
 
     public Prerequisite getPre_requisite() {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ShortUnit {
     Prerequisite prerequisite;
-    String _id;
+    String unit_id;
     String unit_title;
     ArrayList<String> tags;
     int total_lessons;
@@ -24,11 +24,11 @@ public class ShortUnit {
     }
 
     public String get_id() {
-        return _id;
+        return unit_id;
     }
 
     public void set_id(String _id) {
-        this._id = _id;
+        this.unit_id = _id;
     }
 
     public String getUnit_title() {

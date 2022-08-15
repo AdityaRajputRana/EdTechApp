@@ -1,6 +1,7 @@
 package com.quaser.edtechapp.Adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.gson.Gson;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.response.UnitRP;
@@ -36,6 +38,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public UnitRVAdapter(UnitRP unitRP, Activity activity) {
         this.unitRP = unitRP;
         this.activity = activity;
+        Log.i("eta unitrp", new Gson().toJson(unitRP));
     }
 
     @Override
@@ -44,6 +47,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             UnitViewHolder holder = (UnitViewHolder) mHolder;
 
             holder.titleTxt.setText(unitRP.getUnit_title());
+            Log.i("eta units", String.valueOf(unitRP.getTotal_lessons()));
             if (unitRP.getTotal_lessons() == 0){
                 unitRP.setTotal_lessons(1);
                 unitRP.setCompleted_lessons(1);
@@ -67,15 +71,21 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             LessonViewHolder holder = (LessonViewHolder) mHolder;
             position = position-1;
             if (position == 0 && unitRP.isHas_user_started()){
+                holder.topProgress.setBackgroundColor(activity.getResources()
+                        .getColor(R.color.color_accent1_blue));
                 holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_active_ball));
-            } else {
+            } else if (position > 0){
                 ShortLesson previousLesson = unitRP.getLesson().get(position-1);
                 if (previousLesson.isIs_complete()){
+                    holder.topProgress.setBackgroundColor(activity.getResources()
+                            .getColor(R.color.color_accent1_blue));
                     holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_active_ball));
                 }
             }
             ShortLesson lesson = unitRP.getLesson().get(position);
             if (lesson.isIs_complete()){
+                holder.topProgress.setBackgroundColor(activity.getResources()
+                        .getColor(R.color.color_accent1_blue));
                 holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_tick));
                 holder.bottomProgress.setBackgroundColor(activity.getResources()
                         .getColor(R.color.color_accent1_blue));
@@ -121,6 +131,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView bodyTxt;
         ImageView indicatorImg;
         LinearLayout bottomProgress;
+        LinearLayout topProgress;
 
         public LessonViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -129,6 +140,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             bodyTxt = itemView.findViewById(R.id.bodyTxt);
             bottomProgress = itemView.findViewById(R.id.bottomProgress);
             indicatorImg = itemView.findViewById(R.id.progressBar);
+            topProgress = itemView.findViewById(R.id.topProgress);
         }
     }
 }

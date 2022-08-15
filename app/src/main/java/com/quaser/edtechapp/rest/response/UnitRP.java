@@ -6,9 +6,19 @@ import com.quaser.edtechapp.models.ShortLesson;
 import java.util.ArrayList;
 
 public class UnitRP {
+    String _id;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
     String unit_title;
     String completion;
-    int total_lessons = 0;
+    int total_lesson = 0;
     int total_vids = 0;
     int total_tests = 0;
     int total_articles = 0;
@@ -37,11 +47,11 @@ public class UnitRP {
     }
 
     public int getTotal_lessons() {
-        return total_lessons;
+        return total_lesson;
     }
 
     public void setTotal_lessons(int total_lessons) {
-        this.total_lessons = total_lessons;
+        this.total_lesson = total_lessons;
     }
 
     public int getTotal_vids() {
@@ -125,17 +135,17 @@ public class UnitRP {
     }
 
     public ArrayList<ShortLesson> getLesson() {
-        return lesson;
+        return lessons;
     }
 
     public void setLesson(ArrayList<ShortLesson> lesson) {
-        this.lesson = lesson;
+        this.lessons = lesson;
     }
 
     public UnitRP() {
     }
 
-    ArrayList<ShortLesson> lesson = new ArrayList<ShortLesson>();
+    ArrayList<ShortLesson> lessons = new ArrayList<ShortLesson>();
 
     class LastLesson{
         String lesson_id;
