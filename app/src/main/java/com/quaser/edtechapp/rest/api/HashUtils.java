@@ -5,8 +5,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.quaser.edtechapp.rest.requests.AppRequest;
-import com.quaser.edtechapp.rest.requests.InputRequest;
+import com.quaser.edtechapp.rest.requests.App.AppRequest;
+import com.quaser.edtechapp.rest.requests.App.InputRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

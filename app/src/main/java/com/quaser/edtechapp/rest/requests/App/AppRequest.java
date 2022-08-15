@@ -1,4 +1,4 @@
-package com.quaser.edtechapp.rest.requests;
+package com.quaser.edtechapp.rest.requests.App;
 
 public class AppRequest {
     String data;

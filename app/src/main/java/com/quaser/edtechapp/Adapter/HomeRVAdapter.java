@@ -1,6 +1,7 @@
 package com.quaser.edtechapp.Adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.gson.Gson;
 import com.quaser.edtechapp.R;
+import com.quaser.edtechapp.UnitActivity;
 import com.quaser.edtechapp.models.ShortUnit;
 import com.quaser.edtechapp.rest.response.HomeRP;
 
@@ -53,7 +56,7 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             String nameTxt = "Hello, " + homeRP.getName() +"!";
             holder.nameTxt.setText(nameTxt);
             holder.quoteTxt.setText(homeRP.getActive_quote());
-            if (homeRP.getHeadline().isEmpty()){
+            if (homeRP.getHeadline() == null || homeRP.getHeadline().isEmpty()){
                 holder.headlineTxt.setVisibility(View.GONE);
             }
             holder.titleTxt.setText(homeRP.getCourse_title());
@@ -111,8 +114,10 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Todo: Implement Unit Activity
-                    Toast.makeText(activity, "Item clicked!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(activity, UnitActivity.class);
+                    String unitStr = new Gson().toJson(unit);
+                    intent.putExtra("SHORT_UNIT", unitStr);
+                    activity.startActivity(intent);
                 }
             });
         }

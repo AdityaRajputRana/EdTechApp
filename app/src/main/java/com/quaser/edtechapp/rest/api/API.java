@@ -87,7 +87,11 @@ public class API {
         try {
             String data = HashUtils.getHashedData(rawData);
             JSONObject request = new JSONObject(data);
+
             String url = VolleyClient.getBaseUrl() + endpoint;
+
+            Log.i("eta data", data);
+            Log.i("eta url", url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                     (Request.Method.POST, url, request, new Response.Listener<JSONObject>() {
 
