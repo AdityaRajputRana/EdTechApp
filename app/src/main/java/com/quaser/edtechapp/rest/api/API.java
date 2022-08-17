@@ -104,7 +104,7 @@ public class API {
 //                                    String decodedData = HashUtils.fromBase64(data);
                                     listener.convertData(new Gson().fromJson(data, klass));
                                 } else {
-                                    listener.fail("2", request.getString("message"), "", true, false);
+                                    listener.fail("2", response.getString("message"), "", true, false);
                                 }
                             } catch (Exception e) {
                                 listener.fail("1", "The received response is not good", "", true, false);

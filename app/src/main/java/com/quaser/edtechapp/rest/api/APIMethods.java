@@ -1,17 +1,18 @@
 package com.quaser.edtechapp.rest.api;
 
 import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
+import com.quaser.edtechapp.rest.requests.AddQuestionRq;
 import com.quaser.edtechapp.rest.requests.HomeReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
+import com.quaser.edtechapp.rest.response.ForumHomeRP;
+import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.rest.response.HomeRP;
 import com.quaser.edtechapp.rest.response.UnitRP;
+
+import java.util.ArrayList;
 
 public class APIMethods {
     public static void signInAnonymously(APIResponseListener<AnonymousRP> listener){
@@ -26,6 +27,17 @@ public class APIMethods {
     public static void getUnit(String unitId, Activity context, APIResponseListener<UnitRP> listener){
         UnitReq req = new UnitReq(context, unitId);
         API.postData(listener, req, EndPoints.unit, UnitRP.class);
+    }
+
+    public static void postQuestion(String head, String body, String imageUrl, ArrayList<String> tags,
+                                    Activity activity, APIResponseListener<QuestionRP> listener){
+        AddQuestionRq req = new AddQuestionRq(imageUrl, tags, head, body, activity);
+        API.postData(listener, req, EndPoints.addQuestion, QuestionRP.class);
+    }
+
+    public static void getForumHome(Activity context, APIResponseListener<ForumHomeRP> listener){
+        HomeReq req = new HomeReq(context);
+        API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
     }
 
 

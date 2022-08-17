@@ -60,7 +60,7 @@
                 app:layout_constraintTop_toTopOf="@id/nameTxt"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/notificationBtn"
-                android:background="@drawable/bg_edittext"
+                android:background="@drawable/bg_round_fg"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 app:cornerRadius="10dp"
