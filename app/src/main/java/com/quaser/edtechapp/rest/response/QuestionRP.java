@@ -1,5 +1,7 @@
 package com.quaser.edtechapp.rest.response;
 
+import com.quaser.edtechapp.models.Answer;
+
 import java.util.ArrayList;
 
 public class QuestionRP {
@@ -16,6 +18,15 @@ public class QuestionRP {
     int total_likes;
     int total_comments;
     boolean is_liked = false;
+    ArrayList<Answer> answers;
+
+    public ArrayList<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(ArrayList<Answer> answers) {
+        this.answers = answers;
+    }
 
     public boolean isIs_liked() {
         return is_liked;

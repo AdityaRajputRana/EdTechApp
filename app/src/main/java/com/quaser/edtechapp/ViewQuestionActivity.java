@@ -13,7 +13,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Adapter.ViewQuestionRVAdapter;
+import com.quaser.edtechapp.rest.api.APIMethods;
+import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
+import com.quaser.edtechapp.rest.requests.QuestionReq;
 import com.quaser.edtechapp.rest.response.QuestionRP;
+import com.quaser.edtechapp.utils.Method;
 
 public class ViewQuestionActivity extends AppCompatActivity {
 
@@ -69,6 +73,48 @@ public class ViewQuestionActivity extends AppCompatActivity {
 
     private void fetchQuestion() {
         //Todo fetch question
+        String questionId ="";
+        if (getIntent().getBooleanExtra("hasQuestionAttached", false)){
+            QuestionRP questionRP = new Gson().fromJson(getIntent().getStringExtra("question"), QuestionRP.class);
+            questionId = questionRP.get_id();
+        } else {
+            questionId = getIntent().getStringExtra("questionId");
+        }
+        APIMethods.getQuestion(this, questionId, new APIResponseListener<QuestionRP>() {
+            @Override
+            public void success(QuestionRP response) {
+                addResponse(response);
+            }
+
+            @Override
+            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                Method.showFailedAlert(ViewQuestionActivity.this, code + "-" + message);
+                if (adapter!=null){
+                    adapter.showNoAnswerYetTxt();
+                }
+            }
+        });
+    }
+
+    private void addResponse(QuestionRP response) {
+        if (adapter == null){
+            showFetchedQuestion(response);
+        } else {
+            addAnswers(response);
+        }
+    }
+
+    private void showFetchedQuestion(QuestionRP questionRP){
+        manager = new LinearLayoutManager(this);
+        adapter = new ViewQuestionRVAdapter(questionRP);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(adapter);
+        titleTxt.setText(questionRP.getHead());
+        addAnswers(questionRP);
+    }
+
+    private void addAnswers(QuestionRP questionRP) {
+        adapter.addAnswers(questionRP.getAnswers());
     }
 
     private void showQuestion() {

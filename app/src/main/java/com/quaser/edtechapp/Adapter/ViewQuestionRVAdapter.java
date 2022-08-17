@@ -11,17 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quaser.edtechapp.R;
+import com.quaser.edtechapp.models.Answer;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     boolean haveAnswers = true;
     boolean isLoadingAnswers = true;
 
+    ArrayList<Answer> mAnswers = new ArrayList<Answer>();
+
     public void showNoAnswerYetTxt(){
         haveAnswers = false;
         isLoadingAnswers = false;
+        notifyItemChanged(0);
     }
 
     public ViewQuestionRVAdapter(QuestionRP questionRP) {
@@ -37,8 +45,12 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new QuestionViewHolder(LayoutInflater.from(parent.getContext()).inflate(
+        if (viewType == 0)
+            return new QuestionViewHolder(LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_rv_forrum_question, parent, false
+            ));
+        return new AnswerViewHolder(LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.item_rv_forrum_answer, parent, false
         ));
     }
 
@@ -69,12 +81,51 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (!haveAnswers){
                 holder.noAnsTxt.setVisibility(View.VISIBLE);
             }
+        } else if (gHolder instanceof AnswerViewHolder){
+            position = position-1;
+            AnswerViewHolder holder = (AnswerViewHolder) gHolder;
+            Answer answer = mAnswers.get(position);
+            int totalUps = 0;
+            if (answer.getUpvotes() != null){
+                totalUps = answer.getUpvotes().size();
+            } else {
+                totalUps = answer.getTotal_upvotes();
+            }
+
+            holder.body.setText(answer.getBody());
+            holder.upvotesTxt.setText(totalUps + " upvotes");
         }
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemViewType(int position) {
+        if (position == 0){
+            return 0;
+        }
         return 1;
+    }
+
+    @Override
+    public int getItemCount() {
+        return 1 + mAnswers.size();
+    }
+
+    public void addAnswers(ArrayList<Answer> answers) {
+        if (answers == null || answers.size() ==0){
+            if (mAnswers.size() ==0){
+                showNoAnswerYetTxt();
+                return;
+            }
+        }
+
+        int positionStart = mAnswers.size();
+
+        mAnswers.addAll(answers);
+        isLoadingAnswers = false;
+        haveAnswers = true;
+        notifyDataSetChanged();
+//        notifyItemChanged(0);
+//        notifyItemRangeInserted(positionStart, answers.size());
     }
 
     public class QuestionViewHolder extends RecyclerView.ViewHolder{
@@ -105,10 +156,14 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public class AnswerViewHolder extends RecyclerView.ViewHolder{
 
+        TextView upvotesTxt;
+        TextView body;
+
         public AnswerViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            //Todo Make this
+            body = itemView.findViewById(R.id.bodyTxt);
+            upvotesTxt = itemView.findViewById(R.id.likeTxt);
         }
     }
 }
