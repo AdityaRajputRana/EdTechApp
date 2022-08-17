@@ -1,5 +1,6 @@
 package com.quaser.edtechapp.Adapter;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.widget.TextViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quaser.edtechapp.R;
@@ -18,9 +20,11 @@ import com.squareup.picasso.Picasso;
 public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.MyViewHolder> {
 
     ForumHomeRP homeRP;
+    Activity activity;
 
-    public ForumHomeRVAdapter(ForumHomeRP homeRP) {
+    public ForumHomeRVAdapter(ForumHomeRP homeRP, Activity activity) {
         this.homeRP = homeRP;
+        this.activity = activity;
     }
 
     @NonNull
@@ -43,6 +47,16 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.
                     .into(holder.imageView);
         } else {
             holder.imageView.setVisibility(View.GONE);
+        }
+
+        if (questionRP.getTags() != null
+        && questionRP.getTags().size() >0){
+            ForrumChipRVAdapter chipRVAdapter = new ForrumChipRVAdapter(questionRP.getTags());
+            LinearLayoutManager manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+            holder.recyclerView.setAdapter(chipRVAdapter);
+            holder.recyclerView.setLayoutManager(manager);
+        } else {
+            holder.recyclerView.setVisibility(View.GONE);
         }
     }
 

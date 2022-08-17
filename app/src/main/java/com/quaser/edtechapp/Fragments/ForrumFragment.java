@@ -78,7 +78,7 @@ public class ForrumFragment extends Fragment {
 
     private void showRecyclerView(ForumHomeRP res) {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        adapter = new ForumHomeRVAdapter(res);
+        adapter = new ForumHomeRVAdapter(res, getActivity());
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
     }
