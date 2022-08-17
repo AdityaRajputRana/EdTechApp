@@ -80,6 +80,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         String questionRP = new Gson().toJson(response);
         Intent intent = new Intent(this, ViewQuestionActivity.class);
         intent.putExtra("hasQuestionAttached", true);
+        intent.putExtra("isNewQuestion", true);
         intent.putExtra("question", questionRP);
         startActivity(intent);
         this.finish();

@@ -111,21 +111,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         if (isStopped) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-            if (homeFragment != null) {
-                transaction.add(R.id.fragmentLayout, homeFragment);
-            }
-
-            if (profileFrament != null) {
-                transaction.add(R.id.fragmentLayout, profileFrament);
-            }
-
-            if (forrumFragment != null) {
-                transaction.add(R.id.fragmentLayout, forrumFragment);
-            }
-
-            transaction.commit();
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//
+//            if (homeFragment != null) {
+//                transaction.add(R.id.fragmentLayout, homeFragment);
+//            }
+//
+//            if (profileFrament != null) {
+//                transaction.add(R.id.fragmentLayout, profileFrament);
+//            }
+//
+//            if (forrumFragment != null) {
+//                transaction.add(R.id.fragmentLayout, forrumFragment);
+//            }
+//
+//            transaction.commit();
             changeFragment(index);
             isStopped = false;
         }
@@ -138,15 +138,15 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction =    getSupportFragmentManager().beginTransaction();
 
         if (homeFragment != null) {
-            transaction.remove(homeFragment);
+            transaction.hide(homeFragment);
         }
 
         if (profileFrament != null) {
-            transaction.remove(profileFrament);
+            transaction.hide(profileFrament);
         }
 
         if (forrumFragment != null) {
-            transaction.remove(forrumFragment);
+            transaction.hide(forrumFragment);
         }
 
         transaction.commit();

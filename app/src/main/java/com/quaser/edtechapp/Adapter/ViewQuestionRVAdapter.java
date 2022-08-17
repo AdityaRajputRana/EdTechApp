@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,14 @@ import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.squareup.picasso.Picasso;
 
 public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    boolean haveAnswers = true;
+    boolean isLoadingAnswers = true;
+
+    public void showNoAnswerYetTxt(){
+        haveAnswers = false;
+        isLoadingAnswers = false;
+    }
 
     public ViewQuestionRVAdapter(QuestionRP questionRP) {
         this.questionRP = questionRP;
@@ -50,6 +59,16 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         .load(questionRP.getImage_url())
                         .into(holder.imageView);
             }
+
+            if (isLoadingAnswers){
+                holder.progressBar.setVisibility(View.VISIBLE);
+            } else {
+                holder.progressBar.setVisibility(View.GONE);
+            }
+
+            if (!haveAnswers){
+                holder.noAnsTxt.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -67,6 +86,9 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView likesTxt; //Todo Add liking and tags
         TextView commentsTxt;
 
+        ProgressBar progressBar;
+        TextView noAnsTxt;
+
         public QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
             head = itemView.findViewById(R.id.headTxt);
@@ -75,6 +97,9 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             imageView = itemView.findViewById(R.id.imageView);
             likesTxt = itemView.findViewById(R.id.likeTxt);
             commentsTxt = itemView.findViewById(R.id.commentsTxt);
+
+            noAnsTxt= itemView.findViewById(R.id.endText);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 

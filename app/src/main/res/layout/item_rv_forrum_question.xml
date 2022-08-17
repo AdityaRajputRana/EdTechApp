@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
+    android:layout_marginBottom="8dp"
     android:background="@color/color_fg"
     android:layout_height="wrap_content">
 
@@ -89,6 +90,26 @@
         android:text="This would be the body of the question." />
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/endText"
+        app:layout_constraintTop_toBottomOf="@id/bodyTxt"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins"
+        android:textColor="@color/color_secondary_txt"
+        android:textAlignment="center"
+        android:text="No Answers yet!" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/bodyTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

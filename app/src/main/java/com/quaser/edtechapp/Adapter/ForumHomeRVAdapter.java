@@ -1,6 +1,7 @@
 package com.quaser.edtechapp.Adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.quaser.edtechapp.R;
+import com.quaser.edtechapp.ViewQuestionActivity;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.squareup.picasso.Picasso;
@@ -58,6 +61,16 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.
         } else {
             holder.recyclerView.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ViewQuestionActivity.class);
+                intent.putExtra("hasQuestionAttached", true);
+                intent.putExtra("question", new Gson().toJson(questionRP));
+                activity.startActivity(intent);
+            }
+        });
     }
 
     @Override
