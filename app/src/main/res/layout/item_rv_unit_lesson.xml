@@ -28,7 +28,7 @@
         android:fontFamily="@font/poppins_medium"
         android:textSize="16sp"
         android:textColor="@color/color_primary_txt"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toTopOf="parent" />

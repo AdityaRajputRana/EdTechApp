@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quaser.edtechapp.Adapter.ForumHomeRVAdapter;
 import com.quaser.edtechapp.AddQuestionActivity;
@@ -23,7 +24,7 @@ import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.utils.Method;
 
 public class ForrumFragment extends Fragment {
-    FloatingActionButton addBtn;
+    ExtendedFloatingActionButton addBtn;
 
     ProgressBar progressBar;
     RecyclerView recyclerView;

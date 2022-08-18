@@ -16,4 +16,6 @@
 
     <color name="arrow_bg">#3E55F2</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="progress_bg">#564F92</color>
 </resources>

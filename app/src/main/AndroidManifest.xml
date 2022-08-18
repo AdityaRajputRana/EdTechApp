@@ -17,6 +17,9 @@
         android:theme="@style/Theme.EdTechApp"
         tools:targetApi="31">
         <activity
+            android:name=".LessonActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewQuestionActivity"
             android:exported="false" />
         <activity

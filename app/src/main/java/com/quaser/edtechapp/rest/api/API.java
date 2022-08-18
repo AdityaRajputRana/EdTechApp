@@ -86,7 +86,13 @@ public class API {
     public static void postData(APIResponseListener listener, Object rawData, String endpoint, Class klass){
         try {
             String data = HashUtils.getHashedData(rawData);
-            JSONObject request = new JSONObject(data);
+            JSONObject request;
+            Log.i("eta", data);
+            if (data.equals("\"{}\"")){
+                request = new JSONObject();
+            } else {
+                 request = new JSONObject(data);
+            }
 
             String url = VolleyClient.getBaseUrl() + endpoint;
 

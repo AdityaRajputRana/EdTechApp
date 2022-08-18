@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -44,9 +45,11 @@ public class UnitActivity extends AppCompatActivity {
         setUpTopBar();
     }
 
+    ShortUnit shortUnit;
+
     private void fetchUnit() {
         String unitStr = getIntent().getStringExtra("SHORT_UNIT");
-        ShortUnit shortUnit = new Gson().fromJson(unitStr, ShortUnit.class);
+        shortUnit = new Gson().fromJson(unitStr, ShortUnit.class);
         titleTxt.setText(shortUnit.getUnit_title());
         APIMethods.getUnit(shortUnit.get_id(), this, new APIResponseListener<UnitRP>() {
             @Override
@@ -71,20 +74,44 @@ public class UnitActivity extends AppCompatActivity {
             if (unitRP.isIs_paid()){
                 if (unitRP.isHas_user_purchased()){
                     continueBtn.setText("Begin Learning");
+                    continueBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startLessonActivity();
+                        }
+                    });
                 } else {
                     continueBtn.setText("Buy Now");
                 }
             } else {
                 continueBtn.setText("Begin Learning");
+                continueBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startLessonActivity();
+                    }
+                });
             }
         }
         continueBtn.setVisibility(View.VISIBLE);
 
+        if (unitRP.getUnit_title() == null
+        || unitRP.getUnit_title().isEmpty()){
+            unitRP.setUnit_title(shortUnit.getUnit_title());
+        }
         manager = new LinearLayoutManager(this);
         adapter = new UnitRVAdapter(unitRP, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
         recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void startLessonActivity() {
+        Intent intent = new Intent(this, LessonActivity.class);
+        intent.putExtra("isUnitAttached", true);
+        String unitStr = new Gson().toJson(unitRP);
+        intent.putExtra("unitRP", unitStr);
+        startActivity(intent);
     }
 
     private void setUpTopBar() {

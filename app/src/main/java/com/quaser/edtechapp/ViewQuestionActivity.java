@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Adapter.ViewQuestionRVAdapter;
 import com.quaser.edtechapp.rest.api.APIMethods;
@@ -26,6 +27,7 @@ public class ViewQuestionActivity extends AppCompatActivity {
     LinearLayoutManager manager;
     ViewQuestionRVAdapter adapter;
     TextView titleTxt;
+    ExtendedFloatingActionButton addBtn;
 //    ProgressBar progressBar;
 
 
@@ -115,6 +117,7 @@ public class ViewQuestionActivity extends AppCompatActivity {
 
     private void addAnswers(QuestionRP questionRP) {
         adapter.addAnswers(questionRP.getAnswers());
+        addBtn.extend();
     }
 
     private void showQuestion() {
@@ -124,8 +127,10 @@ public class ViewQuestionActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         titleTxt.setText(questionRP.getHead());
-        if (getIntent().getBooleanExtra("isNewQuestion", false))
+        if (getIntent().getBooleanExtra("isNewQuestion", false)) {
             adapter.showNoAnswerYetTxt();
+            addBtn.extend();
+        }
         else
             fetchQuestion();
     }
@@ -134,6 +139,8 @@ public class ViewQuestionActivity extends AppCompatActivity {
         appBar = findViewById(R.id.appBar);
         recyclerView = findViewById(R.id.recyclerView);
         titleTxt = findViewById(R.id.titleTxt);
+        addBtn = findViewById(R.id.addBtn);
+        addBtn.hide();
 //        progressBar = findViewById(R.id.progressBar);
     }
 }
