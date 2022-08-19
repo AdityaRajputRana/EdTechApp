@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1026888489864",
+    "project_id": "quaser-edtech",
+    "storage_bucket": "quaser-edtech.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026888489864:android:7a1f1d84519c0d4276383d",
+        "android_client_info": {
+          "package_name": "com.quaser.edtechapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1026888489864-77spa4kg2eod4hsmb29m8lg899hlj1i3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5kIjHnYlbStFKF4yTJfgwqgOiWju9IRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1026888489864-77spa4kg2eod4hsmb29m8lg899hlj1i3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
