@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.rest.api.API;
 import com.quaser.edtechapp.rest.api.APIMethods;
@@ -137,12 +138,37 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private boolean userCreatedOnServer = false;
+    private boolean userCreatedOnFirebase = false;
+
     private void login(boolean newUser) {
+        if (newUser){
+            startProgress("Please wait while we set up your new Account!");
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName("User")
+                    .build();
+            FirebaseAuth
+                    .getInstance()
+                    .getCurrentUser()
+                    .updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        userCreatedOnFirebase = true;
+                        startNameActivity();
+                    }else{
+                        startProgress("Failed to update user name");
+                    }
+                }
+            });
+
+        }
         APIMethods.login(new APIResponseListener<LoginRP>() {
             @Override
             public void success(LoginRP response) {
                 Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                 if (newUser || response.isIs_new_user()){
+                    userCreatedOnServer = true;
                     startNameActivity();
                 } else
                     startMainActivity();
@@ -153,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                 Method.showFailedAlert(LoginActivity.this, code
                 + "-"  + message);
                 stopProgress();
-                otpLayout.setVisibility(View.VISIBLE);
+                phoneLayout.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -282,18 +308,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startNameActivity() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            Intent intent = new Intent(this, NameActivity
-                    .class);
-            startActivity(intent);
-            this.finish();
-        } else {
-            Toast.makeText(this, "Some error occurred: User is null", Toast.LENGTH_SHORT).show();
+        if (userCreatedOnServer && userCreatedOnFirebase) {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                Intent intent = new Intent(this, NameActivity.class);
+                startActivity(intent);
+                this.finish();
+            } else {
+                Toast.makeText(this, "Some error occurred: User is null", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private void startMainActivity() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            AuthUtils.nameAdded(this);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             this.finish();

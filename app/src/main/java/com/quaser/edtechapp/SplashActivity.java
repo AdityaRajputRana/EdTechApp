@@ -24,8 +24,7 @@ public class SplashActivity extends AppCompatActivity {
         if (isOnboarded){
             boolean isLoggedIn = AuthUtils.getInstance().isLoggedIn();
             if (isLoggedIn) {
-                if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName()==null
-                || FirebaseAuth.getInstance().getCurrentUser().getDisplayName().isEmpty())
+                if (!AuthUtils.isNameAdded(this))
                     startActivity(new Intent(this, NameActivity.class));
                 else
                     startActivity(new Intent(this, MainActivity.class));

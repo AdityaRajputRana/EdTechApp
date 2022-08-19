@@ -3,6 +3,7 @@ package com.quaser.edtechapp.rest.response;
 public class LoginRP {
     boolean is_new_user = false;
     String user_id;
+    String uid;
 
     public boolean isIs_new_user() {
         return is_new_user;

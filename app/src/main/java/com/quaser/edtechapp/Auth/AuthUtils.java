@@ -37,6 +37,15 @@ public class AuthUtils {
             return "Error: Not logged in!";
     }
 
+    public static boolean isNameAdded(Context context){
+        return getSharedPref(context).getBoolean("isNameAdded",false);
+    }
+
+    public static void nameAdded(Context context){
+        getSharedPref(context).edit().putBoolean("isNameAdded", true)
+                .commit();
+    }
+
 //    public void setUser(String userId, String userType, String name){
 //        SharedPreferences.Editor editor = getSharedPref().edit();
 //        editor.putBoolean("user/isLoggedIn", true);
