@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.quaser.edtechapp.Auth.AuthUtils;
 
 public class SplashActivity extends AppCompatActivity {
@@ -21,9 +22,13 @@ public class SplashActivity extends AppCompatActivity {
         boolean isOnboarded = preferences.getBoolean("isOnboarded",false);
 
         if (isOnboarded){
-            boolean isLoggedIn = AuthUtils.getInstance(this).isLoggedIn();
+            boolean isLoggedIn = AuthUtils.getInstance().isLoggedIn();
             if (isLoggedIn) {
-                startActivity(new Intent(this, MainActivity.class));
+                if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName()==null
+                || FirebaseAuth.getInstance().getCurrentUser().getDisplayName().isEmpty())
+                    startActivity(new Intent(this, NameActivity.class));
+                else
+                    startActivity(new Intent(this, MainActivity.class));
             } else {
                 startActivity(new Intent(this, LoginActivity.class));
             }

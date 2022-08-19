@@ -3,43 +3,50 @@ package com.quaser.edtechapp.Auth;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.FileFilter;
+
 public class AuthUtils {
     private static AuthUtils authUtils;
-    private Context context;
-    private SharedPreferences mPref;
-    public static AuthUtils getInstance(Context context){
+    private static SharedPreferences mPref;
+    public static AuthUtils getInstance(){
         if (authUtils == null){
-            authUtils = new AuthUtils(context);
+            authUtils = new AuthUtils();
         }
         return authUtils;
     }
 
-    public AuthUtils(Context context) {
-        this.context = context;
+
+    public static boolean isLoggedIn(){
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
-    public boolean isLoggedIn(){
-        return getSharedPref().getBoolean("user/isLoggedIn", false);
+    public static String getUserName(){
+        if (FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+            return "User";
+        } else {
+            return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        }
     }
 
-    public String getUserName(){
-        return getSharedPref().getString("user/name", "User");
+    public static String getUserId(){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null)
+            return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        else
+            return "Error: Not logged in!";
     }
 
-    public String getUserId(){
-        return getSharedPref().getString("user/id", "");
-    }
+//    public void setUser(String userId, String userType, String name){
+//        SharedPreferences.Editor editor = getSharedPref().edit();
+//        editor.putBoolean("user/isLoggedIn", true);
+//        editor.putString("user/id", userId);
+//        editor.putString("user/name", name);
+//        editor.putString("user/type", userType);
+//        editor.commit();
+//    }
 
-    public void setUser(String userId, String userType, String name){
-        SharedPreferences.Editor editor = getSharedPref().edit();
-        editor.putBoolean("user/isLoggedIn", true);
-        editor.putString("user/id", userId);
-        editor.putString("user/name", name);
-        editor.putString("user/type", userType);
-        editor.commit();
-    }
-
-    public SharedPreferences getSharedPref(){
+    public static SharedPreferences getSharedPref(Context context){
         if (mPref == null){
             mPref = context.getSharedPreferences("EdTech", Context.MODE_PRIVATE);
         }

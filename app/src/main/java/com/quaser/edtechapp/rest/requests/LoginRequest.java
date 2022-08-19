@@ -2,15 +2,16 @@ package com.quaser.edtechapp.rest.requests;
 
 import android.app.Activity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.quaser.edtechapp.Auth.AuthUtils;
 
-public class HomeReq {
+public class LoginRequest {
     String user_id;
-    public HomeReq(Activity activity){
-        user_id = AuthUtils.getInstance().getUserId();
-    }
-
-    public HomeReq() {
+    String phone_number;
+    public LoginRequest(){
+        user_id = AuthUtils.getUserId();
+        this.phone_number = FirebaseAuth.getInstance().getCurrentUser()
+                .getPhoneNumber();
     }
 
     public String getUserId() {

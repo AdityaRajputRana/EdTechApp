@@ -3,6 +3,7 @@ package com.quaser.edtechapp.rest.api;
 public class EndPoints {
 
     public static String anonymous = "auth/anonymous";
+    public static String login = "auth/login";
     public static String home = "ui/home";
     public static String unit = "ui/unit";
 

@@ -12,7 +12,7 @@ public class UnitReq {
     }
 
     public UnitReq(Activity activity, String unit_id) {
-        this.user_id = AuthUtils.getInstance(activity).getUserId();
+        this.user_id = AuthUtils.getInstance().getUserId();
         this.unit_id = unit_id;
     }
 }

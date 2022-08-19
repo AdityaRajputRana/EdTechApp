@@ -5,9 +5,11 @@ import android.app.Activity;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
 import com.quaser.edtechapp.rest.requests.HomeReq;
+import com.quaser.edtechapp.rest.requests.LoginRequest;
 import com.quaser.edtechapp.rest.requests.QuestionReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
+import com.quaser.edtechapp.rest.response.LoginRP;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.rest.response.HomeRP;
@@ -18,6 +20,11 @@ import java.util.ArrayList;
 public class APIMethods {
     public static void signInAnonymously(APIResponseListener<AnonymousRP> listener){
         API.postData(listener, "{}", EndPoints.anonymous, AnonymousRP.class);
+    }
+
+    public static void login(APIResponseListener<LoginRP> listener){
+        LoginRequest req = new LoginRequest();
+        API.postData(listener, req, EndPoints.login, LoginRP.class);
     }
 
     public static void getHomeData(APIResponseListener<HomeRP> listener, Activity context){

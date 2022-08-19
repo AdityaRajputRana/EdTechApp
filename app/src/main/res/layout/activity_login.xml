@@ -37,7 +37,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_height="match_parent"
         android:id="@+id/phoneLayout">
 
@@ -178,25 +178,126 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/otpLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/topLayout"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
-            >
+            android:id="@+id/otp_textLayout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/otpTxt"
+                android:text="Verify your number"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/color_primary_txt"
+                android:textSize="28sp" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/otp_centerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/otp_tncTxt"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintTop_toBottomOf="@id/otp_textLayout"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/otp_enter_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="OTP is sent to number\n+91 XXXXX XXXXX"
+                android:textAlignment="center"
+                android:textColor="@color/color_primary_txt"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/wrong_number_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:text="Wrong number?"
+                android:textAlignment="center"
+                android:textColor="@color/color_cta"
+                android:textSize="16sp" />
+
+<!--            Todo: Implement resent and wrong number txt-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="14dp"
+                android:layout_marginTop="16sp"
+                android:orientation="vertical">
+
+                <in.aabhasjindal.otptextview.OtpTextView
+                    android:id="@+id/otp_view"
+                    android:layout_weight="1"
+                    app:bar_active_color="@color/color_cta"
+                    app:bar_error_color="@android:color/holo_red_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_primary_txt"
+                    app:height="60dp"
+                    app:length="6"
+                    app:otp_box_background="@drawable/bg_round_fg"
+                    app:otp_text_size="24dp"/>
+
+                <TextView
+                    android:id="@+id/resend_otp_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="Resend OTP"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/color_cta"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+
+
+
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
+                android:id="@+id/verifyBtn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/ic_arrow_back"
-                android:drawableTint="@color/color_primary_txt"
-                android:id="@+id/backBtn" />
+                android:padding="16dp"
+                android:backgroundTint="@color/color_cta"
+                android:text="Verify"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:fontFamily="@font/poppins"
+                android:layout_marginTop="16dp"
+                android:drawableRight="@drawable/ic_cont_arrow"
+                app:cornerRadius="16dp" />
+
         </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/tnc_txt"
+            android:textAlignment="center"
+            android:textColor="@color/color_secondary_txt"
+            android:fontFamily="@font/poppins_light"
+            android:textSize="14sp"
+            android:id="@+id/otp_tncTxt" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

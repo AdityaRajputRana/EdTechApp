@@ -23,7 +23,7 @@ public class AddQuestionRq {
         this.tags = tags;
         this.head = head;
         this.body = body;
-        this.user_id = AuthUtils.getInstance(context).getUserId();
-        this.user_name = AuthUtils.getInstance(context).getUserName();
+        this.user_id = AuthUtils.getInstance().getUserId();
+        this.user_name = AuthUtils.getInstance().getUserName();
     }
 }

@@ -12,7 +12,7 @@ public class QuestionReq {
     }
 
     public QuestionReq(Activity activity, String question_id) {
-        this.user_id = AuthUtils.getInstance(activity).getUserId();
+        this.user_id = AuthUtils.getInstance().getUserId();
         this.question_id = question_id;
     }
 }
