@@ -1,5 +1,6 @@
 package com.quaser.edtechapp.rest.response;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.models.Prerequisite;
 import com.quaser.edtechapp.models.ShortUnit;
@@ -12,7 +13,8 @@ public class HomeRP {
     Object last_lesson; //Todo Make this
     Object last_unit; //Todo Make this
 
-    String name = "User"; //Todo: this is not present in request
+    String name = FirebaseAuth.getInstance()
+            .getCurrentUser().getDisplayName(); //Todo: this is not present in request
     int completed_lessons;
     int total_lessons;
     String course_title;

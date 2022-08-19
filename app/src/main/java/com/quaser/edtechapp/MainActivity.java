@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.quaser.edtechapp.Fragments.ForrumFragment;
 import com.quaser.edtechapp.Fragments.HomeFragment;
 import com.quaser.edtechapp.Fragments.ProfileFrament;

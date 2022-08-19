@@ -65,7 +65,7 @@ public class NameActivity extends AppCompatActivity {
             nameEt.setError(null);
 
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName("User")
+                    .setDisplayName(nameEt.getText().toString())
                     .build();
             FirebaseAuth
                     .getInstance()
