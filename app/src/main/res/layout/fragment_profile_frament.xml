@@ -5,10 +5,35 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.ProfileFrament">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Profile Fragment" />
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rootLayout"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/logOutBtn"
+                android:text="Log out"
+                android:textAllCaps="false"
+                android:fontFamily="@font/poppins"
+                android:padding="16dp"
+                android:textAlignment="textStart"
+                android:background="@android:color/transparent"
+                android:textColor="@color/color_primary_txt"
+                android:drawableRight="@drawable/ic_cont_arrow"
+                style="@style/ThemeOverlay.Material3.Button.TextButton" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </FrameLayout>

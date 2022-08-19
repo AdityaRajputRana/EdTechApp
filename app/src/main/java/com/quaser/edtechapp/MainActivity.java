@@ -22,6 +22,20 @@ public class MainActivity extends AppCompatActivity {
     private ProfileFrament profileFrament;
 
     @Override
+    protected void onDestroy() {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        if (homeFragment != null)
+//            transaction.remove(homeFragment);
+//        if (profileFrament != null)
+//            transaction.remove(profileFrament);
+//        if (forrumFragment != null)
+//            transaction.remove(forrumFragment);
+//        transaction.commit();
+        //Todo: destroy fragments on activity destroy
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

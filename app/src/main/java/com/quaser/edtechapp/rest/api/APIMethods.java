@@ -22,7 +22,8 @@ import java.util.ArrayList;
 
 public class APIMethods {
     public static void signInAnonymously(APIResponseListener<AnonymousRP> listener){
-        API.postData(listener, "{}", EndPoints.anonymous, AnonymousRP.class);
+        LoginRequest req = new LoginRequest(true);
+        API.postData(listener, req, EndPoints.anonymous, AnonymousRP.class);
     }
 
     public static void login(APIResponseListener<LoginRP> listener){

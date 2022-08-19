@@ -292,6 +292,28 @@ public class LoginActivity extends AppCompatActivity {
     private void loginAnonymously() {
         startProgress("Signing you in anonymously");
         phoneLayout.setVisibility(View.GONE);
+
+        startFirebaseAnonym();
+    }
+
+    private void startFirebaseAnonym() {
+        auth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            startProgress("Please wait while we are setting up your account!");
+                            saveAnonymUser();
+                        } else {
+                            stopProgress();
+                            phoneLayout.setVisibility(View.VISIBLE);
+                            Method.showFailedAlert(LoginActivity.this, task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    private void saveAnonymUser() {
         APIMethods.signInAnonymously(new APIResponseListener<AnonymousRP>() {
             @Override
             public void success(AnonymousRP response) {

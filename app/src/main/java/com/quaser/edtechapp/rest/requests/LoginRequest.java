@@ -15,6 +15,11 @@ public class LoginRequest {
                 .getPhoneNumber();
     }
 
+    public LoginRequest(boolean ano){
+        user_id = AuthUtils.getUserId();
+        name = AuthUtils.getUserName();
+    }
+
     public LoginRequest(String name){
         user_id = AuthUtils.getUserId();
         this.phone_number = FirebaseAuth.getInstance().getCurrentUser()
