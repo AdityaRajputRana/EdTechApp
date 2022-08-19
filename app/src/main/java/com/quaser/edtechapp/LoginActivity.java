@@ -162,7 +162,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-        }
+        } else
+            userCreatedOnFirebase = true;
         APIMethods.login(new APIResponseListener<LoginRP>() {
             @Override
             public void success(LoginRP response) {
