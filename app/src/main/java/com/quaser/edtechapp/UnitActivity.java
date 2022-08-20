@@ -22,6 +22,8 @@ import com.quaser.edtechapp.utils.Method;
 
 public class UnitActivity extends AppCompatActivity {
 
+    //Todo: If Item is locked show a pre-req text to complete another unit.
+
     TextView titleTxt;
     LinearLayout topBar;
     RecyclerView recyclerView;

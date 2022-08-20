@@ -8,6 +8,7 @@ public class EndPoints {
 
     public static String home = "ui/home";
     public static String unit = "ui/unit";
+    public static String lesson = "ui/lesson";
 
     public static String addQuestion = "forum/question/create";
     public static String getQuestion = "forum/question";

@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
 import com.quaser.edtechapp.rest.requests.HomeReq;
+import com.quaser.edtechapp.rest.requests.LessonReq;
 import com.quaser.edtechapp.rest.requests.LoginRequest;
 import com.quaser.edtechapp.rest.requests.QuestionReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
@@ -60,6 +61,11 @@ public class APIMethods {
     public static void getQuestion(Activity context, String questionId, APIResponseListener<QuestionRP> listener){
         QuestionReq req = new QuestionReq(context, questionId);
         API.postData(listener, req, EndPoints.getQuestion, QuestionRP.class);
+    }
+
+    public static <K> void getLesson(String lessonId, Class responseType, APIResponseListener<K> listener){
+        LessonReq req = new LessonReq(lessonId);
+        API.postData(listener, req, EndPoints.lesson, responseType);
     }
 
 

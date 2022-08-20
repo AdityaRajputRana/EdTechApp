@@ -87,6 +87,13 @@
         app:tsb_track_progress_color="@color/color_accent1_blue"
         app:tsb_track_progress_size="6dp" />
 
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lessonProgressBar" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

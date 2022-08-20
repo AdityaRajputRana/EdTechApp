@@ -1,7 +1,7 @@
 package com.quaser.edtechapp.models;
 
 public class ShortLesson {
-    String id;
+    String lesson_id;
     String title;
     String description;
     Prerequisite pre_requisite;
@@ -58,11 +58,11 @@ public class ShortLesson {
     }
 
     public String getId() {
-        return id;
+        return lesson_id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.lesson_id = id;
     }
 
     public ShortLesson() {
