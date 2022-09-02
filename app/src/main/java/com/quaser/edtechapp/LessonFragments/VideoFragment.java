@@ -1,9 +1,11 @@
 package com.quaser.edtechapp.LessonFragments;
 
+import android.media.session.PlaybackState;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.material.button.MaterialButton;
@@ -79,7 +82,7 @@ public class VideoFragment extends Fragment {
         this.listener = listener;
         this.shortLesson = shortLesson;
     }
-    
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,19 +96,56 @@ public class VideoFragment extends Fragment {
     }
 
     private void setUpPlayer() {
-        player = new ExoPlayer.Builder(getActivity()).build();
+
+        AdaptiveTrackSelection.Factory factory = new AdaptiveTrackSelection.Factory(
+                4000, 1000, 2500,
+                0.8f
+        );
+        DefaultTrackSelector trackSelector = new DefaultTrackSelector(getActivity(), factory);
+        player = new ExoPlayer.Builder(getActivity())
+                .setTrackSelector(
+                        trackSelector
+                ).build();
+
+
         playerView.setPlayer(player);
         player.addListener(new Player.Listener() {
             @Override
-            public void onIsLoadingChanged(boolean isLoading) {
-                if (isLoading){
-                    progressBar.setVisibility(View.VISIBLE);
-                } else {
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playbackState == Player.STATE_READY){
                     progressBar.setVisibility(View.GONE);
+                    setUpQualityOption();
                 }
-                Player.Listener.super.onIsLoadingChanged(isLoading);
+            }
+
+            @Override
+            public void onPlaybackStateChanged(int playbackState) {
+                if (playbackState == PlaybackState.STATE_BUFFERING){
+                    progressBar.setVisibility(View.VISIBLE);
+                } else if (playbackState == PlaybackState.STATE_PLAYING)
+                    progressBar.setVisibility(View.GONE);
+                else if (playbackState == Player.STATE_READY) {
+                    progressBar.setVisibility(View.GONE);
+                    setUpQualityOption();
+                }
+
+
+            }
+
+            @Override
+            public void onIsLoadingChanged(boolean isLoading) {
+//                if (isLoading){
+//                    progressBar.setVisibility(View.VISIBLE);
+//                } else {
+//                    progressBar.setVisibility(View.GONE);
+//                }
+//                Player.Listener.super.onIsLoadingChanged(isLoading);
             }
         });
+    }
+
+    private void setUpQualityOption() {
+        Log.i("VOD", "Quality options");
     }
 
     private void fetchVideoLesson() {
@@ -138,27 +178,25 @@ public class VideoFragment extends Fragment {
     }
 
     private void setUpMediaSource() {
-        MediaItem item = MediaItem.fromUri(videoLesson.getVideo().get(0).getUrl());
+        Log.i("VOD", videoLesson.getVideo());
+
+
+        MediaItem item = MediaItem.fromUri(videoLesson.getVideo());
         player.setMediaItem(item);
         player.prepare();
         playerView.setVisibility(View.VISIBLE);
     }
 
     public void playVideo(){
-        //Todo start playback here.
-        if (!player.isLoading()){
-            player.play();
-            continueBtn.setVisibility(View.GONE);
-            continueBtn.setText("Next Lesson");
-        } else {
-            Toast.makeText(getActivity(), "Wait while video is loading", Toast.LENGTH_SHORT).show();
-        }
+        player.play();
+        continueBtn.setVisibility(View.GONE);
+        continueBtn.setText("Next Lesson");
     }
 
 
     private void setUpTitles() {
         if (shortLesson.getName() != null
-        && !shortLesson.getName().isEmpty())
+                && !shortLesson.getName().isEmpty())
             titleTxt.setText(shortLesson.getName());
         else
             titleTxt.setVisibility(View.GONE);

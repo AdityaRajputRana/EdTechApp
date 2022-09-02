@@ -13,7 +13,17 @@ public class VideoLessonRP {
     boolean is_complete;
     boolean is_locked;
 
-    ArrayList<VideoQualityOption> video;
+    public String getVideo() {
+        return video_url;
+    }
+
+    //    ArrayList<VideoQualityOption> video;
+    String video_url;
+
+    public void setVideo_url(String video) {
+        this.video_url = video;
+    }
+
     String thumbnail_url;
     int total_time;
     int start_at;
@@ -42,9 +52,6 @@ public class VideoLessonRP {
         return is_locked;
     }
 
-    public ArrayList<VideoQualityOption> getVideo() {
-        return video;
-    }
 
     public String getThumbnail_url() {
         return thumbnail_url;

@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/drawable/ic_call.xml" value="0.1145" />
         <entry key="app/src/main/res/drawable/ic_comments.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/ic_dummy_logo.xml" value="0.1145" />
+        <entry key="app/src/main/res/drawable/ic_hd.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_inactive_ball.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1145" />
         <entry key="app/src/main/res/drawable/ic_lock.xml" value="0.1145" />
@@ -30,6 +31,8 @@
         <entry key="app/src/main/res/drawable/il_home.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/splash_image.xml" value="0.1145" />
         <entry key="app/src/main/res/layout/activity_add_question.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_kotlin.xml" value="0.1693840579710145" />
+        <entry key="app/src/main/res/layout/activity_kotlin_act_m.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_lesson.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.18" />
@@ -37,6 +40,7 @@
         <entry key="app/src/main/res/layout/activity_on_boarding.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/activity_unit.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/activity_view_question.xml" value="0.15670289855072464" />
+        <entry key="app/src/main/res/layout/exo_player_controls.xml" value="0.22506082725060828" />
         <entry key="app/src/main/res/layout/fragment_forrum.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/fragment_profile_frament.xml" value="0.17028985507246377" />
