@@ -53,6 +53,16 @@
             android:layout_height="0dp"
             android:layout_gravity="center"/>
 
+        <ImageButton
+            android:id="@+id/qualityBtn"
+            android:layout_width="35dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentTop="true"
+            app:layout_constraintTop_toBottomOf="@id/exoPlayer"
+            app:layout_constraintEnd_toEndOf="@id/exoPlayer"
+            android:layout_height="35dp"
+            app:srcCompat="@drawable/ic_hd"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/continueBtn"
             android:layout_width="match_parent"

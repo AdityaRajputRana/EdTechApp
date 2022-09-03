@@ -1,29 +1,52 @@
 package com.quaser.edtechapp.LessonFragments;
 
+import android.app.AlertDialog;
 import android.media.session.PlaybackState;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Layout;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.hls.HlsManifest;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.source.hls.playlist.HlsMasterPlaylist;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides;
+import com.google.android.exoplayer2.trackselection.TrackSelectionParameters;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
@@ -31,6 +54,8 @@ import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.VideoLessonRP;
 import com.quaser.edtechapp.utils.Method;
+
+import java.util.ArrayList;
 
 
 public class VideoFragment extends Fragment {
@@ -51,6 +76,12 @@ public class VideoFragment extends Fragment {
     private long playbackPosition = 0;
 
     private ExoPlayer player;
+
+    private ArrayList<Pair<String, TrackSelectionOverrides.Builder>> qualityList
+            = new ArrayList<Pair<String, TrackSelectionOverrides.Builder>>();
+    private AlertDialog qualityPopup;
+    private ImageButton exo_quality;
+    private DefaultTrackSelector trackSelector;
 
     private void releasePlayer() {
         if (player != null) {
@@ -101,52 +132,85 @@ public class VideoFragment extends Fragment {
                 4000, 1000, 2500,
                 0.8f
         );
-        DefaultTrackSelector trackSelector = new DefaultTrackSelector(getActivity(), factory);
+        trackSelector = new DefaultTrackSelector(getActivity(), factory);
         player = new ExoPlayer.Builder(getActivity())
                 .setTrackSelector(
                         trackSelector
                 ).build();
 
+        Log.i("VOD", "PT2");
 
-        playerView.setPlayer(player);
-        player.addListener(new Player.Listener() {
+        exo_quality.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (playbackState == Player.STATE_READY){
-                    progressBar.setVisibility(View.GONE);
-                    setUpQualityOption();
+            public void onClick(View view) {
+                Log.i("VOD", "Quality Click");
+                if (qualityPopup != null) {
+                    Log.i("VOD", "Not null");
+                    qualityPopup.show();
                 }
-            }
-
-            @Override
-            public void onPlaybackStateChanged(int playbackState) {
-                if (playbackState == PlaybackState.STATE_BUFFERING){
-                    progressBar.setVisibility(View.VISIBLE);
-                } else if (playbackState == PlaybackState.STATE_PLAYING)
-                    progressBar.setVisibility(View.GONE);
-                else if (playbackState == Player.STATE_READY) {
-                    progressBar.setVisibility(View.GONE);
-                    setUpQualityOption();
-                }
-
-
-            }
-
-            @Override
-            public void onIsLoadingChanged(boolean isLoading) {
-//                if (isLoading){
-//                    progressBar.setVisibility(View.VISIBLE);
-//                } else {
-//                    progressBar.setVisibility(View.GONE);
-//                }
-//                Player.Listener.super.onIsLoadingChanged(isLoading);
             }
         });
+        Log.i("VOD", "PT3");
+
+
+
+        playerView.setPlayer(player);
     }
 
-    private void setUpQualityOption() {
-        Log.i("VOD", "Quality options");
+    private void setupQualityList(HlsManifest manifest) {
+//        singleManifest(manifest);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.alert_quality, null, false);
+        ListView listView= view.findViewById(R.id.listView);
+
+
+        ArrayList<String> qualities = new ArrayList<String>();
+        for (HlsMasterPlaylist.Variant variant: manifest.masterPlaylist.variants){
+            qualities.add(String.valueOf(variant.format.height));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
+                , qualities);
+        Log.i("VOD", "num qualities = " + qualities.size());
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                qualityPopup.dismiss();
+                TrackSelectionParameters parameters =
+                        trackSelector.getParameters()
+                                .buildUpon()
+                                .setMaxVideoBitrate(manifest.masterPlaylist.variants.get(i).format.bitrate)
+                                .setForceHighestSupportedBitrate(true)
+                                .build();
+                trackSelector.setParameters(parameters);
+            }
+        });
+
+        qualityPopup = new AlertDialog.Builder(getActivity())
+                .setCancelable(true)
+                .setTitle("Select quality")
+                .setView(view)
+                .create();
+
+//        qualityPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem menuItem) {
+//                Pair quality = qualityList.get(menuItem.getItemId());
+//                TrackSelectionParameters parameters =
+//                        trackSelector.getParameters()
+//                                .buildUpon()
+//                                .setTrackSelectionOverrides((
+//                                        (TrackSelectionOverrides.Builder) quality.second)
+//                                        .build())
+//                                .setTunnelingEnabled(true)
+//                                .build();
+//                trackSelector.setParameters(parameters);
+//                return true;
+//            }
+//        });
     }
+
 
     private void fetchVideoLesson() {
         APIMethods.getLesson(shortLesson.getId(), VideoLessonRP.class, new APIResponseListener<VideoLessonRP>() {
@@ -178,13 +242,29 @@ public class VideoFragment extends Fragment {
     }
 
     private void setUpMediaSource() {
-        Log.i("VOD", videoLesson.getVideo());
-
-
         MediaItem item = MediaItem.fromUri(videoLesson.getVideo());
-        player.setMediaItem(item);
+        DataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
+        HlsMediaSource hlsMediaSource =
+                new HlsMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(item);
+        player.setMediaSource(hlsMediaSource);
         player.prepare();
         playerView.setVisibility(View.VISIBLE);
+        player.setPlayWhenReady(true);
+
+        player.addListener(
+                new Player.Listener() {
+                    @Override
+                    public void onTimelineChanged(
+                            Timeline timeline, @Player.TimelineChangeReason int reason) {
+                        Object manifest = player.getCurrentManifest();
+                        if (manifest != null) {
+                            HlsManifest hlsManifest = (HlsManifest) manifest;
+                            Log.i("VOD-Manifest", new Gson().toJson(hlsManifest.masterPlaylist.variants.get(0)));
+                            setupQualityList(hlsManifest);
+                        }
+                    }
+                });
     }
 
     public void playVideo(){
@@ -214,5 +294,6 @@ public class VideoFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         continueBtn = view.findViewById(R.id.continueBtn);
         playerView = view.findViewById(R.id.exoPlayer);
+        exo_quality = view.findViewById(R.id.qualityBtn);
     }
 }
