@@ -1,15 +1,22 @@
 package com.quaser.edtechapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Interface.LessonListener;
+import com.quaser.edtechapp.Interface.RevLessonInterface;
 import com.quaser.edtechapp.LessonFragments.VideoFragment;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.response.UnitRP;
@@ -26,6 +33,8 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
     int currentIndex = 0;
     ShortLesson shortLesson;
     String TAG = "lessonFragment";
+
+    private LinearLayout appBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +70,62 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
     private void findViews() {
         unitTitleTxt = findViewById(R.id.titleTxt);
         seekBar = findViewById(R.id.lessonProgressBar);
+        appBar = findViewById(R.id.appBar);
         findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+    }
+
+    private int SCREEN_STATE = 0;
+
+    @Override
+    public void onBackPressed() {
+        switch (SCREEN_STATE){
+            case 1:
+                reverseFullScreen();
+                break;
+            default:
+                super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void revFullScreen(){
+        SCREEN_STATE = 0;
+        appBar.setVisibility(View.VISIBLE);
+        seekBar.setVisibility(View.VISIBLE);
+        toggleFullScreen(false);
+    }
+
+    private void reverseFullScreen() {
+        SCREEN_STATE = 0;
+        appBar.setVisibility(View.VISIBLE);
+        seekBar.setVisibility(View.VISIBLE);
+//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        toggleFullScreen(false);
+        if (lessonInterface != null)
+            lessonInterface.reverseFullScreen();
+    }
+
+    public void toggleFullScreen(boolean goFullScreen){
+        WindowInsetsControllerCompat windowInsetsController =
+                ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+        if (windowInsetsController == null) {
+            return;
+        }
+
+        if (goFullScreen) {
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+        }
+        else
+            windowInsetsController.show(WindowInsetsCompat.Type.systemBars());
+
     }
 
     private void showLessonUI() {
@@ -96,8 +155,15 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
         
     }
 
-    @Override
-    public void fullScreen() {
+    RevLessonInterface lessonInterface;
 
+    @Override
+    public void fullScreen(RevLessonInterface lessonInterface) {
+        toggleFullScreen(true);
+        appBar.setVisibility(View.GONE);
+        seekBar.setVisibility(View.GONE);
+//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        this.lessonInterface = lessonInterface;
+        SCREEN_STATE=1;
     }
 }

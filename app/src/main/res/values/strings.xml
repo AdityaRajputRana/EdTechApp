@@ -15,4 +15,5 @@
     <string name="name_head">What should we call you?</string>
     <string name="name_body">Enter you name</string>
     <string name="play_vid">Play Video</string>
+    <string name="full_screen">Full Screen</string>
 </resources>

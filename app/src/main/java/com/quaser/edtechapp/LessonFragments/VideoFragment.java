@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.media.session.PlaybackState;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import android.text.Layout;
@@ -48,6 +49,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Interface.LessonListener;
+import com.quaser.edtechapp.Interface.RevLessonInterface;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.api.APIMethods;
@@ -58,7 +60,7 @@ import com.quaser.edtechapp.utils.Method;
 import java.util.ArrayList;
 
 
-public class VideoFragment extends Fragment {
+public class VideoFragment extends Fragment implements RevLessonInterface {
 
     LessonListener listener;
     ShortLesson shortLesson;
@@ -83,6 +85,8 @@ public class VideoFragment extends Fragment {
     private ImageButton exo_quality;
     private DefaultTrackSelector trackSelector;
 
+    private AppCompatImageView fullScreenBtn;
+
     private void releasePlayer() {
         if (player != null) {
             playbackPosition = player.getCurrentPosition();
@@ -101,7 +105,7 @@ public class VideoFragment extends Fragment {
 
     @Override
     public void onPause() {
-        releasePlayer();
+        player.pause();
         super.onPause();
     }
 
@@ -192,23 +196,6 @@ public class VideoFragment extends Fragment {
                 .setTitle("Select quality")
                 .setView(view)
                 .create();
-
-//        qualityPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem menuItem) {
-//                Pair quality = qualityList.get(menuItem.getItemId());
-//                TrackSelectionParameters parameters =
-//                        trackSelector.getParameters()
-//                                .buildUpon()
-//                                .setTrackSelectionOverrides((
-//                                        (TrackSelectionOverrides.Builder) quality.second)
-//                                        .build())
-//                                .setTunnelingEnabled(true)
-//                                .build();
-//                trackSelector.setParameters(parameters);
-//                return true;
-//            }
-//        });
     }
 
 
@@ -236,10 +223,21 @@ public class VideoFragment extends Fragment {
         setUpTitles();
         setUpMediaSource();
 
-        continueBtn.setText(R.string.play_vid);
+        continueBtn.setText(R.string.full_screen);
         continueBtn.setVisibility(View.VISIBLE);
-        continueBtn.setOnClickListener(view -> playVideo());
+        continueBtn.setOnClickListener(view -> fullScreen());
     }
+
+    boolean isFullScreen = false;
+
+    private void fullScreen() {
+        listener.fullScreen(this);
+        titleTxt.setVisibility(View.GONE);
+        bodyTxt.setVisibility(View.GONE);
+        continueBtn.setVisibility(View.GONE);
+        isFullScreen = true;
+    }
+
 
     private void setUpMediaSource() {
         MediaItem item = MediaItem.fromUri(videoLesson.getVideo());
@@ -255,16 +253,44 @@ public class VideoFragment extends Fragment {
         player.addListener(
                 new Player.Listener() {
                     @Override
+                    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                        if (playbackState == Player.STATE_BUFFERING){
+                            progressBar.setVisibility(View.VISIBLE);
+                        } else if (playbackState == Player.STATE_READY)
+                            progressBar.setVisibility(View.GONE);
+                        else if (playbackState == Player.STATE_IDLE)
+                            Toast.makeText(getActivity(), "Some error occurred!", Toast.LENGTH_SHORT).show();
+                        else if (playbackState == Player.STATE_ENDED) {
+                            Toast.makeText(getActivity(), "Ended", Toast.LENGTH_SHORT).show();
+                            showCompleted();
+                        }
+                    }
+
+                    @Override
                     public void onTimelineChanged(
                             Timeline timeline, @Player.TimelineChangeReason int reason) {
                         Object manifest = player.getCurrentManifest();
                         if (manifest != null) {
                             HlsManifest hlsManifest = (HlsManifest) manifest;
-                            Log.i("VOD-Manifest", new Gson().toJson(hlsManifest.masterPlaylist.variants.get(0)));
                             setupQualityList(hlsManifest);
                         }
                     }
                 });
+    }
+
+    private void showCompleted() {
+        continueBtn.setText("Next Lesson");
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proceed();
+            }
+        });
+        //Todo: hit completed to server.
+    }
+
+    private void proceed() {
+        //Todo; Make this
     }
 
     public void playVideo(){
@@ -295,5 +321,32 @@ public class VideoFragment extends Fragment {
         continueBtn = view.findViewById(R.id.continueBtn);
         playerView = view.findViewById(R.id.exoPlayer);
         exo_quality = view.findViewById(R.id.qualityBtn);
+        fullScreenBtn = view.findViewById(R.id.exo_fullscreen);
+        setOnClicks();
+    }
+
+    private void setOnClicks() {
+        fullScreenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleFullScreen();
+            }
+        });
+    }
+
+    @Override
+    public void reverseFullScreen() {
+        titleTxt.setVisibility(View.VISIBLE);
+        bodyTxt.setVisibility(View.VISIBLE);
+        continueBtn.setVisibility(View.VISIBLE);
+        listener.revFullScreen();
+        isFullScreen =false;
+    }
+
+    void toggleFullScreen(){
+        if (isFullScreen)
+            reverseFullScreen();
+        else
+            fullScreen();
     }
 }

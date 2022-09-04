@@ -10,17 +10,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         android:id="@+id/rootLayout">
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:elevation="10dp"
+            app:layout_constraintTop_toTopOf="@id/exoPlayer"
+            app:layout_constraintEnd_toEndOf="@id/exoPlayer"
+            app:layout_constraintBottom_toBottomOf="@id/exoPlayer"
+            app:layout_constraintStart_toStartOf="@id/exoPlayer" />
 
         <TextView
             android:id="@+id/title_txt"
@@ -30,6 +30,8 @@
             android:text="This is the video title user is going to watch"
             android:fontFamily="@font/poppins_medium"
             android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:textColor="@color/color_primary_txt" />
         <TextView
             android:id="@+id/bodyTxt"
@@ -38,30 +40,31 @@
             android:text="This would be the description of the video. Lorem ipsum lorem ipsum. This looks cool"
             android:fontFamily="@font/poppins"
             android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:paddingBottom="16dp"
             app:layout_constraintTop_toBottomOf="@id/title_txt"
             android:textColor="@color/color_secondary_txt" />
 
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/exoPlayer"
-            android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/bodyTxt"
             android:layout_width="match_parent"
-            android:visibility="gone"
-            app:controller_layout_id="@layout/exo_player_controls"
             app:layout_constraintDimensionRatio="1.77777778"
             android:layout_height="0dp"
+            app:controller_layout_id="@layout/exo_player_controls"
             android:layout_gravity="center"/>
 
-        <ImageButton
-            android:id="@+id/qualityBtn"
-            android:layout_width="35dp"
-            android:layout_margin="5dp"
-            android:layout_alignParentTop="true"
-            app:layout_constraintTop_toBottomOf="@id/exoPlayer"
-            app:layout_constraintEnd_toEndOf="@id/exoPlayer"
-            android:layout_height="35dp"
-            app:srcCompat="@drawable/ic_hd"/>
+<!--        <ImageButton-->
+<!--            android:id="@+id/qualityBtn"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/exoPlayer"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/exoPlayer"-->
+<!--            android:layout_height="35dp"-->
+<!--            app:srcCompat="@drawable/ic_hd"/>-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/continueBtn"
@@ -72,6 +75,8 @@
             android:backgroundTint="@color/color_cta"
             android:visibility="gone"
             android:text="@string/cont"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:textColor="@color/white"
             android:textAllCaps="false"
             android:fontFamily="@font/poppins"
