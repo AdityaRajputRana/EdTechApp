@@ -137,8 +137,10 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
     }
 
     private void showLessonUI() {
-        String unitStr = getIntent().getStringExtra("unitRP");
-        unitRP = new Gson().fromJson(unitStr, UnitRP.class);
+        if (unitRP == null) {
+            String unitStr = getIntent().getStringExtra("unitRP");
+            unitRP = new Gson().fromJson(unitStr, UnitRP.class);
+        }
 
         unitTitleTxt.setText(unitRP.getUnit_title());
         seekBar.setTickCount(unitRP.getTotal_lessons());
@@ -146,6 +148,8 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
         int totalDivs = unitRP.getTotal_lessons() - 1;
         if (totalDivs <= 0)
             totalDivs=1;
+
+
         float progress = (float) ((unitRP.getCompleted_lessons()*100)/totalDivs);
         //Todo: if progress 100 then change thumb to tick icon
         //Todo: if some new lessons are added/moved in between then show them as incomplete. Handle that.
@@ -161,7 +165,9 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
     @Override
     public void nextLesson() {
         //Todo: Instead of indexes, make use of last lesson and make a mechanism to do newly added lesson in between
+        Log.i("LessonOldCompleted", String.valueOf(unitRP.getCompleted_lessons()));
         unitRP.setCompleted_lessons(unitRP.getCompleted_lessons()+1);
+        Log.i("LessonNewCompleted", String.valueOf(unitRP.getCompleted_lessons()));
         getSupportFragmentManager()
                 .beginTransaction()
                 .remove(getSupportFragmentManager().findFragmentByTag(TAG))
