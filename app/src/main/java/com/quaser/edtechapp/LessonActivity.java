@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.Interface.RevLessonInterface;
+import com.quaser.edtechapp.LessonFragments.ArticleFragment;
 import com.quaser.edtechapp.LessonFragments.VideoFragment;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.response.UnitRP;
@@ -58,14 +59,21 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
         //Todo handle pre-reqs here
         switch (shortLesson.getType()){
             case "video":
-                VideoFragment videoFragment = new VideoFragment(this, shortLesson);
+                VideoFragment videoFragment = new VideoFragment(this, shortLesson, unitRP.get_id());
                 getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, videoFragment, TAG)
+                        .commit();
+                break;
+            case "article":
+                ArticleFragment articleFragment = new ArticleFragment(unitRP.get_id(), shortLesson, this);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.frameLayout, articleFragment, TAG)
                         .commit();
                 break;
             default:
                 Toast.makeText(this, "Unidentified type.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void findViews() {
         unitTitleTxt = findViewById(R.id.titleTxt);
@@ -152,7 +160,14 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
 
     @Override
     public void nextLesson() {
-        
+        //Todo: Instead of indexes, make use of last lesson and make a mechanism to do newly added lesson in between
+        unitRP.setCompleted_lessons(unitRP.getCompleted_lessons()+1);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(getSupportFragmentManager().findFragmentByTag(TAG))
+                .commit();
+        showLessonUI();
+        setUpLesson();
     }
 
     RevLessonInterface lessonInterface;

@@ -16,4 +16,6 @@
     <string name="name_body">Enter you name</string>
     <string name="play_vid">Play Video</string>
     <string name="full_screen">Full Screen</string>
+    <string name="read">Read Now</string>
+    <string name="next">Next Lesson</string>
 </resources>

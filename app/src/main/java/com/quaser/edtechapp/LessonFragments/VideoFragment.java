@@ -65,6 +65,7 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
     LessonListener listener;
     ShortLesson shortLesson;
     VideoLessonRP videoLesson;
+    String unitId;
 
     TextView titleTxt;
     TextView bodyTxt;
@@ -105,6 +106,7 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
 
     @Override
     public void onPause() {
+        if (player != null)
         player.pause();
         super.onPause();
     }
@@ -113,9 +115,10 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         // Required empty public constructor
     }
 
-    public VideoFragment(LessonListener listener, ShortLesson shortLesson){
+    public VideoFragment(LessonListener listener, ShortLesson shortLesson, String unitId){
         this.listener = listener;
         this.shortLesson = shortLesson;
+        this.unitId = unitId;
     }
 
 
@@ -286,11 +289,25 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
                 proceed();
             }
         });
-        //Todo: hit completed to server.
+
+        APIMethods.completeLesson(shortLesson.getId(), unitId, new APIResponseListener() {
+            @Override
+            public void success(Object response) {
+                Toast.makeText(getActivity(), "Video completed! You can proceed to next lesson!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                Method.showFailedAlert(getActivity(), code + "-"  + message);
+            }
+        });
+
     }
 
     private void proceed() {
         //Todo; Make this
+        releasePlayer();
+        listener.nextLesson();
     }
 
     public void playVideo(){

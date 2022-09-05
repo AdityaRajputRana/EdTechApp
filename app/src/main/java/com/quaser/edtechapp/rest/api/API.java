@@ -104,6 +104,7 @@ public class API {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
+                                Log.i("Lesson Response", response.toString());
                                 Boolean successful = response.getBoolean("success");
                                 if (successful) {
                                     String data = response.getJSONObject("data").toString();

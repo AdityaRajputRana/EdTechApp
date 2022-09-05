@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.google.gson.JsonObject;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
+import com.quaser.edtechapp.rest.requests.CompleteLessonReq;
 import com.quaser.edtechapp.rest.requests.HomeReq;
 import com.quaser.edtechapp.rest.requests.LessonReq;
 import com.quaser.edtechapp.rest.requests.LoginRequest;
@@ -66,6 +67,11 @@ public class APIMethods {
     public static <K> void getLesson(String lessonId, Class responseType, APIResponseListener<K> listener){
         LessonReq req = new LessonReq(lessonId);
         API.postData(listener, req, EndPoints.lesson, responseType);
+    }
+
+    public static void completeLesson(String lessonId, String unitId, APIResponseListener listener){
+        CompleteLessonReq req = new CompleteLessonReq(lessonId, unitId);
+        API.postData(listener, req, EndPoints.completeLesson, Object.class);
     }
 
 

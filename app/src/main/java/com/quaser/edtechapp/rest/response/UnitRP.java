@@ -176,6 +176,14 @@ public class UnitRP {
 
         String lesson_name;
         String lesson_type;
+        int start_index;
+
+        public int getStart_index(){
+            return start_index;
+        }
+        public void setStartIndex(int startIndex){
+            this.start_index = startIndex;
+        }
 
         public LastLesson() {
         }
