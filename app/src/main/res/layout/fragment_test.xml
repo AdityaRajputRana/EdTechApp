@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/color_bg"
+    android:layout_height="match_parent"
+    tools:context=".LessonFragments.TestFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/briefLayout"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/testHead"
+            android:text="@string/test"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="18sp"
+            android:textColor="@color/color_secondary_txt" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/head"
+            android:text="Heading of the test will be shown here."
+            android:fontFamily="@font/poppins_extrabold"
+            android:textSize="24sp"
+            android:textColor="@color/color_primary_txt" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/description"
+            android:text="Description of test will be shown here"
+            android:fontFamily="@font/poppins"
+            android:textSize="18sp"
+            android:textColor="@color/color_secondary_txt" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_baseline_question_answer_24"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/numQuestionTxt"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="10 Questions"
+                android:fontFamily="@font/poppins"
+                android:textSize="16sp"
+                android:textColor="@color/color_primary_txt" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_baseline_access_time_filled_24"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/numTimeTxt"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="3 minutes"
+                android:fontFamily="@font/poppins"
+                android:textSize="16sp"
+                android:textColor="@color/color_primary_txt" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
