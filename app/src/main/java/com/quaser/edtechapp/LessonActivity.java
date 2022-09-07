@@ -17,8 +17,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.Interface.RevLessonInterface;
-import com.quaser.edtechapp.LessonFragments.ArticleFragment;
-import com.quaser.edtechapp.LessonFragments.VideoFragment;
+import com.quaser.edtechapp.LessonFragments.*;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.response.UnitRP;
 import com.warkiz.tickseekbar.TickSeekBar;
@@ -67,6 +66,13 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
                 ArticleFragment articleFragment = new ArticleFragment(unitRP.get_id(), shortLesson, this);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.frameLayout, articleFragment, TAG)
+                        .commit();
+                break;
+            case "test":
+                TestFragment testFragment
+                        = new TestFragment(unitRP.get_id(), shortLesson, this);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.frameLayout, testFragment, TAG)
                         .commit();
                 break;
             default:

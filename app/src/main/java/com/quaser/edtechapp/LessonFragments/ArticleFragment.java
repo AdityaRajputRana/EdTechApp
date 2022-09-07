@@ -103,7 +103,6 @@ public class ArticleFragment extends Fragment implements RevLessonInterface {
         headTxt.setText(response.getHead());
         head.setText(response.getHead());
         body.setText(response.getBody());
-        Log.i("Article Head", response.getHead());
         headTxt.setVisibility(View.VISIBLE);
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override

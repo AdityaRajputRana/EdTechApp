@@ -71,12 +71,15 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             LessonViewHolder holder = (LessonViewHolder) mHolder;
             position = position-1;
             if (position == 0 && unitRP.isHas_user_started()){
+                Log.i("Completed", "1");
                 holder.topProgress.setBackgroundColor(activity.getResources()
                         .getColor(R.color.color_accent1_blue));
                 holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_active_ball));
             } else if (position > 0){
+                Log.i("Completed", "2");
                 ShortLesson previousLesson = unitRP.getLesson().get(position-1);
                 if (previousLesson.isIs_complete()){
+                    Log.i("Completed", "Prev is complete");
                     holder.topProgress.setBackgroundColor(activity.getResources()
                             .getColor(R.color.color_accent1_blue));
                     holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_active_ball));
@@ -84,6 +87,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
             ShortLesson lesson = unitRP.getLesson().get(position);
             if (lesson.isIs_complete()){
+                Log.i("Completed", "Current is complete");
                 holder.topProgress.setBackgroundColor(activity.getResources()
                         .getColor(R.color.color_accent1_blue));
                 holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_tick));
