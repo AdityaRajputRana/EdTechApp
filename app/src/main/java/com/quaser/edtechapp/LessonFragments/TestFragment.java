@@ -1,5 +1,7 @@
 package com.quaser.edtechapp.LessonFragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,13 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.Interface.LessonListener;
+import com.quaser.edtechapp.Interface.RevLessonInterface;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.api.API;
@@ -23,13 +29,15 @@ import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.TestLessonRP;
 import com.quaser.edtechapp.utils.Method;
 
-public class TestFragment extends Fragment {
+public class TestFragment extends Fragment implements RevLessonInterface{
 
     TestLessonRP testLesson;
 
     String unitId;
     ShortLesson shortLesson;
     LessonListener listener;
+
+    int screenState = 0;
 
     //BriefLayout
     LinearLayout briefLayout;
@@ -43,6 +51,22 @@ public class TestFragment extends Fragment {
     MaterialButton startBtn;
     ProgressBar bProgressBar;
 
+    //TestLayout
+    LinearLayout testLayout;
+    ImageButton backBtn;
+    TextView questionsTxt;
+    TextView timeLeftTxt;
+    TextView questionTitle;
+    TextView questionBody;
+    ImageView questionImage;
+    TextView optionA;
+    TextView optionB;
+    TextView optionC;
+    TextView optionD;
+    ProgressBar progressBar;
+    MaterialButton continueBtn;
+
+    int currentQuestion = 1;
 
 
 
@@ -106,8 +130,21 @@ public class TestFragment extends Fragment {
         startBtn.setOnClickListener(view -> startTest());
     }
 
+
     private void startTest() {
         briefLayout.setVisibility(View.GONE);
+        screenState = 1;
+        listener.fullScreen(this);
+        testLayout.setVisibility(View.VISIBLE);
+        Log.i("Test", shortLesson.getId());
+        Log.i("TestUserId", AuthUtils.getUserId());
+        Log.i("TestUnitId", unitId);
+    }
+
+    private void setCurrentQuestion() {
+        String txt = currentQuestion + " of "  + testLesson.getNum_questions();
+        questionsTxt.setVisibility(View.VISIBLE);
+        questionsTxt.setText(txt);
     }
 
     private String getTime(int seconds) {
@@ -161,5 +198,44 @@ public class TestFragment extends Fragment {
         bQuestionsTxt = view.findViewById(R.id.numQuestionTxt);
         bProgressBar = view.findViewById(R.id.briefProgress);
         startBtn = view.findViewById(R.id.startTestBtn);
+
+        testLayout = view.findViewById(R.id.testLayout);
+        backBtn = view.findViewById(R.id.backBtn);
+        questionsTxt = view.findViewById(R.id.questionsTxt);
+        timeLeftTxt = view.findViewById(R.id.timeLeftTxt);
+        questionTitle = view.findViewById(R.id.questionTitle);
+        questionBody = view.findViewById(R.id.questionBody);
+        questionImage = view.findViewById(R.id.imageView);
+        optionA = view.findViewById(R.id.optionA);
+        optionB = view.findViewById(R.id.optionB);
+        optionC = view.findViewById(R.id.optionC);
+        optionD = view.findViewById(R.id.optionD);
+        progressBar = view.findViewById(R.id.progressBar);
+        continueBtn = view.findViewById(R.id.continueBtn);
+    }
+
+    @Override
+    public void reverseFullScreen() {
+        new AlertDialog.Builder(getActivity())
+                .setCancelable(false)
+                .setTitle("Exit test?")
+                .setMessage("Your test progress will be lost if you exit the test")
+                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        exitTest();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.fullScreen(TestFragment.this::reverseFullScreen);
+                    }
+                })
+                .show();
+    }
+
+    private void exitTest() {
+        //Todo Make This
     }
 }
