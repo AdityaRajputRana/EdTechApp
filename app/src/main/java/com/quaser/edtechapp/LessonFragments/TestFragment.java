@@ -170,6 +170,7 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         setCurrentQuestion();
         initiateTimer();
         timer.start();
+        timeLeftTxt.setVisibility(View.VISIBLE);
 
         initiateOptions();
         showQuestion();
@@ -313,12 +314,14 @@ public class TestFragment extends Fragment implements RevLessonInterface{
             });
         }
 
+        continueBtn.setVisibility(View.VISIBLE);
+        continueBtn.setEnabled(false);
 
 
     }
 
     private void submitTest() {
-        //Todo make submit test
+
     }
 
     private void saveOption() {
@@ -347,7 +350,7 @@ public class TestFragment extends Fragment implements RevLessonInterface{
             @Override
             public void onTick(long l) {
                 //Todo: convert
-                timeLeftTxt.setText(String.valueOf(l));
+                timeLeftTxt.setText(Method.getCountDownTime(l));
             }
 
             @Override
@@ -402,7 +405,7 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         startBtn = view.findViewById(R.id.startTestBtn);
 
         testLayout = view.findViewById(R.id.testLayout);
-        backBtn = view.findViewById(R.id.backBtn);
+        backBtn = view.findViewById(R.id.cancelTestBtn);
         questionsTxt = view.findViewById(R.id.questionsTxt);
         timeLeftTxt = view.findViewById(R.id.timeLeftTxt);
         questionTitle = view.findViewById(R.id.questionTitle);
@@ -440,6 +443,9 @@ public class TestFragment extends Fragment implements RevLessonInterface{
     private void exitTest() {
         timer.cancel();
         timer = null;
+
+        briefLayout.setVisibility(View.VISIBLE);
+        testLayout.setVisibility(View.GONE);
         //Todo Make This
     }
 }

@@ -43,5 +43,25 @@ public class Method {
 
     }
 
+    public static String getCountDownTime(long milisecs){
+        int seconds = (int) milisecs/1000;
+        int mins = 0;
+        if (seconds>60){
+            mins = seconds/60;
+        }
+        String time = "";
+        if (mins<10){
+            time = "0";
+        }
+        time = time+String.valueOf(mins);
+        time = time + ":";
+        if (seconds<10){
+            time = time+"0";
+        }
+        seconds = seconds-mins*60;
+        time = time+seconds;
+        return time;
+    }
+
 
 }
