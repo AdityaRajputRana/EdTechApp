@@ -6,7 +6,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +29,14 @@ import com.quaser.edtechapp.rest.api.API;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.TestLessonRP;
+import com.quaser.edtechapp.rest.response.TestRP;
 import com.quaser.edtechapp.utils.Method;
+import com.squareup.picasso.Picasso;
 
 public class TestFragment extends Fragment implements RevLessonInterface{
 
     TestLessonRP testLesson;
+    TestRP testRP;
 
     String unitId;
     ShortLesson shortLesson;
@@ -116,17 +121,17 @@ public class TestFragment extends Fragment implements RevLessonInterface{
     private void showFullLesson() {
         bHeadTxt.setText(testLesson.getTitle());
         if (testLesson.getDescription() != null
-        && !testLesson.getDescription().isEmpty()){
+                && !testLesson.getDescription().isEmpty()){
             bBodyTxt.setText(testLesson.getDescription());
         }
         bQuestionsTxt.setText(testLesson.getNum_questions()
-         + " Questions");
-        bTimeTxt.setText(getTime(testLesson.getTime_allowed()));
-        
+                + " Questions");
+        bTimeTxt.setText(Method.getTime(testLesson.getTime_allowed()));
+
         bQuestionsLayout.setVisibility(View.VISIBLE);
         bTimeLayout.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.VISIBLE);
-        
+
         startBtn.setOnClickListener(view -> startTest());
     }
 
@@ -136,41 +141,112 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         screenState = 1;
         listener.fullScreen(this);
         testLayout.setVisibility(View.VISIBLE);
-        Log.i("Test", shortLesson.getId());
-        Log.i("TestUserId", AuthUtils.getUserId());
-        Log.i("TestUnitId", unitId);
+        APIMethods.startTest(shortLesson.getId(), unitId, new APIResponseListener<TestRP>() {
+            @Override
+            public void success(TestRP response) {
+                progressBar.setVisibility(View.GONE);
+                testRP = response;
+                loadTest();
+            }
+
+            @Override
+            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                Method.showFailedAlert(getActivity(), "Failed: "
+                        + code+" - " + message);
+                progressBar.setVisibility(View.GONE);
+                briefLayout.setVisibility(View.VISIBLE);
+                testLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void loadTest() {
+        backBtn.setOnClickListener(view -> reverseFullScreen());
+        backBtn.setVisibility(View.VISIBLE);
+
+        setCurrentQuestion();
+        initiateTimer();
+        timer.start();
+
+        showQuestion();
+    }
+
+    private void showQuestion() {
+        TestRP.Question question = testRP.getQuestions().get(currentQuestion-1);
+
+        if (question.getQuestion() != null
+                && !question.getQuestion().isEmpty()){
+            questionTitle.setText(question.getQuestion());
+            questionTitle.setVisibility(View.VISIBLE);
+        } else {
+            questionTitle.setVisibility(View.GONE);
+        }
+
+        if (question.getBody() != null
+                && !question.getBody().isEmpty()){
+            questionBody.setText(question.getBody());
+            questionBody.setVisibility(View.VISIBLE);
+        } else {
+            questionBody.setVisibility(View.GONE);
+        }
+
+        if (question.getImage_url() != null
+                && !question.getImage_url().isEmpty()){
+            Picasso.get()
+                    .load(question.getImage_url())
+                    .into(questionImage);
+            questionImage.setVisibility(View.VISIBLE);
+        } else {
+            questionImage.setVisibility(View.GONE);
+        }
+
+        for ()
+
+
+
+
+
+
+    }
+
+    CountDownTimer timer;
+
+    private void initiateTimer() {
+        if (timer != null){
+            timer.cancel();
+            timer = null;
+        }
+
+        timer = new CountDownTimer(testRP.getTime_allowed()* 1000L, 1000) {
+            @Override
+            public void onTick(long l) {
+                //Todo: convert
+                timeLeftTxt.setText(String.valueOf(l));
+            }
+
+            @Override
+            public void onFinish() {
+                finishTest();
+            }
+        };
+    }
+
+    private void finishTest() {
+        //Todo: send responses to server and show result.
     }
 
     private void setCurrentQuestion() {
-        String txt = currentQuestion + " of "  + testLesson.getNum_questions();
+        int totalQues = 0;
+        if (testRP != null
+                && testRP.getQuestions() != null)
+            totalQues = testRP.getQuestions().size();
+        else
+            totalQues = testLesson.getNum_questions();
+        String txt = currentQuestion + " of "  + totalQues;
         questionsTxt.setVisibility(View.VISIBLE);
         questionsTxt.setText(txt);
     }
 
-    private String getTime(int seconds) {
-        int minutes = (int) (seconds/60);
-        int hours = (int) (minutes/60);
-
-        int days = (int) (hours/24);
-        int months = (int) (days/30.5);
-        int years = (int) (months/12);
-
-        if (seconds<60){
-            return String.valueOf(seconds) + " seconds";
-        } else if (minutes<60){
-            return String.valueOf(minutes) + " minutes";
-        } else if (hours<24){
-            return String.valueOf(hours) + " hours";
-        } else if (days<31){
-            return String.valueOf(days) + " days";
-        } else if (months<12){
-            return String.valueOf(months) + " months";
-        } else {
-            return String.valueOf(years) + " years";
-        }
-
-
-    }
 
     private void setUpTitles() {
         if (shortLesson.getName() != null
@@ -236,6 +312,8 @@ public class TestFragment extends Fragment implements RevLessonInterface{
     }
 
     private void exitTest() {
+        timer.cancel();
+        timer = null;
         //Todo Make This
     }
 }

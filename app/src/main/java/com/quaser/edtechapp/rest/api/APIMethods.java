@@ -16,6 +16,7 @@ import com.quaser.edtechapp.rest.response.LoginRP;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.rest.response.HomeRP;
+import com.quaser.edtechapp.rest.response.TestRP;
 import com.quaser.edtechapp.rest.response.UnitRP;
 
 import org.json.JSONObject;
@@ -74,7 +75,10 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.completeLesson, Object.class);
     }
 
-//    public static void startTest(String lessonId, String unitId, APIResponseListener<>)
+    public static void startTest(String lessonId, String unitId, APIResponseListener<TestRP> listener){
+        CompleteLessonReq req = new CompleteLessonReq(lessonId, unitId);
+        API.postData(listener, req, EndPoints.startTest, TestRP.class);
+    }
 
 
 }
