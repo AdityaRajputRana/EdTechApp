@@ -2,6 +2,7 @@ package com.quaser.edtechapp.LessonFragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,8 @@ import com.quaser.edtechapp.rest.response.TestLessonRP;
 import com.quaser.edtechapp.rest.response.TestRP;
 import com.quaser.edtechapp.utils.Method;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class TestFragment extends Fragment implements RevLessonInterface{
 
@@ -168,10 +171,67 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         initiateTimer();
         timer.start();
 
+        initiateOptions();
         showQuestion();
     }
 
+    private void initiateOptions() {
+        Drawable inactiveBg = getActivity().getResources().getDrawable(R.drawable.bg_round_fg);
+        Drawable activeBg = getActivity().getResources().getDrawable(R.drawable.bg_round_fg_selected);
+
+        optionA.setOnClickListener(view -> {
+            inactivateOptions(inactiveBg);
+            if (selectedOption.equals("a")) {
+                selectedOption = "-1";
+                continueBtn.setEnabled(false);
+            } else {
+                selectedOption = "a";
+                optionA.setBackground(activeBg);
+                continueBtn.setEnabled(true);
+            }
+        });
+
+        optionB.setOnClickListener(view -> {
+            inactivateOptions(inactiveBg);
+            if (selectedOption.equals("b")) {
+                selectedOption = "-1";
+                continueBtn.setEnabled(false);
+            } else {
+                selectedOption = "b";
+                view.setBackground(activeBg);
+                continueBtn.setEnabled(true);
+            }
+        });
+
+        optionC.setOnClickListener(view -> {
+            inactivateOptions(inactiveBg);
+            if (selectedOption.equals("c")) {
+                selectedOption = "-1";
+                continueBtn.setEnabled(false);
+            } else {
+                selectedOption = "c";
+                view.setBackground(activeBg);
+                continueBtn.setEnabled(true);
+            }
+        });
+
+        optionD.setOnClickListener(view -> {
+            inactivateOptions(inactiveBg);
+            if (selectedOption.equals("d")) {
+                selectedOption = "-1";
+                continueBtn.setEnabled(false);
+            } else {
+                selectedOption = "d";
+                view.setBackground(activeBg);
+                continueBtn.setEnabled(true);
+            }
+        });
+    }
+
+    String selectedOption ="-1";
+
     private void showQuestion() {
+        setCurrentQuestion();
         TestRP.Question question = testRP.getQuestions().get(currentQuestion-1);
 
         if (question.getQuestion() != null
@@ -200,13 +260,79 @@ public class TestFragment extends Fragment implements RevLessonInterface{
             questionImage.setVisibility(View.GONE);
         }
 
-        for ()
+        Drawable inactiveBg = getActivity().getResources().getDrawable(R.drawable.bg_round_fg);
+        Drawable activeBg = getActivity().getResources().getDrawable(R.drawable.bg_round_fg_selected);
+
+        inactivateOptions(inactiveBg);
+        if (question.getOptions() != null){
+            if (question.getOptions().containsKey("a")){
+                optionA.setText("A. " + question.getOptions().get("a"));
+                optionA.setVisibility(View.VISIBLE);
+            } else {
+                optionA.setVisibility(View.GONE);
+            }
+
+            if (question.getOptions().containsKey("b")){
+                optionB.setText("B. " + question.getOptions().get("b"));
+                optionB.setVisibility(View.VISIBLE);
+            } else {
+                optionB.setVisibility(View.GONE);
+            }
+
+            if (question.getOptions().containsKey("c")){
+                optionC.setText("C. " + question.getOptions().get("c"));
+                optionC.setVisibility(View.VISIBLE);
+            } else {
+                optionC.setVisibility(View.GONE);
+            }
+
+            if (question.getOptions().containsKey("d")){
+                optionD.setText("D. " + question.getOptions().get("d"));
+                optionD.setVisibility(View.VISIBLE);
+            } else {
+                optionD.setVisibility(View.GONE);
+            }
+        } else {
+            optionA.setVisibility(View.GONE);
+            optionB.setVisibility(View.GONE);
+            optionC.setVisibility(View.GONE);
+            optionD.setVisibility(View.GONE);
+        }
+
+        if (currentQuestion == testRP.getQuestions().size()){
+            continueBtn.setText("Submit Test");
+            continueBtn.setOnClickListener(view -> {
+                saveOption();
+                submitTest();
+            });
+        } else {
+            continueBtn.setText("Next Question");
+            continueBtn.setOnClickListener(view -> {
+                saveOption();
+                showQuestion();
+            });
+        }
 
 
 
+    }
 
+    private void submitTest() {
+        //Todo make submit test
+    }
 
+    private void saveOption() {
+        answers.add(selectedOption);
+        currentQuestion++;
+    }
 
+    ArrayList<String> answers = new ArrayList<>();
+
+    private void inactivateOptions(Drawable inactiveBg) {
+        optionA.setBackground(inactiveBg);
+        optionB.setBackground(inactiveBg);
+        optionC.setBackground(inactiveBg);
+        optionD.setBackground(inactiveBg);
     }
 
     CountDownTimer timer;
