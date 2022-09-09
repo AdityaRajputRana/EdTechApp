@@ -11,6 +11,7 @@ public class EndPoints {
     public static String lesson = "ui/lesson";
     public static String completeLesson = "ui/lesson/completed";
     public static String startTest = "ui/test/start";
+    public static String submitTest = "ui/test/submit";
 
     public static String addQuestion = "forum/question/create";
     public static String getQuestion = "forum/question";

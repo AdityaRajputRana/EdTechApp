@@ -9,6 +9,27 @@ public class TestRP {
     int time_allowed;
     ArrayList<Question> questions;
 
+    int awarded_marks;
+    int total_marks;
+    int num_correct;
+    int num_wrong;
+
+    public int getAwarded_marks() {
+        return awarded_marks;
+    }
+
+    public int getTotal_marks() {
+        return total_marks;
+    }
+
+    public int getNum_correct() {
+        return num_correct;
+    }
+
+    public int getNum_wrong() {
+        return num_wrong;
+    }
+
     public String get_id() {
         return _id;
     }
@@ -35,6 +56,22 @@ public class TestRP {
         String correct_option; //Todo: don't provide this.
         String _id;
         String body;
+
+        String chosen_option;
+        int awarded_marks;
+        int max_marks;
+
+        public String getChosen_option() {
+            return chosen_option;
+        }
+
+        public int getAwarded_marks() {
+            return awarded_marks;
+        }
+
+        public int getMax_marks() {
+            return max_marks;
+        }
 
         public String getBody() {
             return body;

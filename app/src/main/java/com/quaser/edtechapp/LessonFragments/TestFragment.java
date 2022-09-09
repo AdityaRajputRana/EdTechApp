@@ -2,6 +2,7 @@ package com.quaser.edtechapp.LessonFragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -32,9 +33,12 @@ import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.TestLessonRP;
 import com.quaser.edtechapp.rest.response.TestRP;
 import com.quaser.edtechapp.utils.Method;
+import com.quaser.edtechapp.utils.PieChartUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import ir.mahozad.android.PieChart;
 
 public class TestFragment extends Fragment implements RevLessonInterface{
 
@@ -320,15 +324,92 @@ public class TestFragment extends Fragment implements RevLessonInterface{
 
     }
 
-    private void submitTest() {
+    private TestRP resultResponse;
 
+    private LinearLayout resultLayout;
+    private TextView resultInfoTxt;
+    private TextView resultHeaderTxt;
+    private PieChart pieChart;
+    private LinearLayout analyticsLayout;
+    private TextView correctAnswersTxt;
+    private TextView wrongAnswersTxt;
+    private MaterialButton nextLessonBtn;
+    private ProgressBar resultProgressBar;
+
+    private void findResultViews(View view){
+        resultLayout = view.findViewById(R.id.resultLayout);
+        resultInfoTxt = view.findViewById(R.id.resultInfoTxt);
+        resultHeaderTxt = view.findViewById(R.id.resultHeaderTxt);
+        pieChart = view.findViewById(R.id.pieChart);
+        analyticsLayout = view.findViewById(R.id.analyticsLayout);
+        correctAnswersTxt = view.findViewById(R.id.correctQuestion);
+        wrongAnswersTxt = view.findViewById(R.id.wrongQuestions);
+        nextLessonBtn = view.findViewById(R.id.nextLessonBtn);
+        resultProgressBar = view.findViewById(R.id.resultProgress);
+    }
+
+    private void submitTest() {
+        briefLayout.setVisibility(View.GONE);
+        testLayout.setVisibility(View.GONE);
+        resultLayout.setVisibility(View.VISIBLE);
+        resultProgressBar.setVisibility(View.VISIBLE);
+        resultInfoTxt.setVisibility(View.VISIBLE);
+
+        APIMethods.submitTest(shortLesson.getId(), unitId, questionIds, answers, new APIResponseListener<TestRP>() {
+            @Override
+            public void success(TestRP response) {
+                resultInfoTxt.setVisibility(View.GONE);
+                resultProgressBar.setVisibility(View.GONE);
+                resultResponse = response;
+                showResult();
+            }
+
+            @Override
+            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                resultProgressBar.setVisibility(View.GONE);
+                testLayout.setVisibility(View.VISIBLE);
+                resultLayout.setVisibility(View.GONE);
+                Method.showFailedAlert(getActivity(), "Failed: "
+                        + code+" - " + message);
+            }
+        });
+    }
+
+    private void showResult() {
+        listener.revFullScreen();
+        String head = "You have scored ";
+        int percent = resultResponse.getAwarded_marks()*100/resultResponse.getTotal_marks();
+        head = percent+"% marks in this test.";
+
+        resultHeaderTxt.setText(head);
+        resultHeaderTxt.setVisibility(View.VISIBLE);
+
+        new PieChartUtils().initialisePie(pieChart, percent, 100-percent,
+                getResources().getColor(R.color.color_accent1_blue),
+                getResources().getColor(R.color.color_accent3_red));
+        pieChart.setVisibility(View.VISIBLE);
+
+        correctAnswersTxt.setText(String.valueOf(resultResponse.getNum_correct()));
+        wrongAnswersTxt.setText(String.valueOf(resultResponse.getNum_wrong()));
+
+        analyticsLayout.setVisibility(View.VISIBLE);
+
+        nextLessonBtn.setOnClickListener(view -> nextLesson());
+        nextLessonBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void nextLesson() {
+        listener.revFullScreen();
+        listener.nextLesson();
     }
 
     private void saveOption() {
         answers.add(selectedOption);
+        questionIds.add(testRP.getQuestions().get(currentQuestion-1).get_id());
         currentQuestion++;
     }
 
+    ArrayList<String> questionIds = new ArrayList<String>();
     ArrayList<String> answers = new ArrayList<>();
 
     private void inactivateOptions(Drawable inactiveBg) {
@@ -417,6 +498,8 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         optionD = view.findViewById(R.id.optionD);
         progressBar = view.findViewById(R.id.progressBar);
         continueBtn = view.findViewById(R.id.continueBtn);
+
+        findResultViews(view);
     }
 
     @Override
