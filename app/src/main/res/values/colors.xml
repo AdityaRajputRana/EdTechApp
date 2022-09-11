@@ -10,6 +10,7 @@
     <color name="color_accent1_blue">#02DDD2</color>
     <color name="color_accent2_pink">#FFEDE9</color>
     <color name="color_accent3_red">#F14E4C</color>
+    <color name="color_accent3_red_bg">#66F14E4C</color>
 
     <color name="color_bg_rev">#171431</color>
     <color name="color_fg_rev">#222047</color>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_bg"
+    tools:context=".LessonFragments.AssignmentFragment">
+
+    <LinearLayout
+        android:id="@+id/assignmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ASSIGNMENT"
+            android:padding="16dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/color_primary_txt"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modern Physics"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/color_primary_txt"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This is the body of the assignment."
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/color_secondary_txt"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_round_fg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Assignment"
+                    android:fontFamily="@font/poppins"
+                    android:layout_weight="1"
+                    android:textColor="@color/color_primary_txt"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/sampleDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sample Download"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="@color/color_cta"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/uploadTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:text="No Assignment Uploaded\n\nClick here to select PDF for upload."
+                android:background="@drawable/bg_round_upload"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/placeHolderLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_fg"
+            android:padding="16dp"
+            android:layout_margin="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="STATUS"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/color_secondary_txt" />
+
+            <TextView
+                android:id="@+id/statusTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Not Submitted"
+                android:textSize="24sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/color_primary_txt" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ADDITIONAL PLACEHOLDER"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/color_secondary_txt" />
+
+            <TextView
+                android:id="@+id/placeHolderTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Here the review of the teacher on the assignment would be shown."
+                android:textSize="24sp"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="4"
+                android:textColor="@color/color_primary_txt" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/continueBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/color_cta"
+            android:drawableRight="@drawable/ic_cont_arrow"
+            android:fontFamily="@font/poppins"
+            android:padding="16dp"
+            android:text="@string/read"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            app:cornerRadius="16dp" />
+
+    </LinearLayout>
+
+</FrameLayout>
