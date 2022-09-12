@@ -13,7 +13,7 @@ public class AssignmentRP {
 
     String intro_vid;
     String body;
-    String sample_url;
+    String sample;
 
     String submitted_url;
     String placeholder;
@@ -60,7 +60,7 @@ public class AssignmentRP {
     }
 
     public String getSample_url() {
-        return sample_url;
+        return sample;
     }
 
     public String getSubmitted_url() {

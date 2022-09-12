@@ -1,4 +1,4 @@
-package com.quaser.edtechapp.rest.requests.App;
+package com.quaser.edtechapp.rest.requests;
 
 import com.quaser.edtechapp.Auth.AuthUtils;
 

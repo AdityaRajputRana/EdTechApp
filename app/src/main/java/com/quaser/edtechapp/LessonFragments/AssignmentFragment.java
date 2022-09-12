@@ -9,11 +9,14 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.provider.OpenableColumns;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.quaser.edtechapp.Interface.LessonListener;
@@ -23,6 +26,11 @@ import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
 import com.quaser.edtechapp.utils.Method;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public class AssignmentFragment extends Fragment {
@@ -107,8 +115,8 @@ public class AssignmentFragment extends Fragment {
             placeholderTxt.setText(assignment.getPlaceholder());
         }
 
-        if (assignment.getSubmitted_url() == null
-        || assignment.getSubmitted_url().isEmpty()){
+        if (assignment.getSubmitted_url() != null
+        && !assignment.getSubmitted_url().isEmpty()){
             //Todo handle this by letting ppl download their prev asg,
             //and let variable which handle selected assignment not null
         } else {
@@ -148,12 +156,30 @@ public class AssignmentFragment extends Fragment {
                 uri = resultData.getData();
                 selectedFileUri = uri;
                 showFileDetails(uri);
-//                todo uploadFile();
             }
         }
     }
 
+    private String getEncodedFile() {
+        Uri uri = selectedFileUri;
+
+
+        try {
+            InputStream is = getActivity().getContentResolver().openInputStream(uri);
+            byte[] bytesArray = new byte[is.available()];
+            is.read(bytesArray);
+            return android.util.Base64.encodeToString(bytesArray, Base64.NO_WRAP);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private Uri selectedFileUri;
+    private String fileName;
 
     private void showFileDetails(Uri uri) {
         Cursor cursor = getActivity().getContentResolver()
@@ -163,6 +189,7 @@ public class AssignmentFragment extends Fragment {
             if (cursor != null && cursor.moveToFirst()) {
                 String displayName = cursor.getString(
                         cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                fileName = displayName;
                 uploadTxt.setText(displayName + " selected\n\nClick here to remove selection");
             }
         } finally {
@@ -171,7 +198,9 @@ public class AssignmentFragment extends Fragment {
     }
 
     private void downloadSample() {
-        Intent viewPdfIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(assignment.getSample_url()));
+        Intent viewPdfIntent = new Intent(Intent.ACTION_VIEW);
+        viewPdfIntent.setDataAndType(Uri.parse(assignment.getSample_url()), "application/pdf");
+
         startActivity(viewPdfIntent);
     }
 
@@ -188,6 +217,33 @@ public class AssignmentFragment extends Fragment {
     }
 
     private void submit() {
+        String encodedPDF = getEncodedFile();
+        Log.i("LessonPDFB64", encodedPDF);
+        progressBar.setVisibility(View.VISIBLE);
+        uploadTxt.setText("Please wait while we upload "  + fileName);
+        continueBtn.setText("Uploading");
+        continueBtn.setEnabled(false);
+
+        APIMethods.uploadPDFAssignment(shortLesson.getId(),
+                unitId, encodedPDF, new APIResponseListener<String>() {
+                    @Override
+                    public void success(String response) {
+                        Log.i("AssignmentRP",response);
+                        progressBar.setVisibility(View.GONE);
+                        continueBtn.setText("Uploaded");
+                        uploadTxt.setText(fileName + "Uploaded successfully");
+                    }
+
+                    @Override
+                    public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                        Method.showFailedAlert(getActivity(), "Failed: "
+                                + code+" - " + message);
+                        progressBar.setVisibility(View.GONE);
+                        uploadTxt.setText(fileName + "selected.\n\nClick to remove");
+                        continueBtn.setText("Submit");
+                        continueBtn.setEnabled(true);
+                    }
+                });
     }
 
     private void findViews(View view) {

@@ -2,10 +2,10 @@ package com.quaser.edtechapp.rest.api;
 
 import android.app.Activity;
 
-import com.google.gson.JsonObject;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
-import com.quaser.edtechapp.rest.requests.App.SubmitTestReq;
+import com.quaser.edtechapp.rest.requests.SubmitAssignmentReq;
+import com.quaser.edtechapp.rest.requests.SubmitTestReq;
 import com.quaser.edtechapp.rest.requests.CompleteLessonReq;
 import com.quaser.edtechapp.rest.requests.HomeReq;
 import com.quaser.edtechapp.rest.requests.LessonReq;
@@ -87,6 +87,14 @@ public class APIMethods {
         SubmitTestReq req = new SubmitTestReq(questions, answers, lessonId, unitId);
         API.postData(listener, req, EndPoints.submitTest, TestRP.class);
     }
+
+    public static void uploadPDFAssignment(String lessonId, String unitId,
+                                        String pdfFile, APIResponseListener<String> listener){
+        SubmitAssignmentReq req
+                = new SubmitAssignmentReq(lessonId, unitId, pdfFile);
+        API.postData(listener, req, EndPoints.submitAssignment, String.class);
+    }
+
 
 
 }

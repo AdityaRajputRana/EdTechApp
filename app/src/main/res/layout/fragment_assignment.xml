@@ -156,7 +156,7 @@
             android:drawableRight="@drawable/ic_cont_arrow"
             android:fontFamily="@font/poppins"
             android:padding="16dp"
-            android:text="@string/read"
+            android:text="Submit"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:visibility="visible"
