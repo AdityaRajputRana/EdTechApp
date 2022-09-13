@@ -22,4 +22,7 @@
 
     <color name="progress_bg">#74718E</color>
     <color name="disabled">#797C91</color>
+
+    <color name="day_prim_txt">#2B2B2B</color>
+    <color name="day_sec_txt">#8A8A8A</color>
 </resources>

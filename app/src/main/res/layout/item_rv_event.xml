@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/bg_event_card">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+
+    <TextView
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@id/dateLayout"
+        android:layout_height="wrap_content"
+        android:id="@+id/head"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="SEO Masterclass"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/day_prim_txt"
+        android:textSize="22sp" />
+
+    <TextView
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@id/dateLayout"
+        android:layout_height="wrap_content"
+        android:id="@+id/body"
+        android:fontFamily="@font/poppins"
+        android:text="We at Quasar labs deliver products which are a combination of only two: Cheap, Good Quality, or Fast.\n
+Any two of them can be selected but we won't be able to provide all three together."
+        app:layout_constraintTop_toBottomOf="@id/head"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/day_sec_txt"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/head"
+        app:layout_constraintBottom_toBottomOf="@id/body"
+        android:id="@+id/dateLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/bg_event_day"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateTxt"
+            android:fontFamily="@font/poppins_extrabold"
+            android:text="27"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/white"
+            android:textSize="48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/monthTxt"
+            android:fontFamily="@font/poppins_medium"
+            android:text="JULY"
+            android:layout_marginTop="-24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/body"
+        app:constraint_referenced_ids="body, dateLayout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toStartOf="@id/dateLayout"
+            android:layout_height="wrap_content"
+            android:id="@+id/onlineTxt"
+            android:text="Online"
+            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintTop_toBottomOf="@id/head"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/day_prim_txt"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toStartOf="@id/dateLayout"
+            android:layout_height="wrap_content"
+            android:id="@+id/seatsTxt"
+            android:text="27/50 Seats"
+            android:textAlignment="center"
+            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintTop_toBottomOf="@id/head"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/day_prim_txt"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toStartOf="@id/dateLayout"
+            android:layout_height="wrap_content"
+            android:id="@+id/priceTxt"
+            android:text="Price: Free"
+            android:textAlignment="textEnd"
+            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintTop_toBottomOf="@id/head"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/day_prim_txt"
+            android:textSize="18sp" />
+    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/lockLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_lock"
+        android:elevation="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:padding="16dp"
+            android:background="@drawable/bg_chip"
+            android:src="@drawable/ic_lock" />
+
+
+</LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

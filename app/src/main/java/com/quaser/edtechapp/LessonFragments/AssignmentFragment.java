@@ -146,6 +146,7 @@ public class AssignmentFragment extends Fragment {
             continueBtn.setOnClickListener(view -> selectAssignment());
             continueBtn.setVisibility(View.VISIBLE);
             continueBtn.setEnabled(true);
+            uploadTxt.setOnClickListener(view -> selectAssignment());
         } else {
             continueBtn.setVisibility(View.GONE);;
         }
@@ -164,7 +165,10 @@ public class AssignmentFragment extends Fragment {
         } else {
             selectedFileUri = null;
             uploadTxt.setText("File Removed\n\nClick here to select PDF File.");
-            continueBtn.setEnabled(false);
+            continueBtn.setText("Select File");
+            continueBtn.setOnClickListener(view -> selectAssignment());
+            continueBtn.setVisibility(View.VISIBLE);
+            continueBtn.setEnabled(true);
         }
     }
 
@@ -176,6 +180,8 @@ public class AssignmentFragment extends Fragment {
             Uri uri = null;
             if (resultData != null) {
                 continueBtn.setEnabled(true);
+                continueBtn.setText("Submit Assignment");
+                continueBtn.setOnClickListener(view -> submit());
                 uri = resultData.getData();
                 selectedFileUri = uri;
                 showFileDetails(uri);

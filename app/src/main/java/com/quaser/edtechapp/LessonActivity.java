@@ -82,6 +82,13 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
                         .add(R.id.frameLayout, assignmentFragment, TAG)
                         .commit();
                 break;
+            case "event":
+                EventsFragment eventsFragment =
+                        new EventsFragment(unitRP.get_id(), shortLesson, this);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.frameLayout, eventsFragment, TAG)
+                        .commit();
+                break;
             default:
                 Toast.makeText(this, "Unidentified type.", Toast.LENGTH_SHORT).show();
         }

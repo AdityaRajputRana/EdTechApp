@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="16sp"
+    android:paddingEnd="16sp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Upcoming Events"
+        android:textAlignment="center"
+        android:paddingBottom="8dp"
+        android:textColor="@color/color_primary_txt"
+        android:textSize="24sp" />
+
+    <TextView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/head"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Head of the Event"
+        android:textColor="@color/color_primary_txt"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/body"
+        android:fontFamily="@font/poppins"
+        android:visibility="gone"
+        android:text="Body of the event lesson can be shown here. Lorem ipusm."
+        android:textColor="@color/color_secondary_txt"
+        android:textSize="16sp" />
+
+
+</LinearLayout>
