@@ -12,6 +12,7 @@ import com.quaser.edtechapp.rest.requests.LessonReq;
 import com.quaser.edtechapp.rest.requests.LoginRequest;
 import com.quaser.edtechapp.rest.requests.QuestionReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
+import com.quaser.edtechapp.rest.response.AssignmentRP;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.LoginRP;
 import com.quaser.edtechapp.rest.response.QuestionRP;
@@ -89,10 +90,10 @@ public class APIMethods {
     }
 
     public static void uploadPDFAssignment(String lessonId, String unitId,
-                                        String pdfFile, APIResponseListener<String> listener){
+                                        String pdfFile, APIResponseListener<AssignmentRP> listener){
         SubmitAssignmentReq req
                 = new SubmitAssignmentReq(lessonId, unitId, pdfFile);
-        API.postData(listener, req, EndPoints.submitAssignment, String.class);
+        API.postData(listener, req, EndPoints.submitAssignment, AssignmentRP.class);
     }
 
 

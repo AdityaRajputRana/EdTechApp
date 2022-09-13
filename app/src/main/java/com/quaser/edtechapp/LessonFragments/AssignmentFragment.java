@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
@@ -95,6 +96,7 @@ public class AssignmentFragment extends Fragment {
     }
 
     private void showFullLesson() {
+
         if (assignment.getTitle() != null
         && !assignment.getTitle().isEmpty())
             head.setText(assignment.getTitle());
@@ -111,21 +113,42 @@ public class AssignmentFragment extends Fragment {
         }
 
         if (assignment.getPlaceholder() != null
-        && assignment.getPlaceholder().isEmpty()){
+        && !assignment.getPlaceholder().isEmpty()){
             placeholderTxt.setText(assignment.getPlaceholder());
+        } else {
+            placeholderTxt.setText("Please upload a assignment.");
         }
 
         if (assignment.getSubmitted_url() != null
         && !assignment.getSubmitted_url().isEmpty()){
+            String message = "Assignment";
+            if (fileName != null && !fileName.isEmpty()){
+                message = fileName;
+            }
+            uploadTxt.setText(message + " was uploaded!\n" +
+                    "Click here to open!");
+            uploadTxt.setOnClickListener(view -> openPDF(assignment.getSubmitted_url()));
             //Todo handle this by letting ppl download their prev asg,
             //and let variable which handle selected assignment not null
-        } else {
-            uploadTxt.setOnClickListener(view -> selectAssignment());
         }
 
         if (assignment.getStatus() != null
-        && assignment.getStatus().isEmpty())
+        && !assignment.getStatus().isEmpty())
             statusTxt.setText(assignment.getStatus());
+
+        if (assignment.is_next_btn_enabled()){
+            continueBtn.setText("Next Lesson");
+            continueBtn.setOnClickListener(view -> listener.nextLesson());
+            continueBtn.setVisibility(View.VISIBLE);
+            continueBtn.setEnabled(true);
+        } else if (assignment.show_submit_btn()){
+            continueBtn.setText("Select File");
+            continueBtn.setOnClickListener(view -> selectAssignment());
+            continueBtn.setVisibility(View.VISIBLE);
+            continueBtn.setEnabled(true);
+        } else {
+            continueBtn.setVisibility(View.GONE);;
+        }
 
     }
 
@@ -198,8 +221,12 @@ public class AssignmentFragment extends Fragment {
     }
 
     private void downloadSample() {
+      openPDF(assignment.getSample());
+    }
+
+    private void openPDF(String url){
         Intent viewPdfIntent = new Intent(Intent.ACTION_VIEW);
-        viewPdfIntent.setDataAndType(Uri.parse(assignment.getSample_url()), "application/pdf");
+        viewPdfIntent.setDataAndType(Uri.parse(url), "application/pdf");
 
         startActivity(viewPdfIntent);
     }
@@ -225,13 +252,12 @@ public class AssignmentFragment extends Fragment {
         continueBtn.setEnabled(false);
 
         APIMethods.uploadPDFAssignment(shortLesson.getId(),
-                unitId, encodedPDF, new APIResponseListener<String>() {
+                unitId, encodedPDF, new APIResponseListener<AssignmentRP>() {
                     @Override
-                    public void success(String response) {
-                        Log.i("AssignmentRP",response);
+                    public void success(AssignmentRP response) {
                         progressBar.setVisibility(View.GONE);
-                        continueBtn.setText("Uploaded");
-                        uploadTxt.setText(fileName + "Uploaded successfully");
+                        assignment = response;
+                        showFullLesson();
                     }
 
                     @Override

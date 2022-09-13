@@ -2,12 +2,26 @@ package com.quaser.edtechapp.rest.response;
 
 public class AssignmentRP {
 
+    String user_id;
+    String unit_id;
+    long submitted_on;
+
+
+    private String assignment_type;
+
+    private String bucket_name;
+    private String file_path;
+    String _id;
+    String created_at;
+    String uploaded_at;
+    int __v;
+
     String lesson_id;
     String title;
     String short_description;
     String description;
     String type;
-    boolean is_complete;
+    boolean is_completed;
     String completion;
     boolean is_locked;
 
@@ -15,10 +29,37 @@ public class AssignmentRP {
     String body;
     String sample;
 
-    String submitted_url;
+    String assignment_url;
     String placeholder;
     String status;
 
+    public boolean is_next_btn_enabled(){
+        if (is_completed){
+            return true;
+        } else {
+            return assignment_type != null
+                    && assignment_type.equals("auto")
+                    && status != null
+                    && status.equals("Submitted");
+        }
+    }
+
+    public String getSample() {
+        return sample;
+    }
+
+    public String getAssignment_url() {
+        return assignment_url;
+    }
+
+
+    public boolean show_submit_btn(){
+        if (status == null || status.equals("Not Submitted")
+        || status.equals("Rejected"))
+            return true;
+        else
+            return false;
+    }
     public String getLesson_id() {
         return lesson_id;
     }
@@ -40,7 +81,7 @@ public class AssignmentRP {
     }
 
     public boolean isIs_complete() {
-        return is_complete;
+        return is_completed;
     }
 
     public String getCompletion() {
@@ -64,7 +105,7 @@ public class AssignmentRP {
     }
 
     public String getSubmitted_url() {
-        return submitted_url;
+        return assignment_url;
     }
 
     public String getPlaceholder() {

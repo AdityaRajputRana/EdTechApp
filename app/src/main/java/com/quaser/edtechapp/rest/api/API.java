@@ -114,6 +114,7 @@ public class API {
                                     listener.fail("2", response.getString("message"), "", true, false);
                                 }
                             } catch (Exception e) {
+                                Log.i("Lesson Response", response.toString());
                                 listener.fail("1", "The received response is not good", "", true, false);
                                 e.printStackTrace();
                             }
