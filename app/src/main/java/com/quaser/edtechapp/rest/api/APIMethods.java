@@ -14,6 +14,7 @@ import com.quaser.edtechapp.rest.requests.QuestionReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
+import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
 import com.quaser.edtechapp.rest.response.LoginRP;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
@@ -95,6 +96,13 @@ public class APIMethods {
                 = new SubmitAssignmentReq(lessonId, unitId, pdfFile);
         API.postData(listener, req, EndPoints.submitAssignment, AssignmentRP.class);
     }
+
+
+    public static void getOrderId(String lessonId, String unitId, APIResponseListener<LessonOrderIdRp> listener){
+        LessonReq req = new LessonReq(lessonId, unitId);
+        API.postData(listener, req, EndPoints.getLessonOrderId, LessonOrderIdRp.class);
+    }
+
 
 
 

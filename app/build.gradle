@@ -56,6 +56,8 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.16.1'
 
     implementation("ir.mahozad.android:pie-chart:0.7.0")
+    implementation 'com.razorpay:checkout:1.6.24'
+
 
 
 

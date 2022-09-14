@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_bg"
+    tools:context=".LessonFragments.PaymentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="16dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/head"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Let's take to another level!"
+        android:textSize="18sp"
+        android:textColor="@color/color_primary_txt" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/body"
+            android:fontFamily="@font/poppins"
+            android:text="To proceed to next lesson you need to make payment. This helps us to maintain quality of this course high."
+            android:textSize="16sp"
+            android:textColor="@color/color_secondary_txt" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/progressBar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/paymentLayout"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rupeeSymbol"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="₹"
+                    android:textSize="20sp"
+                    android:textColor="@color/color_secondary_txt" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/priceRupeeTxt"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="4000"
+                    android:textSize="48sp"
+                    android:textColor="@color/color_primary_txt" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pricePaiseTxt"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text=".00"
+                    android:textSize="48sp"
+                    android:textColor="@color/color_secondary_txt" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bottomTxt"
+                android:textAlignment="center"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Amount to be paid"
+                android:layout_marginTop="-20dp"
+                android:textSize="16sp"
+                android:textColor="@color/color_primary_txt" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/continueBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:backgroundTint="@color/color_cta"
+            android:text="Proceed to payment"
+            android:layout_gravity="bottom"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins"
+            app:cornerRadius="16dp"
+            android:drawableRight="@drawable/ic_cont_arrow"/>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/day_prim_txt"
-        android:textSize="22sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="0dp"
@@ -37,7 +37,7 @@ Any two of them can be selected but we won't be able to provide all three togeth
         app:layout_constraintTop_toBottomOf="@id/head"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/day_sec_txt"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -63,7 +63,7 @@ Any two of them can be selected but we won't be able to provide all three togeth
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/white"
-            android:textSize="48dp" />
+            android:textSize="42sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,7 +75,7 @@ Any two of them can be selected but we won't be able to provide all three togeth
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -105,7 +105,7 @@ Any two of them can be selected but we won't be able to provide all three togeth
             app:layout_constraintTop_toBottomOf="@id/head"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/day_prim_txt"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -119,7 +119,7 @@ Any two of them can be selected but we won't be able to provide all three togeth
             app:layout_constraintTop_toBottomOf="@id/head"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/day_prim_txt"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -133,7 +133,7 @@ Any two of them can be selected but we won't be able to provide all three togeth
             app:layout_constraintTop_toBottomOf="@id/head"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/day_prim_txt"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

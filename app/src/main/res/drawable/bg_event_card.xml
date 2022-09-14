@@ -10,9 +10,9 @@
         </shape>
     </item>
 
-    <item android:top="-30dp" android:right="-16dp" android:left="-16dp">
+    <item android:top="-32dp" android:right="-16dp" android:left="-16dp">
         <shape android:shape="rectangle">
-            <corners android:radius="40dp" />
+            <corners android:radius="35dp" />
             <solid android:color="@android:color/transparent" />
             <stroke
                 android:width="14dp"

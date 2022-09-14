@@ -17,4 +17,6 @@ public class EndPoints {
     public static String addQuestion = "forum/question/create";
     public static String getQuestion = "forum/question";
     public static String searchQuestion = "forum/getAllQuestion";
+
+    public static String getLessonOrderId = "ui/lesson/payment";
 }

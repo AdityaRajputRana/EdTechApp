@@ -15,14 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.quaser.edtechapp.Helpers.PaymentHelper;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.Interface.RevLessonInterface;
 import com.quaser.edtechapp.LessonFragments.*;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.response.UnitRP;
+import com.razorpay.PaymentResultListener;
 import com.warkiz.tickseekbar.TickSeekBar;
 
-public class LessonActivity extends AppCompatActivity implements LessonListener {
+public class LessonActivity extends AppCompatActivity implements LessonListener, PaymentResultListener {
 
     //Todo: Don't let user open locked items.
 
@@ -87,6 +89,13 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
                         new EventsFragment(unitRP.get_id(), shortLesson, this);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.frameLayout, eventsFragment, TAG)
+                        .commit();
+                break;
+            case "payment":
+                PaymentFragment paymentFragment =
+                        new PaymentFragment(unitRP.get_id(), shortLesson, this, getApplicationContext());
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.frameLayout, paymentFragment, TAG)
                         .commit();
                 break;
             default:
@@ -206,5 +215,15 @@ public class LessonActivity extends AppCompatActivity implements LessonListener 
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this.lessonInterface = lessonInterface;
         SCREEN_STATE=1;
+    }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        PaymentHelper.getInstance().success(s);
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        PaymentHelper.getInstance().fail(s);
     }
 }
