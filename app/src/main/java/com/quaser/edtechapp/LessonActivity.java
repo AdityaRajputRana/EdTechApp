@@ -226,6 +226,7 @@ public class LessonActivity extends AppCompatActivity implements LessonListener,
     public void onPaymentSuccess(String s, PaymentData paymentData) {
         PaymentHelper.getInstance().success(new Gson().toJson(
                 new VerifyLessonPaymentReq(paymentData)
+
         ));
     }
 
