@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.Order;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
+import com.quaser.edtechapp.utils.Method;
 import com.razorpay.Checkout;
 import com.razorpay.PayloadHelper;
 import com.razorpay.PaymentResultListener;
@@ -22,10 +23,10 @@ public class PaymentHelper{
 
     FirebaseUser user;
 
-    interface Listener{
+    public interface Listener{
+        void verifySuccess(String s);
     }
     private Context applicationContext;
-    private String apiKey;
     private Checkout checkout;
 
     private Listener listener;
@@ -42,15 +43,16 @@ public class PaymentHelper{
         return paymentHelperInstance;
     }
 
-    private PaymentHelper(Context context, Activity activity){
+    private PaymentHelper(Context context, Activity activity, Listener listener){
         this.applicationContext = context;
         this.activity = activity;
+        this.listener = listener;
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         Checkout.preload(context);
     }
 
-    public static PaymentHelper newInstance(Context context, Activity activity){
-        paymentHelperInstance = new PaymentHelper(context, activity);
+    public static PaymentHelper newInstance(Context context, Activity activity, Listener listener){
+        paymentHelperInstance = new PaymentHelper(context, activity, listener);
         return paymentHelperInstance;
     }
 
@@ -58,15 +60,16 @@ public class PaymentHelper{
         this.listener = listener;
         this.orderIdRp = orderIdRp;
         this.order = orderIdRp.getOrder();
+        this.activity = activity;
         createPaymentJSON();
     }
 
     public void success(String s){
-        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show();
+        listener.verifySuccess(s);
     }
 
     public void fail(String s){
-        Toast.makeText(activity, "failed", Toast.LENGTH_SHORT).show();
+        Method.showFailedAlert(activity, s);
     }
 
 

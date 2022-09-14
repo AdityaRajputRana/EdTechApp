@@ -12,6 +12,7 @@ import com.quaser.edtechapp.rest.requests.LessonReq;
 import com.quaser.edtechapp.rest.requests.LoginRequest;
 import com.quaser.edtechapp.rest.requests.QuestionReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
+import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
@@ -101,6 +102,11 @@ public class APIMethods {
     public static void getOrderId(String lessonId, String unitId, APIResponseListener<LessonOrderIdRp> listener){
         LessonReq req = new LessonReq(lessonId, unitId);
         API.postData(listener, req, EndPoints.getLessonOrderId, LessonOrderIdRp.class);
+    }
+
+    public static void verifyLessonPayment(String s, String order_id, APIResponseListener<String> listener){
+        VerifyLessonPaymentReq req = VerifyLessonPaymentReq.getInstance(s, order_id);
+        API.postData(listener, req, EndPoints.verifyLessonPayment, String.class);
     }
 
 

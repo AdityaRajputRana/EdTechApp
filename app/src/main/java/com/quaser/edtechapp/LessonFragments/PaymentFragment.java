@@ -2,6 +2,7 @@ package com.quaser.edtechapp.LessonFragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import com.quaser.edtechapp.Helpers.PaymentHelper;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
+import com.quaser.edtechapp.rest.api.API;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
@@ -127,6 +129,8 @@ public class PaymentFragment extends Fragment {
             subPriceTxt.setText(String.valueOf(sub));
         }
 
+        paymentLayout.setVisibility(View.VISIBLE);
+
         continueBtn.setVisibility(View.VISIBLE);
         continueBtn.setOnClickListener(view -> {
             if (FirebaseAuth.getInstance().getCurrentUser().isAnonymous())
@@ -134,7 +138,29 @@ public class PaymentFragment extends Fragment {
             else
                 fetchOrderId();
         });
-        paymentHelper =  PaymentHelper.newInstance(context, getActivity());
+        paymentHelper =  PaymentHelper.newInstance(context, getActivity(), new PaymentHelper.Listener() {
+            @Override
+            public void verifySuccess(String s) {
+                APIMethods.verifyLessonPayment(s, orderId, new APIResponseListener<String>() {
+                    @Override
+                    public void success(String response) {
+                        listener.nextLesson();
+                        Toast.makeText(getActivity(), "Payment Successful!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                        progressBar.setVisibility(View.GONE);
+                        bottomTxt.setText(message);
+                        bottomTxt.setTextColor(Color.RED);
+                        continueBtn.setVisibility(View.VISIBLE);
+                        continueBtn.setEnabled(true);
+                        Method.showFailedAlert(getActivity(), "Failed: "
+                                + code+" - " + message);
+                    }
+                });
+            }
+        });
     }
 
     private void askToLogin() {
@@ -164,8 +190,10 @@ public class PaymentFragment extends Fragment {
             }
         });
     }
-
+    
+    String orderId;
     private void startPayments(LessonOrderIdRp response) {
+        orderId = response.getOrder().getId();
         paymentHelper.startPayments(response, null);
     }
 
