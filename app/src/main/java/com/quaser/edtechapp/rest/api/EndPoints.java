@@ -19,5 +19,5 @@ public class EndPoints {
     public static String searchQuestion = "forum/getAllQuestion";
 
     public static String getLessonOrderId = "ui/lesson/payment";
-    public static String verifyLessonPayment = "/payment/paymentverification";
+    public static String verifyLessonPayment = "payment/paymentverification";
 }

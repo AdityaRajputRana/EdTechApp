@@ -20,11 +20,14 @@ import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.Interface.RevLessonInterface;
 import com.quaser.edtechapp.LessonFragments.*;
 import com.quaser.edtechapp.models.ShortLesson;
+import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.UnitRP;
+import com.razorpay.PaymentData;
 import com.razorpay.PaymentResultListener;
+import com.razorpay.PaymentResultWithDataListener;
 import com.warkiz.tickseekbar.TickSeekBar;
 
-public class LessonActivity extends AppCompatActivity implements LessonListener, PaymentResultListener {
+public class LessonActivity extends AppCompatActivity implements LessonListener, PaymentResultWithDataListener {
 
     //Todo: Don't let user open locked items.
 
@@ -217,13 +220,17 @@ public class LessonActivity extends AppCompatActivity implements LessonListener,
         SCREEN_STATE=1;
     }
 
+
+
     @Override
-    public void onPaymentSuccess(String s) {
-        PaymentHelper.getInstance().success(s);
+    public void onPaymentSuccess(String s, PaymentData paymentData) {
+        PaymentHelper.getInstance().success(new Gson().toJson(
+                new VerifyLessonPaymentReq(paymentData)
+        ));
     }
 
     @Override
-    public void onPaymentError(int i, String s) {
+    public void onPaymentError(int i, String s, PaymentData paymentData) {
         PaymentHelper.getInstance().fail(s);
     }
 }

@@ -2,7 +2,7 @@ package com.quaser.edtechapp.Helpers;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
+import android.util.Log;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,19 +56,19 @@ public class PaymentHelper{
         return paymentHelperInstance;
     }
 
-    public void startPayments(LessonOrderIdRp orderIdRp, Listener listener){
-        this.listener = listener;
+    public void startPayments(LessonOrderIdRp orderIdRp){
         this.orderIdRp = orderIdRp;
         this.order = orderIdRp.getOrder();
-        this.activity = activity;
         createPaymentJSON();
     }
 
     public void success(String s){
+        Log.i("PHPayment", "success: "+  s);
         listener.verifySuccess(s);
     }
 
     public void fail(String s){
+        Log.i("PHPayment", "fail: "+  s);
         Method.showFailedAlert(activity, s);
     }
 

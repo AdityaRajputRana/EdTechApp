@@ -165,7 +165,7 @@ public class PaymentFragment extends Fragment {
 
     private void askToLogin() {
         //Todo: Provide option to log into same ano account
-        Toast.makeText(getActivity(), "Anonymous users can make payments. Please log in.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Anonymous users cannot make payments. Please log in.", Toast.LENGTH_SHORT).show();
     }
 
     private void fetchOrderId() {
@@ -194,7 +194,7 @@ public class PaymentFragment extends Fragment {
     String orderId;
     private void startPayments(LessonOrderIdRp response) {
         orderId = response.getOrder().getId();
-        paymentHelper.startPayments(response, null);
+        paymentHelper.startPayments(response);
     }
 
     private void setUpTitles() {
