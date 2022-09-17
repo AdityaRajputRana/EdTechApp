@@ -107,9 +107,13 @@ public class API {
                                 Log.i("Lesson Response", response.toString());
                                 Boolean successful = response.getBoolean("success");
                                 if (successful) {
-                                    String data = response.getJSONObject("data").toString();
+                                    if (!response.getString("data").isEmpty()) {
+                                        String data = response.getJSONObject("data").toString();
 //                                    String decodedData = HashUtils.fromBase64(data);
-                                    listener.convertData(new Gson().fromJson(data, klass));
+                                        listener.convertData(new Gson().fromJson(data, klass));
+                                    } else {
+                                        listener.convertData("");
+                                    }
                                 } else {
                                     listener.fail("2", response.getString("message"), "", true, false);
                                 }

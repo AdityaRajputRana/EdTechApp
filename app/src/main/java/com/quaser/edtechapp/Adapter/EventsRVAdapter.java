@@ -1,7 +1,10 @@
 package com.quaser.edtechapp.Adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.exoplayer2.AbstractConcatenatedTimeline;
+import com.quaser.edtechapp.Helpers.EventSubscriptionHelper;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortEvent;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.response.EventRP;
+import com.quaser.edtechapp.rest.response.EventSubscriptionRP;
+import com.quaser.edtechapp.utils.Method;
 
 import org.w3c.dom.Text;
 
@@ -28,11 +34,13 @@ public class EventsRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     ShortLesson shortLesson;
     EventRP eventRP;
     Context context;
+    String unitId;
 
-    public EventsRVAdapter(ArrayList<ShortEvent> events, ShortLesson shortLesson, Context context) {
+    public EventsRVAdapter(ArrayList<ShortEvent> events, ShortLesson shortLesson, Context context, String unitId) {
         this.events = events;
         this.shortLesson = shortLesson;
         this.context = context;
+        this.unitId = unitId;
     }
 
     @Override
@@ -183,7 +191,65 @@ public class EventsRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void launchEventActivity(ShortEvent event) {
-        //Todo: launch event activity
+        //Todo: launch event activity and change mechanism
+        if (event.getIs_paid() != null && (event.getIs_paid()  || event.getPrice() > 0)){
+            new AlertDialog.Builder(context)
+                    .setTitle("Make payment")
+                    .setMessage("You need to pay in order to subscribe to this event.\n" +
+                            "Do you want to continue to payment page?")
+                    .setPositiveButton("Pay Now", (dialogInterface, i) -> subscribe(event))
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                    })
+                    .setCancelable(true)
+                    .show();
+        } else {
+            new AlertDialog.Builder(context)
+                    .setTitle("Confirm Subscription")
+                    .setMessage("By clicking the subscribe button you will confirm your seat for the event")
+                    .setPositiveButton("Subscribe", (dialogInterface, i) -> subscribe(event))
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                    })
+                    .setCancelable(true)
+                    .show();
+        }
+    }
+
+    ProgressDialog dialog;
+
+    private void subscribe(ShortEvent event) {
+        EventSubscriptionHelper helper = new EventSubscriptionHelper(event, context, new EventSubscriptionHelper.EventSubscriptionListener() {
+            @Override
+            public void success(EventSubscriptionRP res) {
+
+            }
+
+            @Override
+            public void fail(String message, String code) {
+                Method.showFailedAlert(context, "Failed: "
+                        + code+" - " + message);
+            }
+
+            @Override
+            public void showProgress(String message) {
+                if (message == null)
+                    message = "";
+                if (dialog == null){
+                    dialog = new ProgressDialog(context);
+                    dialog.setTitle("Please wait");
+                    dialog.setCancelable(false);
+                }
+                dialog.setMessage(message);
+                dialog.show();
+            }
+
+            @Override
+            public void hideProgress(String message) {
+                dialog.dismiss();
+            }
+        }, shortLesson.getId(), unitId);
+        helper.subscribe();
     }
 
     @Override

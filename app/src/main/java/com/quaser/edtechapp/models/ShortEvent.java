@@ -12,6 +12,11 @@ public class ShortEvent {
     Prerequisite prerequisite;
     Boolean is_locked;
     Boolean is_subscribed;
+    String event_id;
+
+    public String getEvent_id() {
+        return event_id;
+    }
 
     public ShortEvent() {
     }

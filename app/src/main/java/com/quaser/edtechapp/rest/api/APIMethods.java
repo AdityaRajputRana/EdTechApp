@@ -11,6 +11,7 @@ import com.quaser.edtechapp.rest.requests.HomeReq;
 import com.quaser.edtechapp.rest.requests.LessonReq;
 import com.quaser.edtechapp.rest.requests.LoginRequest;
 import com.quaser.edtechapp.rest.requests.QuestionReq;
+import com.quaser.edtechapp.rest.requests.SubscribeEventReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
 import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
@@ -109,7 +110,20 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.verifyLessonPayment, String.class);
     }
 
+    public static <K> void verifyLessonPayment(String s, String orderId, Class responseType, APIResponseListener<K> listener){
+        VerifyLessonPaymentReq req = VerifyLessonPaymentReq.getInstance(s, orderId);
+        API.postData(listener, req, EndPoints.verifyLessonPayment, responseType);
+    }
 
+    public static void subscribeToFreeEvent(String eventId, String unitId, String lessonId, APIResponseListener<String> listener){
+        SubscribeEventReq req = new SubscribeEventReq(lessonId, unitId, eventId);
+        API.postData(listener, req, EndPoints.subscribeEvent, String.class);
+    }
+
+    public static void subscribeToPaidEvent(String eventId, String unitId, String lessonId, APIResponseListener<LessonOrderIdRp> listener){
+        SubscribeEventReq req = new SubscribeEventReq(lessonId, unitId, eventId);
+        API.postData(listener, req, EndPoints.subscribeEvent, LessonOrderIdRp.class);
+    }
 
 
 }

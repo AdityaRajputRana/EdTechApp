@@ -20,4 +20,6 @@ public class EndPoints {
 
     public static String getLessonOrderId = "ui/lesson/payment";
     public static String verifyLessonPayment = "payment/paymentverification";
+
+    public static String subscribeEvent = "event/subscribe";
 }

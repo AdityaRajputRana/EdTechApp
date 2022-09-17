@@ -109,7 +109,7 @@ public class EventsFragment extends Fragment {
         ArrayList<ShortEvent> events = new ArrayList<ShortEvent>();
         events.add(null);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        adapter = new EventsRVAdapter(events, shortLesson, getActivity());
+        adapter = new EventsRVAdapter(events, shortLesson, getActivity(), unitId);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         recyclerView.setVisibility(View.VISIBLE);
