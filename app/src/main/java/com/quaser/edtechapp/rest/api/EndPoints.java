@@ -22,4 +22,6 @@ public class EndPoints {
     public static String verifyLessonPayment = "payment/paymentverification";
 
     public static String subscribeEvent = "event/subscribe";
+
+    public static String updateDP = "user/displayPicture/update";
 }

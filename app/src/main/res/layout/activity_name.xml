@@ -46,6 +46,38 @@
         app:layout_constraintTop_toBottomOf="@id/textLayout"
         android:orientation="vertical">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dpLayout"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="24dp">
+
+            <ImageView
+                android:id="@+id/display_picture"
+                android:src="@drawable/ic_display_picture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/dp_progress"
+                android:elevation="16dp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:id="@+id/editOptions"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_baseline_edit_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         <TextView
             android:id="@+id/enterTxt"
             android:layout_width="match_parent"

@@ -1,13 +1,19 @@
 package com.quaser.edtechapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,9 +23,13 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
+import com.quaser.edtechapp.utils.FileUtils;
 import com.quaser.edtechapp.utils.Method;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
+
+import java.io.File;
 
 public class NameActivity extends AppCompatActivity {
 
@@ -27,6 +37,12 @@ public class NameActivity extends AppCompatActivity {
     private EditText nameEt;
     private MaterialButton continueBtn;
     private MaterialButton skipBtn;
+
+    private ConstraintLayout dpLayout;
+    private ImageView dpImg;
+    private ProgressBar dpProgressBar;
+
+    private boolean isUpdatingDP = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +52,8 @@ public class NameActivity extends AppCompatActivity {
         findViews();
         setListeners();
     }
+
+
 
     private void setListeners() {
         skipBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +69,79 @@ public class NameActivity extends AppCompatActivity {
                 verifyName();
             }
         });
+
+        dpLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isUpdatingDP){
+                    selectPicture();
+                }
+            }
+        });
+    }
+
+    private void selectPicture() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+
+        startActivityForResult(Intent.createChooser(intent, "Select Profile Photo from"), 100);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == 100
+                && resultCode == Activity.RESULT_OK) {
+            Uri uri = null;
+            if (resultData != null) {
+                uri = resultData.getData();
+                isUpdatingDP = true;
+                dpProgressBar.setVisibility(View.VISIBLE);
+                
+                Picasso.get()
+                        .load(uri)
+                        .into(dpImg);
+                startUpload(uri);
+            }
+        }
+    }
+    
+    String prevImage = "";
+    boolean updatesMade = false;
+
+    private void startUpload(Uri uri) {
+        String extension = FileUtils.getExtension(uri, this);
+        String encodedDP = FileUtils.getEncodedFile(uri, this);
+        
+        APIMethods.updateDP(encodedDP, extension, new APIResponseListener<String>() {
+            @Override
+            public void success(String response) {
+                updatesMade = true;
+                dpProgressBar.setVisibility(View.GONE);
+                isUpdatingDP = false;
+                prevImage = response;
+                Toast.makeText(NameActivity.this, "Profile Picture updated successfully!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                dpProgressBar.setVisibility(View.GONE);
+                isUpdatingDP = false;
+                if (prevImage != null && !prevImage.isEmpty()){
+                    Picasso.get()
+                            .load(prevImage)
+                            .into(dpImg);
+                } else {
+                    Picasso.get()
+                            .load(R.drawable.ic_display_picture)
+                            .into(dpImg);
+                }
+                Toast.makeText(NameActivity.this, "DP update failed!", Toast.LENGTH_SHORT).show();
+                Method.showFailedAlert(NameActivity.this
+                , code + " - " + message);
+            }
+        });
     }
 
     boolean changedOnServer = false;
@@ -60,6 +151,11 @@ public class NameActivity extends AppCompatActivity {
         if (nameEt.getText().toString().isEmpty())
             nameEt.setError("This is required");
         else {
+
+            if (isUpdatingDP){
+                Toast.makeText(this, "Please wait which photo is being uploaded!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             startProgress();
             nameEt.setError(null);
@@ -116,6 +212,10 @@ public class NameActivity extends AppCompatActivity {
         nameEt = findViewById(R.id.nameEt);
         continueBtn = findViewById(R.id.continueBtn);
         skipBtn = findViewById(R.id.skipBtn);
+
+        dpLayout = findViewById(R.id.dpLayout);
+        dpImg = findViewById(R.id.display_picture);
+        dpProgressBar = findViewById(R.id.dp_progress);
     }
 
     private void startProgress(){

@@ -13,6 +13,7 @@ import com.quaser.edtechapp.rest.requests.LoginRequest;
 import com.quaser.edtechapp.rest.requests.QuestionReq;
 import com.quaser.edtechapp.rest.requests.SubscribeEventReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
+import com.quaser.edtechapp.rest.requests.UploadFileReq;
 import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
 import com.quaser.edtechapp.rest.response.EventsListRP;
@@ -46,6 +47,7 @@ public class APIMethods {
         LoginRequest req = new LoginRequest(name);
         API.postData(listener, req, EndPoints.updateName, JSONObject.class);
     }
+
 
     public static void getHomeData(APIResponseListener<HomeRP> listener, Activity context){
         HomeReq req = new HomeReq(context);
@@ -101,6 +103,13 @@ public class APIMethods {
                 = new SubmitAssignmentReq(lessonId, unitId, pdfFile);
         API.postData(listener, req, EndPoints.submitAssignment, AssignmentRP.class);
     }
+
+    public static void updateDP(String profilePicture, String ext, APIResponseListener<String> listener){
+        UploadFileReq req =
+                new UploadFileReq(profilePicture, ext);
+        API.postData(listener, req, EndPoints.updateDP, String.class);
+    }
+
 
 
     public static void getOrderId(String lessonId, String unitId, APIResponseListener<LessonOrderIdRp> listener){

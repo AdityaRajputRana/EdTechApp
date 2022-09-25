@@ -4,6 +4,9 @@
     <color name="color_bg">#F7F7F7</color>
     <color name="color_fg">#FFFFFF</color>
     <color name="card_bg">#FFFFFF</color>
+    <color name="rev_primary_txt">#FFFFFF</color>
+    <color name="rev_secondary_txt">#7D7B8C</color>
+
     <color name="color_primary_txt">#2B2B2B</color>
     <color name="color_secondary_txt">#8A8A8A</color>
     <color name="color_highlight_txt">#505ACD</color>

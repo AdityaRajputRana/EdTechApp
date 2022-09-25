@@ -41,6 +41,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides;
 import com.google.android.exoplayer2.trackselection.TrackSelectionParameters;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
@@ -146,6 +147,7 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
                 ).build();
 
         Log.i("VOD", "PT2");
+        controls.setPlayer(player);
 
         exo_quality.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,9 +228,9 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         setUpTitles();
         setUpMediaSource();
 
-        continueBtn.setText(R.string.full_screen);
-        continueBtn.setVisibility(View.VISIBLE);
-        continueBtn.setOnClickListener(view -> fullScreen());
+//        continueBtn.setText(R.string.full_screen);
+//        continueBtn.setVisibility(View.VISIBLE);
+//        continueBtn.setOnClickListener(view -> fullScreen());
     }
 
     boolean isFullScreen = false;
@@ -237,7 +239,7 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         listener.fullScreen(this);
         titleTxt.setVisibility(View.GONE);
         bodyTxt.setVisibility(View.GONE);
-        continueBtn.setVisibility(View.GONE);
+        controls.setVisibility(View.GONE);
         isFullScreen = true;
     }
 
@@ -252,7 +254,7 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         player.prepare();
         playerView.setVisibility(View.VISIBLE);
         player.setPlayWhenReady(true);
-
+        continueBtn.setVisibility(View.GONE);
         player.addListener(
                 new Player.Listener() {
                     @Override
@@ -302,6 +304,8 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
             }
         });
 
+        continueBtn.setVisibility(View.VISIBLE);
+
     }
 
     private void proceed() {
@@ -331,14 +335,17 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
             bodyTxt.setVisibility(View.GONE);
     }
 
+    PlayerControlView controls;
+
     private void findViews(View view) {
         titleTxt = view.findViewById(R.id.title_txt);
         bodyTxt = view.findViewById(R.id.bodyTxt);
         progressBar = view.findViewById(R.id.progressBar);
         continueBtn = view.findViewById(R.id.continueBtn);
         playerView = view.findViewById(R.id.exoPlayer);
-        exo_quality = view.findViewById(R.id.qualityBtn);
-        fullScreenBtn = view.findViewById(R.id.exo_fullscreen);
+        controls = view.findViewById(R.id.controls);
+        fullScreenBtn = controls.findViewById(R.id.fullScreenBtn);
+        exo_quality = controls.findViewById(R.id.qualityBtn);
         setOnClicks();
     }
 
@@ -355,8 +362,8 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
     public void reverseFullScreen() {
         titleTxt.setVisibility(View.VISIBLE);
         bodyTxt.setVisibility(View.VISIBLE);
-        continueBtn.setVisibility(View.VISIBLE);
         listener.revFullScreen();
+        controls.setVisibility(View.VISIBLE);
         isFullScreen =false;
     }
 
