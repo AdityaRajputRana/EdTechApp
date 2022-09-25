@@ -64,4 +64,8 @@ public class ShortEvent {
     public Boolean getIs_subscribed() {
         return is_subscribed;
     }
+
+    public void setIs_subscribed(Boolean is_subscribed) {
+        this.is_subscribed = is_subscribed;
+    }
 }

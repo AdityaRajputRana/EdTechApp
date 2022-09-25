@@ -25,6 +25,7 @@ public class PaymentHelper{
 
     public interface Listener{
         void verifySuccess(String s);
+        void failed(String s);
     }
     private Context applicationContext;
     private Checkout checkout;
@@ -69,7 +70,15 @@ public class PaymentHelper{
 
     public void fail(String s){
         Log.i("PHPayment", "fail: "+  s);
-        Method.showFailedAlert(activity, s);
+        String error = s;
+        try{
+            JSONObject object = new JSONObject(s);
+            error = object.getJSONObject("error").getString("description");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        Method.showFailedAlert(activity, error);
+        listener.failed(error);
     }
 
 

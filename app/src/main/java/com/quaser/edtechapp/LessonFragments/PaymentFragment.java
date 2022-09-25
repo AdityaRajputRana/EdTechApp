@@ -27,6 +27,7 @@ import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
 import com.quaser.edtechapp.rest.response.PaymentRP;
+import com.quaser.edtechapp.rest.response.VerifiedPaymentRP;
 import com.quaser.edtechapp.utils.Method;
 import com.razorpay.Checkout;
 
@@ -141,9 +142,9 @@ public class PaymentFragment extends Fragment {
         paymentHelper =  PaymentHelper.newInstance(context, getActivity(), new PaymentHelper.Listener() {
             @Override
             public void verifySuccess(String s) {
-                APIMethods.verifyLessonPayment(s, orderId, new APIResponseListener<String>() {
+                APIMethods.verifyLessonPayment(s, orderId, new APIResponseListener<VerifiedPaymentRP>() {
                     @Override
-                    public void success(String response) {
+                    public void success(VerifiedPaymentRP response) {
                         listener.nextLesson();
                         Toast.makeText(getActivity(), "Payment Successful!", Toast.LENGTH_SHORT).show();
                     }
@@ -159,6 +160,15 @@ public class PaymentFragment extends Fragment {
                                 + code+" - " + message);
                     }
                 });
+            }
+
+            @Override
+            public void failed(String s) {
+                progressBar.setVisibility(View.GONE);
+                bottomTxt.setText(s);
+                bottomTxt.setTextColor(Color.RED);
+                continueBtn.setVisibility(View.VISIBLE);
+                continueBtn.setEnabled(true);
             }
         });
     }

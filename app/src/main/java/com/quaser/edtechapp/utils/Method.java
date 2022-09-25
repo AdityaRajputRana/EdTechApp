@@ -18,6 +18,21 @@ public class Method {
                 .show();
     }
 
+    public static void showSuccessAlert(Context context, String message){
+        new AlertDialog.Builder(context)
+                .setTitle("Success")
+                .setMessage(message)
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
+    }
+
+
+
     public static String getTime(int seconds) {
         int minutes = (int) (seconds/60);
         int hours = (int) (minutes/60);

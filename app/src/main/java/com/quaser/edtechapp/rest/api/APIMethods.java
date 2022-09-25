@@ -15,14 +15,17 @@ import com.quaser.edtechapp.rest.requests.SubscribeEventReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
 import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
+import com.quaser.edtechapp.rest.response.EventsListRP;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
 import com.quaser.edtechapp.rest.response.LoginRP;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.rest.response.HomeRP;
+import com.quaser.edtechapp.rest.response.SubscribeEventRP;
 import com.quaser.edtechapp.rest.response.TestRP;
 import com.quaser.edtechapp.rest.response.UnitRP;
+import com.quaser.edtechapp.rest.response.VerifiedPaymentRP;
 
 import org.json.JSONObject;
 
@@ -105,9 +108,9 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.getLessonOrderId, LessonOrderIdRp.class);
     }
 
-    public static void verifyLessonPayment(String s, String order_id, APIResponseListener<String> listener){
+    public static void verifyLessonPayment(String s, String order_id, APIResponseListener<VerifiedPaymentRP> listener){
         VerifyLessonPaymentReq req = VerifyLessonPaymentReq.getInstance(s, order_id);
-        API.postData(listener, req, EndPoints.verifyLessonPayment, String.class);
+        API.postData(listener, req, EndPoints.verifyLessonPayment, VerifiedPaymentRP.class);
     }
 
     public static <K> void verifyLessonPayment(String s, String orderId, Class responseType, APIResponseListener<K> listener){
@@ -115,9 +118,9 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.verifyLessonPayment, responseType);
     }
 
-    public static void subscribeToFreeEvent(String eventId, String unitId, String lessonId, APIResponseListener<String> listener){
+    public static void subscribeToFreeEvent(String eventId, String unitId, String lessonId, APIResponseListener<SubscribeEventRP> listener){
         SubscribeEventReq req = new SubscribeEventReq(lessonId, unitId, eventId);
-        API.postData(listener, req, EndPoints.subscribeEvent, String.class);
+        API.postData(listener, req, EndPoints.subscribeEvent, SubscribeEventRP.class);
     }
 
     public static void subscribeToPaidEvent(String eventId, String unitId, String lessonId, APIResponseListener<LessonOrderIdRp> listener){

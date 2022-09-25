@@ -4,7 +4,7 @@ import com.quaser.edtechapp.models.ShortEvent;
 
 import java.util.ArrayList;
 
-public class EventSubscriptionRP {
+public class EventsListRP {
 
     String lesson_id;
     String title;
@@ -53,6 +53,6 @@ public class EventSubscriptionRP {
         return events;
     }
 
-    public EventSubscriptionRP() {
+    public EventsListRP() {
     }
 }

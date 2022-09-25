@@ -1,10 +1,8 @@
 package com.quaser.edtechapp.Adapter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.exoplayer2.AbstractConcatenatedTimeline;
 import com.quaser.edtechapp.Helpers.EventSubscriptionHelper;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortEvent;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.response.EventRP;
-import com.quaser.edtechapp.rest.response.EventSubscriptionRP;
+import com.quaser.edtechapp.rest.response.EventsListRP;
+import com.quaser.edtechapp.rest.response.SubscribeEventRP;
 import com.quaser.edtechapp.utils.Method;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -192,7 +188,7 @@ public class EventsRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void launchEventActivity(ShortEvent event) {
         //Todo: launch event activity and change mechanism
-        if (event.getIs_paid() != null && (event.getIs_paid()  || event.getPrice() > 0)){
+        if (event.getIs_paid() != null && event.getIs_paid() || event.getPrice() > 0){
             new AlertDialog.Builder(context)
                     .setTitle("Make payment")
                     .setMessage("You need to pay in order to subscribe to this event.\n" +
@@ -221,8 +217,9 @@ public class EventsRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void subscribe(ShortEvent event) {
         EventSubscriptionHelper helper = new EventSubscriptionHelper(event, context, new EventSubscriptionHelper.EventSubscriptionListener() {
             @Override
-            public void success(EventSubscriptionRP res) {
-
+            public void success(SubscribeEventRP res) {
+                    Method.showSuccessAlert(context, "Event is subscribed successfully");
+                    event.setIs_subscribed(true);
             }
 
             @Override
