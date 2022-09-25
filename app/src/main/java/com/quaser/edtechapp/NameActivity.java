@@ -112,7 +112,7 @@ public class NameActivity extends AppCompatActivity {
 
     private void startUpload(Uri uri) {
         String extension = FileUtils.getExtension(uri, this);
-        String encodedDP = FileUtils.getEncodedFile(uri, this);
+        String encodedDP = FileUtils.getEncodedImage(uri, this);
         
         APIMethods.updateDP(encodedDP, extension, new APIResponseListener<String>() {
             @Override

@@ -3,10 +3,13 @@ package com.quaser.edtechapp.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +48,32 @@ public class FileUtils {
             byte[] bytesArray = new byte[is.available()];
             is.read(bytesArray);
             return android.util.Base64.encodeToString(bytesArray, Base64.NO_WRAP);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getEncodedImage(Uri selectedFileUri, Context context) {
+        Uri uri = selectedFileUri;
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            String ext = FileUtils.getExtension(uri, context);
+            if (ext.equals("png")) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            } else if (ext.equals("webp")) {
+                bitmap.compress(Bitmap.CompressFormat.WEBP, 100, baos);
+            } else
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+            byte[] imageBytes = baos.toByteArray();
+            String encodedImage = Base64.encodeToString(imageBytes, Base64.NO_WRAP);
+            return encodedImage;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

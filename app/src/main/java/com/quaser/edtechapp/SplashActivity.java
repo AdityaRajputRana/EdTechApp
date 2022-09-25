@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.quaser.edtechapp.Auth.AuthUtils;
 
 public class SplashActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences preferences =  this.getSharedPreferences("EdTech", MODE_PRIVATE);
         boolean isOnboarded = preferences.getBoolean("isOnboarded",false);
 
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
         if (isOnboarded){
             boolean isLoggedIn = AuthUtils.getInstance().isLoggedIn();
             if (isLoggedIn) {
