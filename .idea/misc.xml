@@ -72,7 +72,7 @@
         <entry key="app/src/main/res/layout/fragment_video.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_rv_event.xml" value="0.2" />
         <entry key="app/src/main/res/layout/item_rv_event_head.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/item_rv_forrum.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_rv_forrum.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/layout/item_rv_forrum_answer.xml" value="0.22506082725060828" />
         <entry key="app/src/main/res/layout/item_rv_forrum_question.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_rv_home.xml" value="0.22" />

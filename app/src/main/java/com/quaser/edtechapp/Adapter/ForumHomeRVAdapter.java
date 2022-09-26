@@ -18,6 +18,7 @@ import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.ViewQuestionActivity;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.QuestionRP;
+import com.quaser.edtechapp.utils.Transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.MyViewHolder> {
@@ -62,6 +63,17 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.
             holder.recyclerView.setVisibility(View.GONE);
         }
 
+        if (questionRP.getUser_name() != null && !questionRP.getUser_name().isEmpty()){
+            holder.userNameTxt.setText(questionRP.getUser_name());
+        }
+
+        if (questionRP.getDisplay_picture() != null && !questionRP.getDisplay_picture().isEmpty()){
+            Picasso.get()
+                    .load(questionRP.getDisplay_picture())
+                    .transform(new CircleTransform())
+                    .into(holder.userDisplayPictureImg);
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +97,8 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.
         RecyclerView recyclerView;
         TextView likesTxt;
         TextView commentsTxt;
+        TextView userNameTxt;
+        ImageView userDisplayPictureImg;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -93,7 +107,8 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.
             recyclerView = itemView.findViewById(R.id.recyclerView);
             likesTxt = itemView.findViewById(R.id.likeTxt);
             commentsTxt = itemView.findViewById(R.id.commentsTxt);
-
+            userDisplayPictureImg = itemView.findViewById(R.id.userDisplayImg);
+            userNameTxt = itemView.findViewById(R.id.userNameTxt);
             //Todo Add User Avatar
         }
     }

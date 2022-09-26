@@ -12,6 +12,7 @@ public class QuestionRP {
     String head;
     String body;
     String user_name;
+    String display_picture;
     String createdAt;
     String updatedAt;
     String _id;
@@ -19,6 +20,10 @@ public class QuestionRP {
     int total_comments;
     boolean is_liked = false;
     ArrayList<Answer> answers;
+
+    public String getDisplay_picture(){
+        return display_picture;
+    }
 
     public ArrayList<Answer> getAnswers() {
         return answers;

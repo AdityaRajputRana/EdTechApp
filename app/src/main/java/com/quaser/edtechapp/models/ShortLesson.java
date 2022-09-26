@@ -6,7 +6,7 @@ public class ShortLesson {
     String description;
     Prerequisite pre_requisite;
     String type;
-    boolean is_complete = false;
+    boolean is_completed;
     boolean is_locked;
 
     public String getName() {
@@ -42,11 +42,11 @@ public class ShortLesson {
     }
 
     public boolean isIs_complete() {
-        return is_complete;
+        return is_completed;
     }
 
     public void setIs_complete(boolean is_complete) {
-        this.is_complete = is_complete;
+        this.is_completed = is_complete;
     }
 
     public boolean isIs_locked() {

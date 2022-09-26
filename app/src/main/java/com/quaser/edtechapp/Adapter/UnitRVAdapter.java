@@ -70,6 +70,8 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } else if (mHolder instanceof LessonViewHolder){
             LessonViewHolder holder = (LessonViewHolder) mHolder;
             position = position-1;
+            Log.i("CompletedUnitRP", new Gson().toJson(unitRP));
+            Log.i("Completed", "starting");
             if (position == 0 && unitRP.isHas_user_started()){
                 Log.i("Completed", "1");
                 holder.topProgress.setBackgroundColor(activity.getResources()
@@ -85,6 +87,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_active_ball));
                 }
             }
+            Log.i("Completed", "Checking current completion");
             ShortLesson lesson = unitRP.getLesson().get(position);
             if (lesson.isIs_complete()){
                 Log.i("Completed", "Current is complete");

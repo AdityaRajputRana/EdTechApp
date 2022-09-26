@@ -26,6 +26,7 @@ import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.DataRp;
 import com.quaser.edtechapp.utils.FileUtils;
 import com.quaser.edtechapp.utils.Method;
+import com.quaser.edtechapp.utils.Transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -102,6 +103,7 @@ public class NameActivity extends AppCompatActivity {
                 
                 Picasso.get()
                         .load(uri)
+                        .transform(new CircleTransform())
                         .into(dpImg);
                 startUpload(uri);
             }
