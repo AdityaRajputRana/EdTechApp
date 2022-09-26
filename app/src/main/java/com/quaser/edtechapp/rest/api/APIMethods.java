@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
+import com.quaser.edtechapp.rest.requests.ForumReq;
 import com.quaser.edtechapp.rest.requests.SubmitAssignmentReq;
 import com.quaser.edtechapp.rest.requests.SubmitTestReq;
 import com.quaser.edtechapp.rest.requests.CompleteLessonReq;
@@ -66,10 +67,16 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.addQuestion, QuestionRP.class);
     }
 
-    public static void getForumHome(Activity context, APIResponseListener<ForumHomeRP> listener){
-        HomeReq req = new HomeReq(context);
+    public static void getForumQuestion(Activity context, APIResponseListener<ForumHomeRP> listener){
+        ForumReq req = new ForumReq();
         API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
     }
+
+    public static void getForumQuestion(int page, APIResponseListener<ForumHomeRP> listener){
+        ForumReq req = new ForumReq(page);
+        API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
+    }
+
 
     public static void getQuestion(Activity context, String questionId, APIResponseListener<QuestionRP> listener){
         QuestionReq req = new QuestionReq(context, questionId);

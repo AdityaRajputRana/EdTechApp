@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,7 @@ import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.utils.Transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
 
-public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.MyViewHolder> {
+public class ForumHomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ForumHomeRP homeRP;
     Activity activity;
@@ -31,63 +32,90 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<ForumHomeRVAdapter.
         this.activity = activity;
     }
 
-    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rv_forrum, parent, false));
+    public int getItemViewType(int position) {
+        if (homeRP.getQuestions().get(position) == null){
+            return 1;
+        }
+        return 0;
     }
 
+    @NonNull
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        QuestionRP questionRP = homeRP.getQuestions().get(position);
-        holder.head.setText(questionRP.getHead());
-        holder.likesTxt.setText(questionRP.getTotal_likes() + " likes");
-        holder.commentsTxt.setText(questionRP.getTotal_comments() + " Answers"); //Todo show likes and comments
-        if (questionRP.getImage_url() != null
-                && !questionRP.getImage_url().isEmpty()){
-            holder.imageView.setVisibility(View.VISIBLE);
-            Picasso.get()
-                    .load(questionRP.getImage_url())
-                    .into(holder.imageView);
-        } else {
-            holder.imageView.setVisibility(View.GONE);
-        }
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == 0)
+            return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rv_forrum, parent, false));
+        else
+            return new LoadingViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
 
-        if (questionRP.getTags() != null
-        && questionRP.getTags().size() >0){
-            ForrumChipRVAdapter chipRVAdapter = new ForrumChipRVAdapter(questionRP.getTags());
-            LinearLayoutManager manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
-            holder.recyclerView.setAdapter(chipRVAdapter);
-            holder.recyclerView.setLayoutManager(manager);
-        } else {
-            holder.recyclerView.setVisibility(View.GONE);
-        }
+    }
 
-        if (questionRP.getUser_name() != null && !questionRP.getUser_name().isEmpty()){
-            holder.userNameTxt.setText(questionRP.getUser_name());
-        }
 
-        if (questionRP.getDisplay_picture() != null && !questionRP.getDisplay_picture().isEmpty()){
-            Picasso.get()
-                    .load(questionRP.getDisplay_picture())
-                    .transform(new CircleTransform())
-                    .into(holder.userDisplayPictureImg);
-        }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, ViewQuestionActivity.class);
-                intent.putExtra("hasQuestionAttached", true);
-                intent.putExtra("question", new Gson().toJson(questionRP));
-                activity.startActivity(intent);
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        if (viewHolder instanceof LoadingViewHolder){
+            LoadingViewHolder holder = (LoadingViewHolder) viewHolder;
+        }else {
+            MyViewHolder holder = (MyViewHolder) viewHolder;
+            QuestionRP questionRP = homeRP.getQuestions().get(position);
+            holder.head.setText(questionRP.getHead());
+            holder.likesTxt.setText(questionRP.getTotal_likes() + " likes");
+            holder.commentsTxt.setText(questionRP.getTotal_comments() + " Answers"); //Todo show likes and comments
+            if (questionRP.getImage_url() != null
+                    && !questionRP.getImage_url().isEmpty()) {
+                holder.imageView.setVisibility(View.VISIBLE);
+                Picasso.get()
+                        .load(questionRP.getImage_url())
+                        .into(holder.imageView);
+            } else {
+                holder.imageView.setVisibility(View.GONE);
             }
-        });
+
+            if (questionRP.getTags() != null
+                    && questionRP.getTags().size() > 0) {
+                ForrumChipRVAdapter chipRVAdapter = new ForrumChipRVAdapter(questionRP.getTags());
+                LinearLayoutManager manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+                holder.recyclerView.setAdapter(chipRVAdapter);
+                holder.recyclerView.setLayoutManager(manager);
+            } else {
+                holder.recyclerView.setVisibility(View.GONE);
+            }
+
+            if (questionRP.getUser_name() != null && !questionRP.getUser_name().isEmpty()) {
+                holder.userNameTxt.setText(questionRP.getUser_name());
+            }
+
+            if (questionRP.getDisplay_picture() != null && !questionRP.getDisplay_picture().isEmpty()) {
+                Picasso.get()
+                        .load(questionRP.getDisplay_picture())
+                        .transform(new CircleTransform())
+                        .into(holder.userDisplayPictureImg);
+            }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(activity, ViewQuestionActivity.class);
+                    intent.putExtra("hasQuestionAttached", true);
+                    intent.putExtra("question", new Gson().toJson(questionRP));
+                    activity.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return homeRP.getQuestions().size();
+    }
+
+    public class LoadingViewHolder extends RecyclerView.ViewHolder{
+        ProgressBar progressBar;
+        public LoadingViewHolder(@NonNull View itemView){
+            super(itemView);
+            this.progressBar = itemView.findViewById(R.id.progressBar);
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

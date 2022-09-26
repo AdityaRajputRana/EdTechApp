@@ -3,10 +3,12 @@ package com.quaser.edtechapp.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quaser.edtechapp.Adapter.ForumHomeRVAdapter;
 import com.quaser.edtechapp.AddQuestionActivity;
 import com.quaser.edtechapp.R;
@@ -62,7 +63,7 @@ public class ForrumFragment extends Fragment {
 
     private void fetchForumQuestions() {
         //Todo: Add Pagination
-        APIMethods.getForumHome(getActivity(), new APIResponseListener<ForumHomeRP>() {
+        APIMethods.getForumQuestion(getActivity(), new APIResponseListener<ForumHomeRP>() {
             @Override
             public void success(ForumHomeRP response) {
                 progressBar.setVisibility(View.GONE);
@@ -79,8 +80,29 @@ public class ForrumFragment extends Fragment {
 
     private void showRecyclerView(ForumHomeRP res) {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        if (res.areMorePagesAvailable()){
+            res.getQuestions().add(null);
+        }
         adapter = new ForumHomeRVAdapter(res, getActivity());
         recyclerView.setLayoutManager(manager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItem = manager.getChildCount();
+                int totalItem = manager.getItemCount();
+                int firstVisibleItem = manager.findFirstVisibleItemPosition();
+
+                if ((visibleItem + firstVisibleItem) >= totalItem
+                        && firstVisibleItem >= 0){
+                    res.paginate(adapter, getActivity());
+                    if (!res.areMorePagesAvailable()){
+                        recyclerView.removeOnScrollListener(this);
+                    }
+                }
+            }
+        });
         recyclerView.setAdapter(adapter);
     }
 
