@@ -23,6 +23,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
+import com.quaser.edtechapp.rest.response.DataRp;
 import com.quaser.edtechapp.utils.FileUtils;
 import com.quaser.edtechapp.utils.Method;
 import com.squareup.picasso.Picasso;
@@ -114,13 +115,13 @@ public class NameActivity extends AppCompatActivity {
         String extension = FileUtils.getExtension(uri, this);
         String encodedDP = FileUtils.getEncodedImage(uri, this);
         
-        APIMethods.updateDP(encodedDP, extension, new APIResponseListener<String>() {
+        APIMethods.updateDP(encodedDP, extension, new APIResponseListener<DataRp>() {
             @Override
-            public void success(String response) {
+            public void success(DataRp response) {
                 updatesMade = true;
                 dpProgressBar.setVisibility(View.GONE);
                 isUpdatingDP = false;
-                prevImage = response;
+                prevImage = response.getLink();
                 Toast.makeText(NameActivity.this, "Profile Picture updated successfully!", Toast.LENGTH_SHORT).show();
             }
 

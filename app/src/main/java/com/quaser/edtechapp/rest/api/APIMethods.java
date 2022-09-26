@@ -16,6 +16,7 @@ import com.quaser.edtechapp.rest.requests.UnitReq;
 import com.quaser.edtechapp.rest.requests.UploadFileReq;
 import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
+import com.quaser.edtechapp.rest.response.DataRp;
 import com.quaser.edtechapp.rest.response.EventsListRP;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
@@ -104,10 +105,10 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.submitAssignment, AssignmentRP.class);
     }
 
-    public static void updateDP(String profilePicture, String ext, APIResponseListener<String> listener){
+    public static void updateDP(String profilePicture, String ext, APIResponseListener<DataRp> listener){
         UploadFileReq req =
                 new UploadFileReq(profilePicture, ext);
-        API.postData(listener, req, EndPoints.updateDP, String.class);
+        API.postData(listener, req, EndPoints.updateDP, DataRp.class);
     }
 
 
