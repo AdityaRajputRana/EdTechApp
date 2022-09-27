@@ -1,95 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+
     android:background="@color/color_bg"
     tools:context=".AddQuestionActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="8dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="New Question"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textColor="@color/color_secondary_txt"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/continueBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="Next"
+            android:textColor="@color/color_cta"
+            android:textAllCaps="true"
+            android:textSize="17sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:elevation="16dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cornerRadius="16dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:id="@+id/rootLayout">
 
-        <TextView
 
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Add a question"
-            android:textSize="20sp"
-            android:textColor="@color/color_primary_txt"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:padding="8dp"
+            android:id="@+id/questionTitleLayout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Enter you question below."
+                android:textSize="20sp"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/color_primary_txt" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_fg"
             android:padding="16dp"
-            android:layout_marginTop="16dp"
-            android:hint="Your Question"
+            android:layout_marginTop="8dp"
+            android:imeOptions="actionNext"
+            android:hint="Start writing your question title here..."
+            android:fontFamily="@font/poppins"
             android:textColor="@color/color_primary_txt"
             android:textColorHint="@color/color_secondary_txt"
             android:id="@+id/headEt" />
 
+        </LinearLayout>
 
-        <EditText
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/questionBodyLayout">
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@color/color_fg"
+                android:layout_height="match_parent">
+
+
+                <!-- Begin Editor toolbar -->
+
+                <HorizontalScrollView
+                    android:id="@+id/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="#e6e6e6"
+                    android:scrollbars="none">
+
+                    <include layout="@layout/editor_toolbar_linearlayout_horizontal" />
+
+
+                </HorizontalScrollView>
+                <!--End of Editor toolbar -->
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="40dp"
+                    android:scrollbars="vertical">
+
+                    <com.github.irshulx.Editor
+                        android:id="@+id/editor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="100dp"
+                        app:placeholder="2. Describe your question here, you can use different markers from down below."
+                        app:render_type="Editor"></com.github.irshulx.Editor>
+                </ScrollView>
+            </RelativeLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_fg"
-            android:padding="16dp"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/color_primary_txt"
-            android:textColorHint="@color/color_secondary_txt"
-            android:hint="Image Link"
-            android:id="@+id/imgEt" />
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:padding="8dp"
+            android:id="@+id/tagsLayout">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_fg"
-            android:padding="16dp"
-            android:layout_marginTop="16dp"
-            android:hint="Tags, separated by comma"
-            android:textColor="@color/color_primary_txt"
-            android:textColorHint="@color/color_secondary_txt"
-            android:id="@+id/tagsEt" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Select Few tags to categorize your question"
+                android:textSize="20sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/color_primary_txt" />
+
+<!--            <com.pchmn.materialchips.ChipsInput-->
+<!--                android:id="@+id/chipsInput"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:hint="Enter a name"-->
+<!--                app:hintColor="@color/color_secondary_txt"-->
+<!--                app:textColor="@color/color_primary_txt"-->
+<!--                app:maxRows="3"-->
+<!--                app:chip_labelColor="@color/black"-->
+<!--                app:chip_hasAvatarIcon="true"-->
+<!--                app:chip_deletable="true" />-->
+
+        </LinearLayout>
 
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_fg"
-            android:padding="16dp"
-            android:layout_marginTop="16dp"
-            android:hint="Body of question"
-            android:gravity="top"
-            android:minHeight="150dp"
-            android:textColor="@color/color_primary_txt"
-            android:textColorHint="@color/color_secondary_txt"
-            android:id="@+id/bodyEt" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/continueBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:backgroundTint="@color/color_cta"
-            android:text="Post Question"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:fontFamily="@font/poppins"
-            android:elevation="16dp"
-            android:visibility="visible"
-            android:layout_marginTop="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:cornerRadius="16dp" />
+
 
 
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

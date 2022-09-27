@@ -57,6 +57,14 @@ public class FileUtils {
         return null;
     }
 
+    public static String getEncodedImage(Bitmap bitmap, Context context){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String encodedImage = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+        return encodedImage;
+    }
+
     public static String getEncodedImage(Uri selectedFileUri, Context context) {
         Uri uri = selectedFileUri;
         try {

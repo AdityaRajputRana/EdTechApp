@@ -130,6 +130,12 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.updateDP, DataRp.class);
     }
 
+    public static void uploadForumFile(String profilePicture, String ext, APIResponseListener<DataRp> listener){
+        UploadFileReq req =
+                new UploadFileReq(profilePicture, ext);
+        API.postData(listener, req, EndPoints.uploadFile, DataRp.class);
+    }
+
 
 
     public static void getOrderId(String lessonId, String unitId, APIResponseListener<LessonOrderIdRp> listener){

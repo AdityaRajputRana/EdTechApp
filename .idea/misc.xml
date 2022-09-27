@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.21203703703703702" />
+        <entry key="../../.gradle/caches/transforms-3/1a3e74d961b1260f3a743e33afc5d737/transformed/jetified-laser-native-editor-3.0.3/res/layout/editor_toolbar_linearlayout_horizontal.xml" value="0.19375" />
         <entry key="../../.gradle/caches/transforms-3/f061e7cac83869030af665ddb5c3163c/transformed/exoplayer-ui-2.16.1/res/drawable-anydpi-v21/exo_icon_pause.xml" value="0.1295" />
         <entry key="../../.gradle/caches/transforms-3/f061e7cac83869030af665ddb5c3163c/transformed/exoplayer-ui-2.16.1/res/drawable-anydpi-v21/exo_icon_play.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
@@ -49,7 +50,7 @@
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/il_home.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/splash_image.xml" value="0.1145" />
-        <entry key="app/src/main/res/layout/activity_add_question.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_add_question.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_kotlin.xml" value="0.1693840579710145" />
         <entry key="app/src/main/res/layout/activity_kotlin_act_m.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_lesson.xml" value="0.25" />
@@ -83,8 +84,10 @@
         <entry key="app/src/main/res/layout/item_rv_unit_header.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_rv_unit_lesson.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_ticket.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/layout_authored_by.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/notification.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/rv_unit_header.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/toolbar_editor.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/menu/main_bottom_menu.xml" value="0.19375" />
       </map>
     </option>

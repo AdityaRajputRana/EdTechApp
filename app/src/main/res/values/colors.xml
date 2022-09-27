@@ -7,6 +7,9 @@
     <color name="rev_primary_txt">#FFFFFF</color>
     <color name="rev_secondary_txt">#7D7B8C</color>
 
+    <color name="colorPrimaryDark">#222047</color>
+    <color name="colorPrimary">#505ACD</color>
+
     <color name="color_primary_txt">#2B2B2B</color>
     <color name="color_secondary_txt">#8A8A8A</color>
     <color name="color_highlight_txt">#505ACD</color>
