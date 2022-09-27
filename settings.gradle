@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "EdTechApp"
 include ':app'
+

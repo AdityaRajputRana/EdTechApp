@@ -24,10 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.github.irshulx.Editor;
-import com.github.irshulx.EditorListener;
-import com.github.irshulx.models.EditorTextStyle;
+//
+import com.quaser.edtechapp.wsywig.Editor;
+import com.quaser.edtechapp.wsywig.EditorListener;
+import com.quaser.edtechapp.wsywig.models.EditorTextStyle;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Helpers.TagsListHelper;
@@ -168,21 +168,21 @@ public class AddQuestionActivity extends AppCompatActivity {
 
         @SuppressLint("ResourceType")
         private void setUpEditor() {
-            findViewById(com.github.irshulx.R.id.action_h1).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_h1).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.updateTextStyle(EditorTextStyle.H1);
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_h2).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_h2).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.updateTextStyle(EditorTextStyle.H2);
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_h3).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_h3).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.updateTextStyle(EditorTextStyle.H3);
@@ -190,59 +190,59 @@ public class AddQuestionActivity extends AppCompatActivity {
             });
 
 
-            findViewById(com.github.irshulx.R.id.action_Italic).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_Italic).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.updateTextStyle(EditorTextStyle.ITALIC);
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_indent).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.updateTextStyle(EditorTextStyle.INDENT);
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE);
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.updateTextStyle(EditorTextStyle.OUTDENT);
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_bulleted).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_bulleted).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.insertList(false);
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_unordered_numbered).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_unordered_numbered).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.insertList(true);
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_hr).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_hr).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.insertDivider();
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_color).setVisibility(View.GONE);
+            findViewById(R.id.action_color).setVisibility(View.GONE);
 
 
-//            findViewById(com.github.irshulx.R.id.action_color).setOnClickListener(new View.OnClickListener() {
+//            findViewById(R.id.action_color).setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
 //                    new ColorPickerPopup.Builder(AddQuestionActivity.this)
@@ -270,27 +270,27 @@ public class AddQuestionActivity extends AppCompatActivity {
 //                }
 //            });
 
-            findViewById(com.github.irshulx.R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.openImagePicker();
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.insertLink();
                 }
             });
 
-            findViewById(com.github.irshulx.R.id.action_bold).setOnClickListener(view -> {
+            findViewById(R.id.action_bold).setOnClickListener(view -> {
                 editor.updateTextStyle(EditorTextStyle.BOLD);
                 Toast.makeText(this, "Bold!", Toast.LENGTH_SHORT).show();
             });
 
 
-            findViewById(com.github.irshulx.R.id.action_erase).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.action_erase).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editor.clearAllContents();
@@ -302,9 +302,9 @@ public class AddQuestionActivity extends AppCompatActivity {
             Map<Integer, String> contentTypeface = getContentface();
             editor.setHeadingTypeface(headingTypeface);
             editor.setContentTypeface(contentTypeface);
-            editor.setDividerLayout(com.github.irshulx.R.layout.tmpl_divider_layout);
-            editor.setEditorImageLayout(com.github.irshulx.R.layout.tmpl_image_view);
-            editor.setListItemLayout(com.github.irshulx.R.layout.tmpl_list_item);
+            editor.setDividerLayout(R.layout.tmpl_divider_layout);
+            editor.setEditorImageLayout(R.layout.tmpl_image_view);
+            editor.setListItemLayout(R.layout.tmpl_list_item);
             editor.setNormalTextSize(20);
             editor.setEditorTextColor(AddQuestionActivity.this.getResources().getString(R.color.color_primary_txt));
             editor.setEditorListener(new EditorListener() {
@@ -356,7 +356,7 @@ public class AddQuestionActivity extends AppCompatActivity {
 
             });
 
-            findViewById(com.github.irshulx.R.id.action_erase).performClick();
+            findViewById(R.id.action_erase).performClick();
 
 
         }

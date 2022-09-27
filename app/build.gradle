@@ -60,8 +60,18 @@ dependencies {
     implementation("ir.mahozad.android:pie-chart:0.7.0")
     implementation 'com.razorpay:checkout:1.6.24'
 
-    implementation('com.github.irshulx:laser-native-editor:3.0.3')
+//    implementation('com.github.irshulx:laser-native-editor:3.0.3')
     implementation( 'com.github.pchmn:MaterialChipsInput:1.0.8')
+
+
+
+    implementation 'org.jsoup:jsoup:1.11.3'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'org.jetbrains:annotations:13.0'
+
+    implementation 'com.android.support:support-annotations:27.1.1'
+    annotationProcessor 'com.android.support:support-annotations:27.1.1'
 
 
 

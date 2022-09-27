@@ -143,7 +143,7 @@
                     android:layout_marginBottom="40dp"
                     android:scrollbars="vertical">
 
-                    <com.github.irshulx.Editor
+                    <com.quaser.edtechapp.wsywig.Editor
                         android:id="@+id/editor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                         android:paddingRight="8dp"
                         android:paddingBottom="100dp"
                         app:placeholder="2. Describe your question here, you can use different markers from down below."
-                        app:render_type="Editor"></com.github.irshulx.Editor>
+                        app:render_type="Editor"></com.quaser.edtechapp.wsywig.Editor>
                 </ScrollView>
             </RelativeLayout>
 
