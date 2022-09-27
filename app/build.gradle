@@ -61,6 +61,7 @@ dependencies {
     implementation 'com.razorpay:checkout:1.6.24'
 
     implementation('com.github.irshulx:laser-native-editor:3.0.3')
+    implementation( 'com.github.pchmn:MaterialChipsInput:1.0.8')
 
 
 

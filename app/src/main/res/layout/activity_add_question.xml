@@ -91,6 +91,16 @@
             android:textColorHint="@color/color_secondary_txt"
             android:id="@+id/headEt" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:textColor="@color/color_secondary_txt"
+                android:fontFamily="@font/poppins"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:text="1/3 Step" />
+
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,22 +173,29 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="3. Select Few tags to categorize your question"
+                android:text="3. Finally, select some categories to which you think your question belongs"
                 android:textSize="20sp"
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/color_primary_txt" />
 
-<!--            <com.pchmn.materialchips.ChipsInput-->
-<!--                android:id="@+id/chipsInput"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:hint="Enter a name"-->
-<!--                app:hintColor="@color/color_secondary_txt"-->
-<!--                app:textColor="@color/color_primary_txt"-->
-<!--                app:maxRows="3"-->
-<!--                app:chip_labelColor="@color/black"-->
-<!--                app:chip_hasAvatarIcon="true"-->
-<!--                app:chip_deletable="true" />-->
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/tagsProgressBar" />
+
+            <com.pchmn.materialchips.ChipsInput
+                android:id="@+id/chipsInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint="Enter a name"
+                app:hintColor="@color/color_secondary_txt"
+                app:textColor="@color/color_primary_txt"
+                app:maxRows="3"
+                app:chip_labelColor="@color/black"
+                app:chip_hasAvatarIcon="true"
+                app:chip_deletable="true" />
 
         </LinearLayout>
 

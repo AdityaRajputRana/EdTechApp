@@ -24,5 +24,7 @@ public class EndPoints {
     public static String subscribeEvent = "event/subscribe";
 
     public static String updateDP = "user/displayPicture/update";
-    public static String uploadFile = "ui/fileUpload";
+    public static String uploadFile = "ui/file-upload";
+
+    public static String tags = "ui/tags";
 }

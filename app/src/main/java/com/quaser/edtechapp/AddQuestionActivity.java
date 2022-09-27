@@ -14,12 +14,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +30,12 @@ import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorTextStyle;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.quaser.edtechapp.Helpers.TagsListHelper;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.DataRp;
 import com.quaser.edtechapp.rest.response.QuestionRP;
+import com.quaser.edtechapp.rest.response.TagsRP;
 import com.quaser.edtechapp.utils.FileUtils;
 import com.quaser.edtechapp.utils.Method;
 
@@ -44,7 +48,7 @@ import java.util.Map;
 public class AddQuestionActivity extends AppCompatActivity {
 
     boolean hasEditorInput = false;
-    ArrayList<String> mediaInput;
+    ArrayList<String> mediaInput = new ArrayList<String>();
     String serialisedBody = "";
 
     private int pageState = 0;
@@ -52,6 +56,8 @@ public class AddQuestionActivity extends AppCompatActivity {
     private LinearLayout headLayout;
     private ConstraintLayout bodyLayout;
     private LinearLayout tagsLayout;
+
+    private ProgressBar tagsProgressBar;
 
     @Override
     public void onBackPressed() {
@@ -84,12 +90,11 @@ public class AddQuestionActivity extends AppCompatActivity {
                     headEt.setError(null);
                     headLayout.setVisibility(View.GONE);
                     bodyLayout.setVisibility(View.VISIBLE);
-
-                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(headEt.getWindowToken(), 0);
-
                     if (!hasEditorInput){
                         setUpEditor();
+                        editor.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                     }
                     pageState++;
                 }
@@ -103,9 +108,39 @@ public class AddQuestionActivity extends AppCompatActivity {
                     bodyLayout.setVisibility(View.GONE);
                     tagsLayout.setVisibility(View.VISIBLE);
                     continueBtn.setText("POST");
+                    loadTags();
+                    pageState++;
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 }
                 break;
+            case 2:
+                continueBtn.setEnabled(false);
+                tagsProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(this, "Posting question", Toast.LENGTH_SHORT).show();
+                processData();
+                break;
         }
+    }
+
+    private TagsListHelper tagsHelper;
+
+    private void loadTags() {
+        tagsProgressBar.setVisibility(View.VISIBLE);
+        APIMethods.getTags(new APIResponseListener<TagsRP>() {
+            @Override
+            public void success(TagsRP response) {
+                tagsProgressBar.setVisibility(View.GONE);
+                tagsHelper = new TagsListHelper(AddQuestionActivity.this, tagsLayout, response.getTags());
+            }
+
+            @Override
+            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                tagsProgressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(AddQuestionActivity.this, "Error loading tags.", Toast.LENGTH_SHORT).show();
+                Method.showFailedAlert(AddQuestionActivity.this, code + " - " + message);
+            }
+        });
     }
 
     private MaterialButton continueBtn;
@@ -116,6 +151,7 @@ public class AddQuestionActivity extends AppCompatActivity {
 
     Editor editor;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +161,9 @@ public class AddQuestionActivity extends AppCompatActivity {
         findViews();
         setListeners();
         editor =  findViewById(R.id.editor);
+        headEt.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
         @SuppressLint("ResourceType")
@@ -277,20 +316,36 @@ public class AddQuestionActivity extends AppCompatActivity {
                 @Override
                 public void onUpload(Bitmap image, String uuid) {
                     Toast.makeText(AddQuestionActivity.this, "Uploading image:" + uuid, Toast.LENGTH_LONG).show();
-                    APIMethods.uploadForumFile(FileUtils.getEncodedImage(image, AddQuestionActivity.this), "png", new APIResponseListener<DataRp>() {
+                    Thread thread = new Thread(new Runnable() {
                         @Override
-                        public void success(DataRp response) {
-                            Toast.makeText(AddQuestionActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
-                            mediaInput.add(response.getLink());
-                            editor.onImageUploadComplete(response.getLink(), uuid);
-                        }
+                        public void run() {
+                            APIMethods.uploadForumFile(FileUtils.getEncodedImage(image, AddQuestionActivity.this), "png", new APIResponseListener<DataRp>() {
+                                @Override
+                                public void success(DataRp response) {
+                                    AddQuestionActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(AddQuestionActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+                                            mediaInput.add(response.getLink());
+                                            editor.onImageUploadComplete(response.getLink(), uuid);
+                                        }
+                                    });
+                                }
 
-                        @Override
-                        public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
-                            Toast.makeText(AddQuestionActivity.this, "Upload image failed!", Toast.LENGTH_SHORT).show();
-                            editor.onImageUploadFailed(uuid);
+                                @Override
+                                public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                                    AddQuestionActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(AddQuestionActivity.this, "Upload image failed!", Toast.LENGTH_SHORT).show();
+                                            editor.onImageUploadFailed(uuid);
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
+                    thread.start();
                 }
 
                 @Override
@@ -345,19 +400,18 @@ public class AddQuestionActivity extends AppCompatActivity {
     }
 
     private void processData() {
-        disable();
-        ArrayList<String> tagsList = new ArrayList<>();
-        if (!tagsEt.getText().toString().isEmpty()){
-            String[] tags = tagsEt.getText().toString().split(",");
-            tagsList= new ArrayList<String>(Arrays.asList(tags));
-        }
-
-        postQuestion(tagsList);
+        continueBtn.setEnabled(false);
+        tagsHelper.disableEditing();
+        Log.i("ProcessingData", "processData:");
+        if (tagsHelper != null)
+            postQuestion(tagsHelper.getSelectedTags());
+        else
+            postQuestion(null);
     }
 
     private void postQuestion(ArrayList<String> tagsList) {
         APIMethods.postQuestion(headEt.getText().toString(),
-                bodyEt.getText().toString(), imgEt.getText().toString(), tagsList,
+                editor.getContentAsHTML(), serialisedBody, editor.getContentAsHTML(), mediaInput, tagsList,
                 this, new APIResponseListener<QuestionRP>() {
                     @Override
                     public void success(QuestionRP response) {
@@ -367,12 +421,14 @@ public class AddQuestionActivity extends AppCompatActivity {
 
                     @Override
                     public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
-                        enable();
                         Method.showFailedAlert(AddQuestionActivity.this, code+"-"+message);
+                        continueBtn.setEnabled(true);
+                        tagsProgressBar.setVisibility(View.GONE);
+                        tagsHelper.enableEditing();
+                        continueBtn.setEnabled(true);
                     }
                 });
     }
-
 
 
     @Override
@@ -451,5 +507,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         imgEt = findViewById(R.id.headEt);
         tagsEt = findViewById(R.id.headEt);
         bodyEt = findViewById(R.id.headEt);
+
+        tagsProgressBar = findViewById(R.id.tagsProgressBar);
     }
 }

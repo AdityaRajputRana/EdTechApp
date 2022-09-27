@@ -26,6 +26,7 @@ import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.rest.response.HomeRP;
 import com.quaser.edtechapp.rest.response.SubscribeEventRP;
+import com.quaser.edtechapp.rest.response.TagsRP;
 import com.quaser.edtechapp.rest.response.TestRP;
 import com.quaser.edtechapp.rest.response.UnitRP;
 import com.quaser.edtechapp.rest.response.VerifiedPaymentRP;
@@ -38,6 +39,10 @@ public class APIMethods {
     public static void signInAnonymously(APIResponseListener<AnonymousRP> listener){
         LoginRequest req = new LoginRequest(true);
         API.postData(listener, req, EndPoints.anonymous, AnonymousRP.class);
+    }
+
+    public static void getTags(APIResponseListener<TagsRP> listener){
+        API.postData(listener, "{}", EndPoints.tags, TagsRP.class);
     }
 
     public static void login(APIResponseListener<LoginRP> listener){
@@ -61,9 +66,13 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.unit, UnitRP.class);
     }
 
-    public static void postQuestion(String head, String body, String imageUrl, ArrayList<String> tags,
+    public static void postQuestion(String head, String body, String html, String serialised, ArrayList<String> media, ArrayList<String> tags,
                                     Activity activity, APIResponseListener<QuestionRP> listener){
-        AddQuestionRq req = new AddQuestionRq(imageUrl, tags, head, body, activity);
+        String imageUrl = "";
+        if (media != null && media.size() >0){
+            imageUrl = media.get(0);
+        }
+        AddQuestionRq req = new AddQuestionRq(imageUrl, tags, head, body, activity, html, serialised, media);
         API.postData(listener, req, EndPoints.addQuestion, QuestionRP.class);
     }
 
