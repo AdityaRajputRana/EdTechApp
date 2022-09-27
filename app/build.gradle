@@ -60,7 +60,7 @@ dependencies {
     implementation("ir.mahozad.android:pie-chart:0.7.0")
     implementation 'com.razorpay:checkout:1.6.24'
 
-
+    implementation('com.github.irshulx:laser-native-editor:3.0.3')
 
 
 }
