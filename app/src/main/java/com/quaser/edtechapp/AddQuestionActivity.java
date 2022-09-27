@@ -411,7 +411,7 @@ public class AddQuestionActivity extends AppCompatActivity {
 
     private void postQuestion(ArrayList<String> tagsList) {
         APIMethods.postQuestion(headEt.getText().toString(),
-                editor.getContentAsHTML(), serialisedBody, editor.getContentAsHTML(), mediaInput, tagsList,
+                editor.getContentAsHTML(), editor.getContentAsHTML(), serialisedBody, mediaInput, tagsList,
                 this, new APIResponseListener<QuestionRP>() {
                     @Override
                     public void success(QuestionRP response) {
