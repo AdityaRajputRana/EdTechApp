@@ -72,6 +72,18 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
     }
 
+    //Search QUESTION
+    public static void getForumQuestion(String keyword, APIResponseListener<ForumHomeRP> listener){
+        ForumReq req = new ForumReq(keyword);
+        API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
+    }
+
+    //PAGINATE SEARCH QUESTION
+    public static void getForumQuestion(String keyword, int page, APIResponseListener<ForumHomeRP> listener){
+        ForumReq req = new ForumReq(keyword, page);
+        API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
+    }
+
     public static void getForumQuestion(int page, APIResponseListener<ForumHomeRP> listener){
         ForumReq req = new ForumReq(page);
         API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);

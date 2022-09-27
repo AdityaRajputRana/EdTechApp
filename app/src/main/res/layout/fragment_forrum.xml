@@ -40,6 +40,8 @@
                android:paddingEnd="16dp"
                android:hint="Type here to search"
                android:fontFamily="@font/poppins"
+               android:imeOptions="actionSearch"
+               android:inputType="text"
                android:textSize="14sp"
                android:drawableRight="@drawable/ic_search" />
        </LinearLayout>

@@ -9,16 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.quaser.edtechapp.Adapter.ForumHomeRVAdapter;
 import com.quaser.edtechapp.AddQuestionActivity;
 import com.quaser.edtechapp.R;
+import com.quaser.edtechapp.SearchActivity;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
@@ -62,7 +66,6 @@ public class ForrumFragment extends Fragment {
     }
 
     private void fetchForumQuestions() {
-        //Todo: Add Pagination
         APIMethods.getForumQuestion(getActivity(), new APIResponseListener<ForumHomeRP>() {
             @Override
             public void success(ForumHomeRP response) {
@@ -121,6 +124,25 @@ public class ForrumFragment extends Fragment {
                 launchAddActivity();
             }
         });
+
+        searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (!searchEt.getText().toString().isEmpty()){
+                        performSearch();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void performSearch() {
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        intent.putExtra("KEYWORD", searchEt.getText().toString());
+        getActivity().startActivity(intent);
     }
 
     private void launchAddActivity() {

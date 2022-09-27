@@ -15,11 +15,24 @@ public class ForumReq {
         return user_id;
     }
 
+    String keyword;
+
     public void setUserId(String userId) {
         this.user_id = userId;
     }
     public ForumReq(int page){
         user_id = AuthUtils.getUserId();
         this.page = page;
+    }
+
+    public ForumReq(String keyword, int page){
+        user_id = AuthUtils.getUserId();
+        this.page = page;
+        this.keyword = keyword;
+    }
+
+    public ForumReq(String keyword){
+        user_id = AuthUtils.getUserId();
+        this.keyword = keyword;
     }
 }

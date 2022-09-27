@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.quaser.edtechapp.models.Filter;
+import com.quaser.edtechapp.rest.api.API;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.utils.Method;
@@ -15,6 +17,12 @@ public class ForumHomeRP {
     private int page;
     private int pages;
     private int count;
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter;
 
     public int getPage() {
         return page;
@@ -48,8 +56,8 @@ public class ForumHomeRP {
 
     public void paginate(RecyclerView.Adapter adapter, Context context ){
         if (areMorePagesAvailable()){
-            isLoading =true;
-            APIMethods.getForumQuestion(page + 1, new APIResponseListener<ForumHomeRP>() {
+
+            APIResponseListener<ForumHomeRP> apiListener = new APIResponseListener<ForumHomeRP>() {
                 @Override
                 public void success(ForumHomeRP mRes) {
                     page = mRes.getPage();
@@ -61,6 +69,9 @@ public class ForumHomeRP {
                     count = count + mRes.getCount();
                     questions.addAll(mRes.getQuestions());
                     pages = mRes.getPages();
+                    if (mRes.getFilter() != null){
+                        filter = mRes.getFilter();
+                    }
                     isLoading = false;
                     if (areMorePagesAvailable()){
                         questions.add(null);
@@ -77,7 +88,16 @@ public class ForumHomeRP {
                     }
                     Method.showFailedAlert(context, code + " - " + message);
                 }
-            });
+            };
+
+            isLoading =true;
+            if (filter == null
+            || filter.getKeyword() == null
+            || filter.getKeyword().isEmpty()) {
+                APIMethods.getForumQuestion(page + 1, apiListener);
+            } else {
+                APIMethods.getForumQuestion(filter.getKeyword(), page+1, apiListener);
+            }
         }
     }
 
