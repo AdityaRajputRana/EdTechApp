@@ -110,6 +110,12 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
     }
 
+    public static void likeQuestion(String questionId, APIResponseListener<QuestionRP> listener){
+        QuestionReq req = new QuestionReq(questionId);
+        //Todo: change from string to success req
+        API.postData(listener, req, EndPoints.likeQuestion, QuestionRP.class);
+    }
+
 
     public static void getQuestion(Activity context, String questionId, APIResponseListener<QuestionRP> listener){
         QuestionReq req = new QuestionReq(context, questionId);

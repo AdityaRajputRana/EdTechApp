@@ -1,18 +1,24 @@
 package com.quaser.edtechapp.Adapter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.Answer;
+import com.quaser.edtechapp.rest.api.APIMethods;
+import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.QuestionRP;
+import com.quaser.edtechapp.utils.Method;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -25,6 +31,8 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     boolean isLoadingAnswers = true;
 
     ArrayList<Answer> mAnswers = new ArrayList<Answer>();
+    
+    Context context;
 
     public void showNoAnswerYetTxt(){
         haveAnswers = false;
@@ -32,8 +40,9 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyItemChanged(0);
     }
 
-    public ViewQuestionRVAdapter(QuestionRP questionRP) {
+    public ViewQuestionRVAdapter(QuestionRP questionRP, Context context) {
         this.questionRP = questionRP;
+        this.context = context;
     }
 
     public void AddAnswers(){
@@ -55,7 +64,8 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder gHolder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder gHolder, int pos) {
+        final int positionf = pos;
         if (gHolder instanceof QuestionViewHolder){
             QuestionViewHolder holder = (QuestionViewHolder) gHolder;
 
@@ -63,6 +73,11 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.body.setText(questionRP.getBody());
             holder.time.setText(questionRP.getCreatedAt());
             holder.likesTxt.setText(questionRP.getTotal_likes() + " likes");
+            if (questionRP.isIs_liked())
+                holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_liked, 0, 0, 0);
+            else
+                holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like, 0, 0, 0);
+
             holder.commentsTxt.setText(questionRP.getTotal_comments() + " Answers"); //Todo show likes and comments
             if (questionRP.getImage_url() != null
             && !questionRP.getImage_url().isEmpty()){
@@ -71,6 +86,43 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         .load(questionRP.getImage_url())
                         .into(holder.imageView);
             }
+
+            holder.likesTxt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    questionRP.setIs_liked(!questionRP.isIs_liked());
+                    if (questionRP.isIs_liked())
+                        holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_liked, 0, 0, 0);
+                    else
+                        holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like, 0, 0, 0);
+                    APIMethods.likeQuestion(questionRP.get_id(), new APIResponseListener<QuestionRP>() {
+                        @Override
+                        public void success(QuestionRP response) {
+                            questionRP.setTotal_likes(questionRP.getTotal_likes()+1);
+                            notifyItemChanged(positionf);
+                            if (response != null) {
+                                if (response.isIs_liked())
+                                    holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_liked, 0, 0, 0);
+                                else
+                                    holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like, 0, 0, 0);
+                            }
+                        }
+
+                        @Override
+                        public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                            questionRP.setIs_liked(!questionRP.isIs_liked());
+                            if (questionRP.isIs_liked())
+                                holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_liked, 0, 0, 0);
+                            else
+                                holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like, 0, 0, 0);
+                            if (context instanceof Activity)
+                            Method.showFailedAlert(context, code + " - "+  message);
+                            else
+                                Toast.makeText(context, code + " - "+  message, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
 
             if (isLoadingAnswers){
                 holder.progressBar.setVisibility(View.VISIBLE);
@@ -82,7 +134,7 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 holder.noAnsTxt.setVisibility(View.VISIBLE);
             }
         } else if (gHolder instanceof AnswerViewHolder){
-            position = position-1;
+            int position = positionf-1;
             AnswerViewHolder holder = (AnswerViewHolder) gHolder;
             Answer answer = mAnswers.get(position);
             int totalUps = 0;

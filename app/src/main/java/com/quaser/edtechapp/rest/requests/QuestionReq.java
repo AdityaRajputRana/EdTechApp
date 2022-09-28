@@ -15,4 +15,9 @@ public class QuestionReq {
         this.user_id = AuthUtils.getInstance().getUserId();
         this.question_id = question_id;
     }
+
+    public QuestionReq(String question_id){
+        this.question_id = question_id;
+        this.user_id = AuthUtils.getInstance().getUserId();
+    }
 }

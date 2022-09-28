@@ -45,8 +45,11 @@
         <entry key="app/src/main/res/drawable/ic_display_picture.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_dummy_logo.xml" value="0.1145" />
         <entry key="app/src/main/res/drawable/ic_hd.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_heart_fill.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/ic_inactive_ball.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1145" />
+        <entry key="app/src/main/res/drawable/ic_like.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_liked.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_lock.xml" value="0.1145" />
         <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.1145" />
         <entry key="app/src/main/res/drawable/ic_outline_settings_24.xml" value="0.1295" />

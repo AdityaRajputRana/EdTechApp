@@ -108,7 +108,7 @@ public class ViewQuestionActivity extends AppCompatActivity {
 
     private void showFetchedQuestion(QuestionRP questionRP){
         manager = new LinearLayoutManager(this);
-        adapter = new ViewQuestionRVAdapter(questionRP);
+        adapter = new ViewQuestionRVAdapter(questionRP, this);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         titleTxt.setText(questionRP.getHead());
@@ -123,7 +123,8 @@ public class ViewQuestionActivity extends AppCompatActivity {
     private void showQuestion() {
         QuestionRP questionRP = new Gson().fromJson(getIntent().getStringExtra("question"), QuestionRP.class);
         manager = new LinearLayoutManager(this);
-        adapter = new ViewQuestionRVAdapter(questionRP);
+        adapter = new ViewQuestionRVAdapter(questionRP, this
+        );
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         titleTxt.setText(questionRP.getHead());
