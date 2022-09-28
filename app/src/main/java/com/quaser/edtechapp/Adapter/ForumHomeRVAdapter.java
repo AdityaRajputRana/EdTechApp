@@ -2,6 +2,7 @@ package com.quaser.edtechapp.Adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.utils.Transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class ForumHomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ForumHomeRP homeRP;
@@ -40,6 +43,25 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return 0;
     }
 
+    public ForumHomeRVAdapter setTag(ForumHomeRP forumHomeRP){
+        homeRP = forumHomeRP;
+        Log.i("TagFHP", new Gson().toJson(homeRP));
+        return ForumHomeRVAdapter.this;
+    }
+
+    String loadingMessage = "Loading";
+    boolean stopLoading = false;
+
+    public void showMessage(String message, boolean stopLoading){
+        loadingMessage = message;
+        this.stopLoading = stopLoading;
+        if (homeRP.getQuestions() == null){
+            homeRP.setQuestions(new ArrayList<>());
+        }
+        homeRP.getQuestions().add(null);
+        notifyItemInserted(homeRP.getQuestions().size()-1);
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,6 +78,12 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof LoadingViewHolder){
             LoadingViewHolder holder = (LoadingViewHolder) viewHolder;
+            if (stopLoading){
+                holder.progressBar.setVisibility(View.GONE);
+            } else {
+                holder.progressBar.setVisibility(View.VISIBLE);
+            }
+            holder.progressTxt.setText(loadingMessage);
         }else {
             MyViewHolder holder = (MyViewHolder) viewHolder;
             QuestionRP questionRP = homeRP.getQuestions().get(position);
@@ -112,9 +140,11 @@ public class ForumHomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class LoadingViewHolder extends RecyclerView.ViewHolder{
         ProgressBar progressBar;
+        TextView progressTxt;
         public LoadingViewHolder(@NonNull View itemView){
             super(itemView);
             this.progressBar = itemView.findViewById(R.id.progressBar);
+            this.progressTxt = itemView.findViewById(R.id.progressText);
         }
     }
 

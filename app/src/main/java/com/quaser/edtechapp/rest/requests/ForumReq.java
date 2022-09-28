@@ -7,6 +7,7 @@ import com.quaser.edtechapp.Auth.AuthUtils;
 public class ForumReq {
     int page;
     String user_id;
+    String tags;
     public ForumReq(){
         user_id = AuthUtils.getInstance().getUserId();
     }
@@ -25,6 +26,12 @@ public class ForumReq {
         this.page = page;
     }
 
+    public ForumReq(int page, String tag){
+        user_id = AuthUtils.getUserId();
+        this.tags = tag;
+        this.page = page;
+    }
+
     public ForumReq(String keyword, int page){
         user_id = AuthUtils.getUserId();
         this.page = page;
@@ -34,5 +41,9 @@ public class ForumReq {
     public ForumReq(String keyword){
         user_id = AuthUtils.getUserId();
         this.keyword = keyword;
+    }
+
+    public ForumReq(boolean isTag, String tags){
+        this.tags = tags;
     }
 }

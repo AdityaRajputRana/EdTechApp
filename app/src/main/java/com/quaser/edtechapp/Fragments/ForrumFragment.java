@@ -15,18 +15,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.gson.Gson;
 import com.quaser.edtechapp.Adapter.ForumHomeRVAdapter;
+import com.quaser.edtechapp.Adapter.TagsRVAdapter;
 import com.quaser.edtechapp.AddQuestionActivity;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.SearchActivity;
+import com.quaser.edtechapp.rest.api.API;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
+import com.quaser.edtechapp.rest.response.TagsRP;
 import com.quaser.edtechapp.utils.Method;
+import com.quaser.edtechapp.utils.Statics;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class ForrumFragment extends Fragment {
     ExtendedFloatingActionButton addBtn;
@@ -37,6 +48,8 @@ public class ForrumFragment extends Fragment {
     ForumHomeRVAdapter adapter;
 
     public static ForrumFragment forrumFragment;
+
+    public static HashMap<String, String> forrums= new HashMap<String, String>();
 
     public ForrumFragment() {
         // Required empty public constructor
@@ -62,7 +75,80 @@ public class ForrumFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_forrum, container, false);
         findViews(view);
         fetchForumQuestions();
+        setUpTags();
         return view;
+    }
+
+    RecyclerView tagsRv;
+    ArrayList<String> tagsList;
+    private void setUpTags() {
+        Statics.getTagsList(new Statics.TagsListener() {
+            @Override
+            public void onResult(boolean isSuccess, String message, ArrayList<String> tags) {
+                if (!isSuccess){
+                    Method.showFailedAlert(getActivity(), message);
+                } else {
+                    tagsList = tags;
+                    showTagsRV();
+                }
+            }
+        });
+    }
+
+    TagsRVAdapter tagsAdapter;
+
+    private void showTagsRV() {
+        tagsAdapter = new TagsRVAdapter("All", tagsList, getActivity(), new TagsRVAdapter.Listener() {
+            @Override
+            public void selectSubCat(String tag) {
+
+
+                progressBar.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.INVISIBLE);
+                if (forrums.containsKey(tag)) {
+                    ForumHomeRP filtered = new Gson().fromJson(forrums.get(tag), ForumHomeRP.class);
+                    adapter = adapter.setTag(filtered);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    if (filtered.getQuestions() == null || filtered.getQuestions().size() == 0){
+                        adapter.showMessage("No Questions under '" + tag + "' category.\nYou can explore other categories.", true);
+                    }
+                } else {
+                    APIMethods.getForumQuestion(new APIResponseListener<ForumHomeRP>() {
+                        @Override
+                        public void success(ForumHomeRP response) {
+                            forrums.put(tag, new Gson().toJson(response));
+                            if (response.areMorePagesAvailable()) {
+                                response.getQuestions().add(null);
+                            }
+
+                            adapter = adapter.setTag(new Gson().fromJson(forrums.get(tag), ForumHomeRP.class));
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            if (response.getQuestions() == null || response.getQuestions().size() == 0){
+                                adapter.showMessage("No Questions under '" + tag + "' category.\nYou can explore other categories.", true);
+                            }
+                        }
+
+                        @Override
+                        public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                            Method.showFailedAlert(getActivity(), code + "-" + message);
+                                    progressBar.setVisibility(View.GONE);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    tagsAdapter.resetToAll();
+                        }
+                    }, tag);
+                }
+            }
+                //Todo: Fetch store and maintain here, progress bar, thread and filter from all questions list and then show them.
+        });
+         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+         tagsRv.setAdapter(tagsAdapter);
+         tagsRv.setLayoutManager(manager);
+         tagsRv.setVisibility(View.VISIBLE);
+
     }
 
     private void fetchForumQuestions() {
@@ -70,6 +156,7 @@ public class ForrumFragment extends Fragment {
             @Override
             public void success(ForumHomeRP response) {
                 progressBar.setVisibility(View.GONE);
+                forrums.put("All", new Gson().toJson(response));
                 showRecyclerView(response);
             }
 
@@ -107,6 +194,10 @@ public class ForrumFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
+
+        if (res.getQuestions() == null || res.getQuestions().size() == 0){
+            adapter.showMessage("No Questions have been posted to our forum. To Add a question click (+) button below.", true);
+        }
     }
 
     private void findViews(View view) {
@@ -114,6 +205,7 @@ public class ForrumFragment extends Fragment {
         searchEt = view.findViewById(R.id.searchEt);
         recyclerView = view.findViewById(R.id.questionRV);
         progressBar = view.findViewById(R.id.progressBar);
+        tagsRv = view.findViewById(R.id.tagsSelectionRv);
         addListeners();
     }
 

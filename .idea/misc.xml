@@ -23,6 +23,8 @@
         <entry key="app/src/main/res/drawable/bg_round_fg_selected.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_round_orange.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_round_upload.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/bg_tag_disselected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/bg_tag_selected.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_ticket_card.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/block_quote_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/divider_background_dark.xml" value="0.1" />
@@ -93,6 +95,7 @@
         <entry key="app/src/main/res/layout/item_rv_forrum_question.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_rv_home.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_rv_question_tags.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_rv_tag.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/item_rv_unit.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_rv_unit_header.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_rv_unit_lesson.xml" value="0.5" />

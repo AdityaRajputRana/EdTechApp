@@ -93,6 +93,18 @@ public class APIMethods {
         API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
     }
 
+    //Paginate Tagged question
+    public static void getForumQuestion(int page, APIResponseListener<ForumHomeRP> listener, String tag){
+        ForumReq req = new ForumReq(page, tag);
+        API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
+    }
+
+    //Get Tagged questions
+    public static void getForumQuestion(APIResponseListener<ForumHomeRP> listener, String tag){
+        ForumReq req = new ForumReq(true, tag);
+        API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);
+    }
+
     public static void getForumQuestion(int page, APIResponseListener<ForumHomeRP> listener){
         ForumReq req = new ForumReq(page);
         API.postData(listener, req, EndPoints.searchQuestion, ForumHomeRP.class);

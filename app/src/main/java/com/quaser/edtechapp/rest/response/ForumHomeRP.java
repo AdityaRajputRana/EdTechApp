@@ -4,6 +4,9 @@ import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.quaser.edtechapp.Adapter.ForumHomeRVAdapter;
+import com.quaser.edtechapp.Fragments.ForrumFragment;
 import com.quaser.edtechapp.models.Filter;
 import com.quaser.edtechapp.rest.api.API;
 import com.quaser.edtechapp.rest.api.APIMethods;
@@ -62,21 +65,36 @@ public class ForumHomeRP {
                 public void success(ForumHomeRP mRes) {
                     page = mRes.getPage();
                     int startingIndex = count;
-                    if (questions.size() > count && questions.get(count) == null){
+                    if (questions.size() > count && questions.get(count) == null) {
                         questions.remove(count);
                         adapter.notifyItemRemoved(count);
                     }
                     count = count + mRes.getCount();
                     questions.addAll(mRes.getQuestions());
                     pages = mRes.getPages();
-                    if (mRes.getFilter() != null){
+                    if (mRes.getFilter() != null) {
                         filter = mRes.getFilter();
                     }
                     isLoading = false;
-                    if (areMorePagesAvailable()){
-                        questions.add(null);
+
+                    if (adapter instanceof ForumHomeRVAdapter) {
+                        ForumHomeRVAdapter forumHomeRVAdapter = (ForumHomeRVAdapter) adapter;
+                        if (areMorePagesAvailable()) {
+                            forumHomeRVAdapter.showMessage("Loading more questions", false);
+                        } else {
+                            if (!isLoading){
+                                forumHomeRVAdapter.showMessage("No more questions to display", true);
+                            }
+                        }
                     }
                     adapter.notifyItemRangeInserted(startingIndex, mRes.getCount());
+                    if (ForrumFragment.forrums != null){
+                        String tag = "All";
+                        if (filter != null && filter.isTagged()){
+                            tag = filter.getTag();
+                        }
+                        ForrumFragment.forrums.put(tag, new Gson().toJson(ForumHomeRP.this));
+                    }
                 }
 
                 @Override
@@ -94,7 +112,11 @@ public class ForumHomeRP {
             if (filter == null
             || filter.getKeyword() == null
             || filter.getKeyword().isEmpty()) {
-                APIMethods.getForumQuestion(page + 1, apiListener);
+                if (filter != null && filter.isTagged()){
+                    APIMethods.getForumQuestion(page+1, apiListener, filter.getTag());
+                }else {
+                    APIMethods.getForumQuestion(page + 1, apiListener);
+                }
             } else {
                 APIMethods.getForumQuestion(filter.getKeyword(), page+1, apiListener);
             }
