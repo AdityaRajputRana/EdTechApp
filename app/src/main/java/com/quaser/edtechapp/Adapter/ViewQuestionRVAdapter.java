@@ -145,6 +145,7 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onClick(View v) {
                     Intent intent = new Intent(context, AddAnswerActivity.class);
                     intent.putExtra("QID", questionRP.get_id());
+                    intent.putExtra("QHEAD", questionRP.getHead());
                     context.startActivity(intent);
                 }
             });

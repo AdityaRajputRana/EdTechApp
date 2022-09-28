@@ -2,35 +2,36 @@ package com.quaser.edtechapp.rest.requests;
 
 import android.app.Activity;
 
+import com.google.android.gms.auth.api.Auth;
 import com.quaser.edtechapp.Auth.AuthUtils;
 
 import java.util.ArrayList;
 
-public class AddQuestionRq {
+public class AddAnswerRQ {
     String user_id;
     String image_url;
     ArrayList<String> tags;
     String head;
     String body;
     String user_name;
-    String user_display_picture;
     String html;
     String serialized;
     ArrayList<String> media;
+    String question_id;
+    String user_display_picture;
 
-    public AddQuestionRq() {
+    public AddAnswerRQ() {
     }
 
-    public AddQuestionRq(String image_url, ArrayList<String> tags, String head, String body,
-                         Activity context, String html, String serialized, ArrayList<String> media) {
+    public AddAnswerRQ(String image_url, String head, String body, String html, String serialized, ArrayList<String> media, String question_id) {
+        this.user_id = AuthUtils.getUserId();
         this.image_url = image_url;
-        this.tags = tags;
         this.head = head;
         this.body = body;
-        this.user_id = AuthUtils.getInstance().getUserId();
-        this.user_name = AuthUtils.getInstance().getUserName();
+        this.user_name = AuthUtils.getUserName();
         this.html = html;
         this.serialized = serialized;
         this.media = media;
+        this.question_id = question_id;
     }
 }

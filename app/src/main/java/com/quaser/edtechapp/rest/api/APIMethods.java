@@ -3,6 +3,7 @@ package com.quaser.edtechapp.rest.api;
 import android.app.Activity;
 
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
+import com.quaser.edtechapp.rest.requests.AddAnswerRQ;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
 import com.quaser.edtechapp.rest.requests.ForumReq;
 import com.quaser.edtechapp.rest.requests.SubmitAssignmentReq;
@@ -74,6 +75,10 @@ public class APIMethods {
         }
         AddQuestionRq req = new AddQuestionRq(imageUrl, tags, head, body, activity, html, serialised, media);
         API.postData(listener, req, EndPoints.addQuestion, QuestionRP.class);
+    }
+
+    public static void postAnswer(AddAnswerRQ req, APIResponseListener<QuestionRP> listener){
+        API.postData(listener, req, EndPoints.postAnswer, QuestionRP.class); //Todo change to AnswerRP class
     }
 
     public static void getForumQuestion(Activity context, APIResponseListener<ForumHomeRP> listener){

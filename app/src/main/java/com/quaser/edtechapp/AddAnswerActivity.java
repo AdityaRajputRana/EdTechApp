@@ -19,11 +19,15 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
+import com.quaser.edtechapp.rest.requests.AddAnswerRQ;
 import com.quaser.edtechapp.rest.response.DataRp;
+import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.utils.FileUtils;
+import com.quaser.edtechapp.utils.Method;
 import com.quaser.edtechapp.wsywig.Editor;
 import com.quaser.edtechapp.wsywig.EditorListener;
 import com.quaser.edtechapp.wsywig.models.EditorTextStyle;
+import com.quaser.edtechapp.wsywig.models.Node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +47,7 @@ public class AddAnswerActivity extends AppCompatActivity {
 
         findViews();
         setListeners();
+        setUpEditor();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
@@ -77,7 +82,18 @@ public class AddAnswerActivity extends AppCompatActivity {
                 if (editor.getContentAsHTML().isEmpty()){
                     Toast.makeText(AddAnswerActivity.this, "Answer cannot be empty", Toast.LENGTH_SHORT).show();
                 } else {
+                    //Todo: make empty check can be done by recursion
+                    boolean isEmpty = true;
+                    for (Node n: editor.getContent().nodes) {
+                        if (n.content != null && n.content.size() > 0 && !n.content.get(0).isEmpty()){
+                            isEmpty = false;
+                            break;
+                        }
+                    }
+                    if (!isEmpty)
                     processData();
+                    else
+                        Toast.makeText(AddAnswerActivity.this, "Answer cannot be empty", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -86,8 +102,36 @@ public class AddAnswerActivity extends AppCompatActivity {
     private void processData() {
         String answer = editor.getContentAsHTML();
         String questionId = getIntent().getStringExtra("QID");
+        String head = getIntent().getStringExtra("QHEAD");
+        disable();
+        String imageUrl = "";
+        if (mediaInput.size() >0){
+            imageUrl = mediaInput.get(0);
+        } else {
+            imageUrl = null;
+        }
+
+        AddAnswerRQ addAnswerRQ = new AddAnswerRQ(imageUrl, head, answer, answer, editor.getContentAsSerialized(), mediaInput, questionId   );
+        postAnswer(addAnswerRQ);
     }
-    
+
+    private void postAnswer(AddAnswerRQ addAnswerRQ) {
+        APIMethods.postAnswer(addAnswerRQ, new APIResponseListener<QuestionRP>() {
+            @Override
+            public void success(QuestionRP response) {
+                Toast.makeText(AddAnswerActivity.this, "Answer posted successfully!", Toast.LENGTH_SHORT).show();
+                AddAnswerActivity.this.finish();
+                //Todo: refresh answer activity after this or go to answer.
+            }
+
+            @Override
+            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                Method.showFailedAlert(AddAnswerActivity.this, code  + " - " + message);
+                enable();
+            }
+        });
+    }
+
     private void disable(){
         continueBtn.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
