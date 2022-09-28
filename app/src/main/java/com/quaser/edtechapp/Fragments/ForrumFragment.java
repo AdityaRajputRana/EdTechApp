@@ -187,7 +187,7 @@ public class ForrumFragment extends Fragment {
                 if ((visibleItem + firstVisibleItem) >= totalItem
                         && firstVisibleItem >= 0){
                     res.paginate(adapter, getActivity());
-                    if (!res.areMorePagesAvailable()){
+                    if (!res.areMorePagesAvailable() && !res.isLoading()){
                         recyclerView.removeOnScrollListener(this);
                     }
                 }

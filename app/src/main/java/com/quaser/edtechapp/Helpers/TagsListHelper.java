@@ -59,6 +59,8 @@ public class TagsListHelper {
                 // text changed
             }
         });
+
+        chipsInput.requestFocus();
     }
 
     public ArrayList<String> getSelectedTags(){

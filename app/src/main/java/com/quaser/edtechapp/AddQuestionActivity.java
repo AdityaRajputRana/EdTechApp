@@ -74,6 +74,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                 editor.requestFocus();
                 tagsLayout.setVisibility(View.GONE);
                 continueBtn.setText("NEXT");
+                pageState--;
                 break;
 
             default:
@@ -395,6 +396,13 @@ public class AddQuestionActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }
