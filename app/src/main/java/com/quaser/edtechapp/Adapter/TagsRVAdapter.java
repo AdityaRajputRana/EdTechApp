@@ -55,7 +55,7 @@ public class TagsRVAdapter extends RecyclerView.Adapter<TagsRVAdapter.TagsViewho
             holder.textView.setTextColor(context.getResources().getColor(R.color.color_secondary_txt));
         } else {
             holder.itemView.setBackground(context.getDrawable(R.drawable.bg_tag_disselected));
-            holder.textView.setTextColor(context.getResources().getColor(R.color.white));
+            holder.textView.setTextColor(context.getResources().getColor(R.color.color_secondary_txt));
         }
 
         holder.textView.setText(tags.get(position));

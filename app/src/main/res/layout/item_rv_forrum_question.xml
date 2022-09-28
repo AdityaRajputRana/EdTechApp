@@ -89,12 +89,26 @@
         android:textColor="@color/color_primary_txt"
         android:text="This would be the body of the question." />
 
+    <LinearLayout
+        android:id="@+id/answerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/bodyTxt">
+
+        
+    </LinearLayout>
+
+
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/endText"
-        app:layout_constraintTop_toBottomOf="@id/bodyTxt"
+        app:layout_constraintTop_toBottomOf="@id/answerLayout"
         android:textSize="14sp"
         android:visibility="gone"
         android:layout_marginTop="16dp"
