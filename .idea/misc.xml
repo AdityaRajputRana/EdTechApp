@@ -100,8 +100,10 @@
         <entry key="app/src/main/res/layout/layout_authored_by.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/notification.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/rv_unit_header.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/tmpl_divider_layout.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/tmpl_image_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/tmpl_list_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/tmpl_map_view.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/toolbar_editor.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/toolbar_map_selector.xml" value="0.1" />
         <entry key="app/src/main/res/menu/main_bottom_menu.xml" value="0.19375" />

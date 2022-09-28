@@ -139,7 +139,7 @@ public class ListItemExtensions extends EditorComponent {
     public TableLayout createTable() {
         TableLayout table = new TableLayout(editorCore.getContext());
         table.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        table.setPadding(30, 10, 10, 10);
+        table.setPadding(30, 5, 10, 5);
         return table;
     }
 

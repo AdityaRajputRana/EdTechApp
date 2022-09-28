@@ -34,6 +34,7 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,9 +81,9 @@ public class InputExtensions extends EditorComponent {
     public static final int HEADING = 0;
     public static final int CONTENT = 1;
     private String DEFAULT_TEXT_COLOR = "#000000";
-    private int H1TEXTSIZE = 23;
-    private int H2TEXTSIZE = 20;
-    private int H3TEXTSIZE = 18;
+    private int H1TEXTSIZE = 36;
+    private int H2TEXTSIZE = 26;
+    private int H3TEXTSIZE = 20;
     private int NORMALTEXTSIZE = 16;
     private int fontFace = R.string.fontFamily__sans_serif;
     EditorCore editorCore;
@@ -267,6 +268,7 @@ public class InputExtensions extends EditorComponent {
             setText(editText, text);
         }
 
+
         /**
          * create tag for the editor
          */
@@ -375,7 +377,9 @@ public class InputExtensions extends EditorComponent {
         editText.setFocusableInTouchMode(true);
         editText.setTextSize(TypedValue.COMPLEX_UNIT_SP, NORMALTEXTSIZE);
         editText.setTextColor(Color.parseColor(this.DEFAULT_TEXT_COLOR));
-        editText.setPadding(0,30,0,30);
+        editText.setPadding(0,2,0,2);
+        //Added by Aditya Rana
+        editText.setGravity(Gravity.TOP);
     }
 
 

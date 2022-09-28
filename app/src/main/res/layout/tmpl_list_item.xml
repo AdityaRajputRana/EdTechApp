@@ -16,7 +16,7 @@
         android:focusableInTouchMode="true"
         style="@style/WysiwygEditText"
         android:text=""
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="0dp"
         android:layout_width="wrap_content"
         android:background="@drawable/invisible_edit_text"></com.quaser.edtechapp.wsywig.Components.CustomEditText>
 
@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:visibility="gone"
         style="@style/WysiwygEditText"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="0dp"
         android:layout_width="wrap_content"></TextView>
 
 </TableRow>
