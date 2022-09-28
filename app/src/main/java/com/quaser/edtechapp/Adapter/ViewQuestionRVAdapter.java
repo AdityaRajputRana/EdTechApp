@@ -1,11 +1,18 @@
 package com.quaser.edtechapp.Adapter;
 
+import static com.quaser.edtechapp.utils.WsyswigUtils.getContentface;
+import static com.quaser.edtechapp.utils.WsyswigUtils.getHeadingTypeface;
+import static com.quaser.edtechapp.utils.WsyswigUtils.renderBody;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,17 +20,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.quaser.edtechapp.AddAnswerActivity;
+import com.quaser.edtechapp.AddQuestionActivity;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.Answer;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.utils.Method;
+import com.quaser.edtechapp.wsywig.Editor;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -70,7 +81,7 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             QuestionViewHolder holder = (QuestionViewHolder) gHolder;
 
             holder.head.setText(questionRP.getHead());
-            holder.body.setText(questionRP.getBody());
+            renderBody(holder.body, questionRP.getBody(), context);
             holder.time.setText(questionRP.getCreatedAt());
             holder.likesTxt.setText(questionRP.getTotal_likes() + " likes");
             if (questionRP.isIs_liked())
@@ -79,13 +90,6 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like, 0, 0, 0);
 
             holder.commentsTxt.setText(questionRP.getTotal_comments() + " Answers"); //Todo show likes and comments
-            if (questionRP.getImage_url() != null
-            && !questionRP.getImage_url().isEmpty()){
-                holder.imageView.setVisibility(View.VISIBLE);
-                Picasso.get()
-                        .load(questionRP.getImage_url())
-                        .into(holder.imageView);
-            }
 
             holder.likesTxt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,13 +102,15 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     APIMethods.likeQuestion(questionRP.get_id(), new APIResponseListener<QuestionRP>() {
                         @Override
                         public void success(QuestionRP response) {
-                            questionRP.setTotal_likes(questionRP.getTotal_likes()+1);
-                            notifyItemChanged(positionf);
                             if (response != null) {
-                                if (response.isIs_liked())
+                                if (response.isIs_liked()) {
+                                    questionRP.setTotal_likes(questionRP.getTotal_likes() + 1);
                                     holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_liked, 0, 0, 0);
-                                else
+                                } else {
                                     holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like, 0, 0, 0);
+                                    questionRP.setTotal_likes(questionRP.getTotal_likes()-1);
+                                }
+                                notifyItemChanged(positionf);
                             }
                         }
 
@@ -133,6 +139,15 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (!haveAnswers){
                 holder.noAnsTxt.setVisibility(View.VISIBLE);
             }
+
+            holder.answerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, AddAnswerActivity.class);
+                    intent.putExtra("QID", questionRP.get_id());
+                    context.startActivity(intent);
+                }
+            });
         } else if (gHolder instanceof AnswerViewHolder){
             int position = positionf-1;
             AnswerViewHolder holder = (AnswerViewHolder) gHolder;
@@ -148,6 +163,8 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.upvotesTxt.setText(totalUps + " upvotes");
         }
     }
+
+
 
     @Override
     public int getItemViewType(int position) {
@@ -183,26 +200,27 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public class QuestionViewHolder extends RecyclerView.ViewHolder{
 
         TextView head;
-        TextView body;
+        Editor body;
         TextView time;
-        ImageView imageView;
         TextView likesTxt; //Todo Add liking and tags
         TextView commentsTxt;
 
         ProgressBar progressBar;
         TextView noAnsTxt;
+        
+        LinearLayout answerLayout;
 
         public QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
             head = itemView.findViewById(R.id.headTxt);
             body = itemView.findViewById(R.id.bodyTxt);
             time = itemView.findViewById(R.id.timeTxt);
-            imageView = itemView.findViewById(R.id.imageView);
             likesTxt = itemView.findViewById(R.id.likeTxt);
             commentsTxt = itemView.findViewById(R.id.commentsTxt);
 
             noAnsTxt= itemView.findViewById(R.id.endText);
             progressBar = itemView.findViewById(R.id.progressBar);
+            answerLayout = itemView.findViewById(R.id.answerLayout);
         }
     }
 

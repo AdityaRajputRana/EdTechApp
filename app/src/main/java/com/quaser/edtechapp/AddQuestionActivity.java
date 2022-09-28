@@ -306,7 +306,7 @@ public class AddQuestionActivity extends AppCompatActivity {
             editor.setDividerLayout(R.layout.tmpl_divider_layout);
             editor.setEditorImageLayout(R.layout.tmpl_image_view);
             editor.setListItemLayout(R.layout.tmpl_list_item);
-            editor.setNormalTextSize(20);
+            editor.setNormalTextSize(18);
             editor.setEditorTextColor(AddQuestionActivity.this.getResources().getString(R.color.color_primary_txt));
             editor.setEditorListener(new EditorListener() {
                 @Override
