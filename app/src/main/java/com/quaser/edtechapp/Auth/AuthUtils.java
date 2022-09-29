@@ -2,10 +2,9 @@ package com.quaser.edtechapp.Auth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.io.FileFilter;
 
 public class AuthUtils {
     private static AuthUtils authUtils;
@@ -16,6 +15,18 @@ public class AuthUtils {
         }
         return authUtils;
     }
+
+    public static String getFormattedPhoneNum(){
+        if (phoneNum.contains("+91")){
+            String p1 = phoneNum.substring(3, 8);
+            String p2 = phoneNum.substring(8, 13);
+            return "+91 "+ p1 + " " + p2;
+        }
+        return phoneNum;
+    }
+
+    public static String phoneNum = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+    public static Uri dp = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
 
 
     public static boolean isLoggedIn(){
@@ -36,6 +47,8 @@ public class AuthUtils {
         else
             return "Error: Not logged in!";
     }
+
+    public static boolean isAnonymousUser = FirebaseAuth.getInstance().getCurrentUser().isAnonymous();
 
     public static boolean isNameAdded(Context context){
         if (FirebaseAuth.getInstance().getCurrentUser().isAnonymous()){
