@@ -2,6 +2,7 @@ package com.quaser.edtechapp.rest.api;
 
 import android.app.Activity;
 
+import com.quaser.edtechapp.models.Answer;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddAnswerRQ;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
@@ -12,14 +13,13 @@ import com.quaser.edtechapp.rest.requests.CompleteLessonReq;
 import com.quaser.edtechapp.rest.requests.HomeReq;
 import com.quaser.edtechapp.rest.requests.LessonReq;
 import com.quaser.edtechapp.rest.requests.LoginRequest;
-import com.quaser.edtechapp.rest.requests.QuestionReq;
+import com.quaser.edtechapp.rest.requests.ForumQAReq;
 import com.quaser.edtechapp.rest.requests.SubscribeEventReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
 import com.quaser.edtechapp.rest.requests.UploadFileReq;
 import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
 import com.quaser.edtechapp.rest.response.DataRp;
-import com.quaser.edtechapp.rest.response.EventsListRP;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
 import com.quaser.edtechapp.rest.response.LoginRP;
@@ -116,14 +116,20 @@ public class APIMethods {
     }
 
     public static void likeQuestion(String questionId, APIResponseListener<QuestionRP> listener){
-        QuestionReq req = new QuestionReq(questionId);
+        ForumQAReq req = new ForumQAReq(questionId);
         //Todo: change from string to success req
         API.postData(listener, req, EndPoints.likeQuestion, QuestionRP.class);
     }
 
+    public static void upVoteAnswer(String questionId, String answerId, APIResponseListener<Answer> listener){
+        ForumQAReq req = new ForumQAReq(questionId, answerId);
+        //Todo: change from string to success req
+        API.postData(listener, req, EndPoints.likeQuestion, Answer.class);
+    }
+
 
     public static void getQuestion(Activity context, String questionId, APIResponseListener<QuestionRP> listener){
-        QuestionReq req = new QuestionReq(context, questionId);
+        ForumQAReq req = new ForumQAReq(context, questionId);
         API.postData(listener, req, EndPoints.getQuestion, QuestionRP.class);
     }
 

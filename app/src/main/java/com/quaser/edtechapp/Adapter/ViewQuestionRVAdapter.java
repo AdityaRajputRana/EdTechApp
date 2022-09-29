@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.quaser.edtechapp.AddAnswerActivity;
 import com.quaser.edtechapp.AddQuestionActivity;
 import com.quaser.edtechapp.R;
@@ -29,6 +31,7 @@ import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.utils.Method;
 import com.quaser.edtechapp.utils.Transformations.CircleTransform;
+import com.quaser.edtechapp.utils.WsyswigUtils;
 import com.quaser.edtechapp.wsywig.Editor;
 import com.squareup.picasso.Picasso;
 
@@ -98,6 +101,13 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         .transform(new CircleTransform())
                         .into(holder.userDisplayImg);
 
+            if (FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl() != null){
+                Picasso.get()
+                        .load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl())
+                        .transform(new CircleTransform())
+                        .into(holder.mDisplayImage);
+            }
+
             if (questionRP.getUser_name() != null && !questionRP.getUser_name().isEmpty())
                 holder.userDisplayName.setText(questionRP.getUser_name());
 
@@ -164,14 +174,58 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             AnswerViewHolder holder = (AnswerViewHolder) gHolder;
             Answer answer = mAnswers.get(position);
             int totalUps = 0;
-            if (answer.getUpvotes() != null){
-                totalUps = answer.getUpvotes().size();
-            } else {
                 totalUps = answer.getTotal_upvotes();
-            }
 
-            holder.body.setText(answer.getBody());
+            WsyswigUtils.renderBody(holder.body, answer.getBody(), context);
             holder.upvotesTxt.setText(totalUps + " upvotes");
+
+            if (answer.isIs_liked())
+                holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_liked, 0, 0);
+            else
+                holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_like, 0, 0);
+
+
+            holder.upvotesTxt.setOnClickListener(view -> {
+                answer.setIs_liked(!answer.isIs_liked());
+                if (answer.isIs_liked())
+                    holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_liked, 0, 0);
+                else
+                    holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_like, 0, 0);
+
+                APIMethods.upVoteAnswer(questionRP.get_id(), answer.get_id(), new APIResponseListener<Answer>() {
+                    @Override
+                    public void success(Answer response) {
+                        if (response != null) {
+                            Answer answerNew = mAnswers.get(position);
+                            answerNew.setIs_liked(response.isIs_liked());
+                            if (response.isIs_liked()) {
+                                Log.i("Lesson", "liked");
+                                answerNew.setTotal_upvotes(answerNew.getTotal_upvotes() + 1);
+                                Log.i("Lesson", "likes: " + answerNew.getTotal_upvotes());
+                                holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_liked, 0, 0);
+                            } else {
+                                Log.i("Lesson", "unliked");
+                                Log.i("Lesson", "likes: " + answerNew.getTotal_upvotes());
+                                holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_like, 0, 0);
+                                answerNew.setTotal_upvotes(answerNew.getTotal_upvotes()-1);
+                            }
+                            notifyItemChanged(positionf);
+                        }
+                    }
+
+                    @Override
+                    public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                        answer.setIs_liked(!answer.isIs_liked());
+                        if (answer.isIs_liked())
+                            holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_liked, 0, 0);
+                        else
+                            holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_like, 0, 0);
+
+                            Method.showFailedAlert(context, code + " - "+  message);
+                    }
+                });
+            });
+
         }
     }
 
@@ -223,6 +277,8 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         ImageView userDisplayImg;
         TextView userDisplayName;
 
+        ImageView mDisplayImage;
+
         public QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
             head = itemView.findViewById(R.id.headTxt);
@@ -237,13 +293,14 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             userDisplayImg = itemView.findViewById(R.id.userDisplayImg);
             userDisplayName = itemView.findViewById(R.id.userNameTxt);
+            mDisplayImage = itemView.findViewById(R.id.mDisplayPicture);
         }
     }
 
     public class AnswerViewHolder extends RecyclerView.ViewHolder{
 
         TextView upvotesTxt;
-        TextView body;
+        Editor body;
 
         public AnswerViewHolder(@NonNull View itemView) {
             super(itemView);

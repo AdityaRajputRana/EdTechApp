@@ -8,12 +8,14 @@ public class Answer {
     String user_id;
     String body;
     boolean is_liked;
+    boolean liked;
     boolean accepted_answers;
     String createdAt;
     String updatedAt;
     ArrayList<String> upvotes;
     int total_upvotes;
     String head;
+    boolean unliked;
 
     public String get_id() {
         return _id;
@@ -48,11 +50,13 @@ public class Answer {
     }
 
     public boolean isIs_liked() {
-        return is_liked;
+        return is_liked || liked;
     }
 
     public void setIs_liked(boolean is_liked) {
         this.is_liked = is_liked;
+        this.liked = is_liked;
+        this.unliked = !is_liked;
     }
 
     public boolean isAccepted_answers() {
@@ -115,6 +119,8 @@ public class Answer {
         this.upvotes = upvotes;
         this.total_upvotes = total_upvotes;
         this.head = head;
+        this.liked = is_liked;
+        this.unliked = !is_liked;
     }
 
     public Answer() {

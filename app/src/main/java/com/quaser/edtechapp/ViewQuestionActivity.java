@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -16,7 +15,6 @@ import com.google.gson.Gson;
 import com.quaser.edtechapp.Adapter.ViewQuestionRVAdapter;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
-import com.quaser.edtechapp.rest.requests.QuestionReq;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.utils.Method;
 

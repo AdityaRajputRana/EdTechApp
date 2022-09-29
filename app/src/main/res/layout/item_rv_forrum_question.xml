@@ -130,6 +130,20 @@
         app:placeholder="Start typing your answer here..."
         app:render_type="Renderer"></com.quaser.edtechapp.wsywig.Editor>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:id="@+id/answersTxt"
+        app:layout_constraintTop_toBottomOf="@id/bodyTxt"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_light"
+        android:textColor="@color/color_primary_txt"
+        android:text="Posted Answers" />
+
+
     <LinearLayout
         android:id="@+id/answerLayout"
         android:layout_width="match_parent"
@@ -137,9 +151,8 @@
         android:padding="8dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginTop="16dp"
         android:background="@color/color_bg"
-        app:layout_constraintTop_toBottomOf="@id/bodyTxt">
+        app:layout_constraintTop_toBottomOf="@id/answersTxt">
 
         <ImageView
             android:id="@+id/mDisplayPicture"
@@ -153,6 +166,7 @@
             android:layout_height="wrap_content"
             android:text="Add Answer"
             android:id="@+id/answer"
+            android:layout_marginStart="8dp"
             android:gravity="center_vertical"
             android:background="@drawable/bg_round_fg"
             android:fontFamily="@font/poppins"

@@ -23,18 +23,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/bodyTxt"
+    <com.quaser.edtechapp.wsywig.Editor
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins"
-        android:text="This would be the body of the question."
-        android:textColor="@color/color_primary_txt"
-        android:textSize="14sp"
+        android:background="@android:color/transparent"
+        android:id="@+id/bodyTxt"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/likeTxt"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:placeholder="This is body of answer"
+        app:render_type="Renderer"></com.quaser.edtechapp.wsywig.Editor>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
