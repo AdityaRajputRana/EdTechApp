@@ -60,7 +60,7 @@ public class ProfileFrament extends Fragment {
     }
 
     private void setUpViews() {
-        if (AuthUtils.isAnonymousUser){
+        if (FirebaseAuth.getInstance().getCurrentUser().isAnonymous()){
             editProfileTxt.setVisibility(View.GONE);
             phoneTxt.setVisibility(View.GONE);
             userInfoLayout.setOnClickListener(view -> login());
@@ -83,7 +83,9 @@ public class ProfileFrament extends Fragment {
     }
 
     private void login() {
-        //Todo: make this
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.putExtra("convertToPermanent", true);
+        startActivity(intent);
     }
 
     private void findViews(View view) {

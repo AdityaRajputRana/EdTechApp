@@ -41,6 +41,8 @@ import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.rest.response.LoginRP;
 import com.quaser.edtechapp.utils.Method;
 
+import org.w3c.dom.Text;
+
 import java.util.concurrent.TimeUnit;
 
 import in.aabhasjindal.otptextview.OTPListener;
@@ -72,17 +74,32 @@ public class LoginActivity extends AppCompatActivity {
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
+    private boolean isAnoSignUp = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
+
+        isAnoSignUp = getIntent().getBooleanExtra("convertToPermanent",false);
         initialisePhoneAuth();
         findViews();
         setVisibility();
         setUpBackBtn();
         setOnClickListener();
         initialiseVolley();
+        setUpAnoSignUP();
+    }
+
+    private void setUpAnoSignUP() {
+        if (isAnoSignUp){
+            MaterialButton skipBtn = findViewById(R.id.skipBtn);
+            skipBtn.setText("Cancel");
+            skipBtn.setOnClickListener(view -> onBackPressed());
+
+            TextView loginTxt = findViewById(R.id.loginTxt);
+            loginTxt.setText("Convert to a permanent account");
+        }
     }
 
     private void initialisePhoneAuth() {
@@ -121,48 +138,44 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            startProgress("Phone number verified! Logging you in.");
-                            login(task.getResult().getAdditionalUserInfo().isNewUser());
-                            // Todo: Communicate to our server and login
-                        } else {
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                wrongCode();
+        if (isAnoSignUp){
+            auth.getCurrentUser().linkWithCredential(credential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = task.getResult().getUser();
+                                startProgress("Phone number verified! Logging you in.");
+                                startNameActivity();
+                            } else {
+                                stopProgress();
+                                Method.showFailedAlert(LoginActivity.this, task.getException().getMessage());
                             }
                         }
-                    }
-                });
+                    });
+        } else {
+            auth.signInWithCredential(credential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                startProgress("Phone number verified! Logging you in.");
+                                login(task.getResult().getAdditionalUserInfo().isNewUser());
+                                // Todo: Communicate to our server and login
+                            } else {
+                                if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                    wrongCode();
+                                }
+                            }
+                        }
+                    });
+        }
     }
 
     private boolean userCreatedOnServer = false;
     private boolean userCreatedOnFirebase = false;
 
     private void login(boolean newUser) {
-        if (newUser){
-            startProgress("Please wait while we set up your new Account!");
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName("User")
-                    .build();
-            FirebaseAuth
-                    .getInstance()
-                    .getCurrentUser()
-                    .updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
-                        userCreatedOnFirebase = true;
-                        startNameActivity();
-                    }else{
-                        startProgress("Failed to update user name");
-                    }
-                }
-            });
-
-        } else
             userCreatedOnFirebase = true;
         APIMethods.login(new APIResponseListener<LoginRP>() {
             @Override
@@ -196,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && !isAnoSignUp){
             startMainActivity();
         }
     }
@@ -287,6 +300,11 @@ public class LoginActivity extends AppCompatActivity {
                 loginAnonymously();
             }
         });
+
+        findViewById(R.id.wrong_number_txt).setOnClickListener(view -> {
+            stopProgress();
+            onBackPressed();
+        });
     }
 
     private void loginAnonymously() {
@@ -331,9 +349,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startNameActivity() {
-        if (userCreatedOnServer && userCreatedOnFirebase) {
+        if (userCreatedOnServer || isAnoSignUp) {
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 Intent intent = new Intent(this, NameActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 this.finish();
             } else {

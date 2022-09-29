@@ -28,6 +28,13 @@ public class AuthUtils {
 
     public static String phoneNum = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
     private static String dp(){
+        if (isAnonymousUser) {
+            return "";
+        }
+        if (FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()
+        == null){
+            return "";
+        }
         String url = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
         Log.i("Profile Req", url);
         return url;
@@ -55,7 +62,13 @@ public class AuthUtils {
             return "Error: Not logged in!";
     }
 
-    public static boolean isAnonymousUser = FirebaseAuth.getInstance().getCurrentUser().isAnonymous();
+    public static boolean isAnonymousUser = isAnonym();
+
+    private static boolean isAnonym() {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+            return true;
+        return FirebaseAuth.getInstance().getCurrentUser().isAnonymous();
+    }
 
     public static boolean isNameAdded(Context context){
         if (FirebaseAuth.getInstance().getCurrentUser().isAnonymous()){

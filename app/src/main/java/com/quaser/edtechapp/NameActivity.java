@@ -60,12 +60,18 @@ public class NameActivity extends AppCompatActivity {
     }
 
     private void setUpNameChnage() {
+        skipBtn.setVisibility(View.GONE);
         if (getIntent().getBooleanExtra("EditProfileFlag", false)){
             nameEt.setText(AuthUtils.getUserName());
-            if (AuthUtils.dp != null
-            && !AuthUtils.dp.toString().isEmpty()){
+            if (FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl() != null
+            && !FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString().isEmpty()){
                 Picasso.get()
-                        .load(AuthUtils.dp)
+                        .load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString())
+                        .transform(new CircleTransform())
+                        .into(dpImg);
+            } else {
+                Picasso.get()
+                        .load(R.drawable.ic_profile)
                         .transform(new CircleTransform())
                         .into(dpImg);
             }
@@ -79,6 +85,7 @@ public class NameActivity extends AppCompatActivity {
                 }
             });
             editMode = true;
+            skipBtn.setVisibility(View.VISIBLE);
         }
     }
 
