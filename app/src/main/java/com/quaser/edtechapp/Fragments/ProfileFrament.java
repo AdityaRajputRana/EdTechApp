@@ -19,6 +19,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.LoginActivity;
+import com.quaser.edtechapp.NameActivity;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.utils.Transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -72,6 +73,12 @@ public class ProfileFrament extends Fragment {
                     .into(profileImg);
             nameTxt.setText(AuthUtils.getUserName());
             phoneTxt.setText(AuthUtils.getFormattedPhoneNum());
+
+            userInfoLayout.setOnClickListener(view -> {
+                Intent i = new Intent(getActivity(), NameActivity.class);
+                i.putExtra("EditProfileFlag", true);
+                startActivity(i);
+            });
         }
     }
 

@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,6 +46,8 @@ public class NameActivity extends AppCompatActivity {
     private ProgressBar dpProgressBar;
 
     private boolean isUpdatingDP = false;
+    private boolean changedDp = false;
+    private boolean editMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +56,31 @@ public class NameActivity extends AppCompatActivity {
 
         findViews();
         setListeners();
+        setUpNameChnage();
     }
 
+    private void setUpNameChnage() {
+        if (getIntent().getBooleanExtra("EditProfileFlag", false)){
+            nameEt.setText(AuthUtils.getUserName());
+            if (AuthUtils.dp != null
+            && !AuthUtils.dp.toString().isEmpty()){
+                Picasso.get()
+                        .load(AuthUtils.dp)
+                        .transform(new CircleTransform())
+                        .into(dpImg);
+            }
+
+            skipBtn.setText("Cancel");
+            skipBtn.setOnClickListener(view -> {
+                if (changedDp){
+                    startMainActivity();
+                } else {
+                    onBackPressed();
+                }
+            });
+            editMode = true;
+        }
+    }
 
 
     private void setListeners() {
@@ -120,24 +146,7 @@ public class NameActivity extends AppCompatActivity {
         uploadedToFB = false;
         uploadedToServer = false;
 
-        //Uploading to firebase
-        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                .setPhotoUri(uri)
-                .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(request)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            uploadedToFB = true;
-                        } else {
-                            Toast.makeText(NameActivity.this, "Auth change DP Failed!", Toast.LENGTH_SHORT).show();
-                            dpProgressBar.setVisibility(View.GONE);
-                        }
-                        hideProgress();
-                    }
-                });
 
 
         //Uploading to our servers
@@ -151,6 +160,28 @@ public class NameActivity extends AppCompatActivity {
                 uploadedToServer = true;
                 dpProgressBar.setVisibility(View.GONE);
                 isUpdatingDP = false;
+                //Uploading to firebase
+                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                        .setPhotoUri(Uri.parse(response.getLink()))
+                        .build();
+
+                FirebaseAuth.getInstance().getCurrentUser().updateProfile(request)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    uploadedToFB = true;
+                                    changedDp = true;
+                                    Picasso.get().invalidate(response.getLink());
+                                    Log.i("Profile Img", FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
+                                } else {
+                                    Toast.makeText(NameActivity.this, "Auth change DP Failed!", Toast.LENGTH_SHORT).show();
+                                    dpProgressBar.setVisibility(View.GONE);
+                                }
+                                hideProgress();
+                            }
+                        });
+
                 prevImage = response.getLink();
                 hideProgress();
             }
@@ -179,6 +210,7 @@ public class NameActivity extends AppCompatActivity {
         if (uploadedToServer && uploadedToFB){
             dpProgressBar.setVisibility(View.GONE);
             Toast.makeText(NameActivity.this, "Profile Picture updated successfully!", Toast.LENGTH_SHORT).show();
+            changedDp = true;
         }
     }
 
@@ -192,6 +224,13 @@ public class NameActivity extends AppCompatActivity {
 
             if (isUpdatingDP){
                 Toast.makeText(this, "Please wait which photo is being uploaded!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (editMode
+            && !changedDp
+            && nameEt.getText().toString().equals(AuthUtils.getUserName())){
+                NameActivity.this.finish();
                 return;
             }
 
@@ -240,7 +279,11 @@ public class NameActivity extends AppCompatActivity {
     private void startMainActivity() {
         AuthUtils.nameAdded(this);
         Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("isNewUser", true);
+        i.putExtra("isNewUser", !editMode);
+        if (editMode){
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.putExtra("ProfileEdited", true);
+        }
         startActivity(i);
         this.finish();
     }

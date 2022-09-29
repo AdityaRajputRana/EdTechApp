@@ -3,6 +3,7 @@ package com.quaser.edtechapp.Auth;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -26,7 +27,13 @@ public class AuthUtils {
     }
 
     public static String phoneNum = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
-    public static Uri dp = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+    private static String dp(){
+        String url = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+        Log.i("Profile Req", url);
+        return url;
+    }
+
+    public static String dp = dp();
 
 
     public static boolean isLoggedIn(){
