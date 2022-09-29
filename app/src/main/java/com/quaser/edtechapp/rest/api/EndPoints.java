@@ -29,4 +29,7 @@ public class EndPoints {
     public static String uploadFile = "ui/file-upload";
 
     public static String tags = "ui/tags";
+
+    //Leaderboard
+    public static String rankList = "ui/leaderboard/ranklist";
 }

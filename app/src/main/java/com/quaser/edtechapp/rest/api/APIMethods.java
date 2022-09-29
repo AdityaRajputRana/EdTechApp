@@ -26,6 +26,7 @@ import com.quaser.edtechapp.rest.response.LoginRP;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.rest.response.HomeRP;
+import com.quaser.edtechapp.rest.response.RanklistRes;
 import com.quaser.edtechapp.rest.response.SubscribeEventRP;
 import com.quaser.edtechapp.rest.response.TagsRP;
 import com.quaser.edtechapp.rest.response.TestRP;
@@ -128,6 +129,7 @@ public class APIMethods {
     }
 
 
+
     public static void getQuestion(Activity context, String questionId, APIResponseListener<QuestionRP> listener){
         ForumQAReq req = new ForumQAReq(context, questionId);
         API.postData(listener, req, EndPoints.getQuestion, QuestionRP.class);
@@ -199,6 +201,18 @@ public class APIMethods {
     public static void subscribeToPaidEvent(String eventId, String unitId, String lessonId, APIResponseListener<LessonOrderIdRp> listener){
         SubscribeEventReq req = new SubscribeEventReq(lessonId, unitId, eventId);
         API.postData(listener, req, EndPoints.subscribeEvent, LessonOrderIdRp.class);
+    }
+
+    //Leaderboard
+    public static void getRanklist(APIResponseListener<RanklistRes> listener){
+        HomeReq req = new HomeReq();
+        API.postData(listener, req, EndPoints.rankList, RanklistRes.class);
+    }
+
+    //paginated leaderboard
+    public static void getRanklist(int page, APIResponseListener<RanklistRes> listener){
+        HomeReq req = new HomeReq(page);
+        API.postData(listener, req, EndPoints.rankList, RanklistRes.class);
     }
 
 
