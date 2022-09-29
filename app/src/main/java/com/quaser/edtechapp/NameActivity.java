@@ -100,7 +100,8 @@ public class NameActivity extends AppCompatActivity {
                 uri = resultData.getData();
                 isUpdatingDP = true;
                 dpProgressBar.setVisibility(View.VISIBLE);
-                
+
+
                 Picasso.get()
                         .load(uri)
                         .transform(new CircleTransform())
@@ -113,7 +114,33 @@ public class NameActivity extends AppCompatActivity {
     String prevImage = "";
     boolean updatesMade = false;
 
+    boolean uploadedToFB = false;
+    boolean uploadedToServer = false;
     private void startUpload(Uri uri) {
+        uploadedToFB = false;
+        uploadedToServer = false;
+
+        //Uploading to firebase
+        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(uri)
+                .build();
+
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(request)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            uploadedToFB = true;
+                        } else {
+                            Toast.makeText(NameActivity.this, "Auth change DP Failed!", Toast.LENGTH_SHORT).show();
+                            dpProgressBar.setVisibility(View.GONE);
+                        }
+                        hideProgress();
+                    }
+                });
+
+
+        //Uploading to our servers
         String extension = FileUtils.getExtension(uri, this);
         String encodedDP = FileUtils.getEncodedImage(uri, this);
         
@@ -121,10 +148,11 @@ public class NameActivity extends AppCompatActivity {
             @Override
             public void success(DataRp response) {
                 updatesMade = true;
+                uploadedToServer = true;
                 dpProgressBar.setVisibility(View.GONE);
                 isUpdatingDP = false;
                 prevImage = response.getLink();
-                Toast.makeText(NameActivity.this, "Profile Picture updated successfully!", Toast.LENGTH_SHORT).show();
+                hideProgress();
             }
 
             @Override
@@ -145,6 +173,13 @@ public class NameActivity extends AppCompatActivity {
                 , code + " - " + message);
             }
         });
+    }
+
+    private void hideProgress() {
+        if (uploadedToServer && uploadedToFB){
+            dpProgressBar.setVisibility(View.GONE);
+            Toast.makeText(NameActivity.this, "Profile Picture updated successfully!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     boolean changedOnServer = false;

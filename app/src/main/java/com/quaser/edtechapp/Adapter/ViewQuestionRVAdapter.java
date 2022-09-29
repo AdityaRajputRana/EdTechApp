@@ -28,6 +28,7 @@ import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.utils.Method;
+import com.quaser.edtechapp.utils.Transformations.CircleTransform;
 import com.quaser.edtechapp.wsywig.Editor;
 import com.squareup.picasso.Picasso;
 
@@ -90,6 +91,15 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 holder.likesTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like, 0, 0, 0);
 
             holder.commentsTxt.setText(questionRP.getTotal_comments() + " Answers"); //Todo show likes and comments
+
+            if (questionRP.getDisplay_picture() != null && !questionRP.getDisplay_picture().isEmpty())
+                Picasso.get()
+                        .load(questionRP.getDisplay_picture())
+                        .transform(new CircleTransform())
+                        .into(holder.userDisplayImg);
+
+            if (questionRP.getUser_name() != null && !questionRP.getUser_name().isEmpty())
+                holder.userDisplayName.setText(questionRP.getUser_name());
 
             holder.likesTxt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -210,6 +220,8 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView noAnsTxt;
         
         LinearLayout answerLayout;
+        ImageView userDisplayImg;
+        TextView userDisplayName;
 
         public QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -222,6 +234,9 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             noAnsTxt= itemView.findViewById(R.id.endText);
             progressBar = itemView.findViewById(R.id.progressBar);
             answerLayout = itemView.findViewById(R.id.answerLayout);
+
+            userDisplayImg = itemView.findViewById(R.id.userDisplayImg);
+            userDisplayName = itemView.findViewById(R.id.userNameTxt);
         }
     }
 

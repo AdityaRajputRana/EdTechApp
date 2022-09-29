@@ -38,7 +38,16 @@ public class AuthUtils {
     }
 
     public static boolean isNameAdded(Context context){
-        return getSharedPref(context).getBoolean("isNameAdded",false);
+        if (FirebaseAuth.getInstance().getCurrentUser().isAnonymous()){
+            return true;
+        }
+        if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() == null ||
+        FirebaseAuth.getInstance().getCurrentUser().getDisplayName().isEmpty()){
+            return false;
+        }
+        return true;
+//
+//        return getSharedPref(context).getBoolean("isNameAdded",false);
     }
 
     public static void nameAdded(Context context){

@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/drawable/bg_home_card.xml" value="0.1145" />
         <entry key="app/src/main/res/drawable/bg_lock.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_round_bg.xml" value="0.143" />
+        <entry key="app/src/main/res/drawable/bg_round_fg.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_round_fg_selected.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_round_orange.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_round_upload.xml" value="0.1" />
@@ -64,6 +65,7 @@
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/il_home.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/image_placeholder.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/invisible_edit_text.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/long_click_effect.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/splash_image.xml" value="0.1145" />
         <entry key="app/src/main/res/drawable/success_background.xml" value="0.1" />
@@ -95,7 +97,7 @@
         <entry key="app/src/main/res/layout/item_rv_event_head.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_rv_forrum.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/layout/item_rv_forrum_answer.xml" value="0.22506082725060828" />
-        <entry key="app/src/main/res/layout/item_rv_forrum_question.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_rv_forrum_question.xml" value="0.22807017543859648" />
         <entry key="app/src/main/res/layout/item_rv_home.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_rv_question_tags.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_rv_tag.xml" value="0.19270833333333334" />
