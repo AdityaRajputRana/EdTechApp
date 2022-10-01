@@ -38,6 +38,7 @@ public class LeaderboardActivity extends AppCompatActivity {
             @Override
             public void success(RanklistRes response) {
                 progressBar.setVisibility(View.GONE);
+
             }
 
             @Override
@@ -59,13 +60,13 @@ public class LeaderboardActivity extends AppCompatActivity {
         recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                if (manager.findFirstVisibleItemPosition() == 0){
+                if (manager.findFirstCompletelyVisibleItemPosition() == 0){
                     if (topBar.getVisibility() == View.VISIBLE){
                         topBar.setVisibility(View.INVISIBLE);
                     }
                 }
 
-                if (manager.findFirstVisibleItemPosition() == 1){
+                if (manager.findFirstCompletelyVisibleItemPosition() == 1){
                     if (topBar.getVisibility() != View.VISIBLE){
                         topBar.setVisibility(View.VISIBLE);
                     }
