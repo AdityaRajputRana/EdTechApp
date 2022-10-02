@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
+import com.quaser.edtechapp.NotificationActivity;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.UnitActivity;
 import com.quaser.edtechapp.models.ShortUnit;
@@ -69,6 +71,10 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 homeRP.setCompleted_lessons(1);
             }
             holder.progressBar.setProgress((int)(100*homeRP.getCompleted_lessons()/homeRP.getTotal_lessons()), true);
+            holder.notificationBtn.setOnClickListener(view -> {
+                activity.startActivity(new Intent(
+                        activity, NotificationActivity.class ));
+            });
         }
 
         else if (gHolder instanceof UnitViewHolder){
@@ -135,6 +141,7 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView titleTxt;
         TextView progressTxt;
         LinearProgressIndicator progressBar;
+        ImageButton notificationBtn;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -144,6 +151,7 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             titleTxt = itemView.findViewById(R.id.courseTitle);
             progressTxt = itemView.findViewById(R.id.lessonProgressTxt);
             progressBar = itemView.findViewById(R.id.lessonProgressBar);
+            notificationBtn = itemView.findViewById(R.id.notificationBtn);
         }
     }
 

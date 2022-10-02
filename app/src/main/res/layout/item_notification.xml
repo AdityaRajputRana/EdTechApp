@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:backgroundTint="@color/color_fg"
+    app:cardCornerRadius="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="false"
+    app:cardElevation="0dp"
+    android:layout_marginBottom="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/titleTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@id/barrier"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/color_primary_txt"
+            android:fontFamily="@font/poppins"
+            android:layout_marginEnd="8dp"
+            android:textSize="16sp"
+            android:text="This is a new test notification. We are happy to see you here." />
+
+        <TextView
+            android:id="@+id/messageTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            android:layout_marginStart="8dp"
+            android:autoLink="all"
+            app:layout_constraintEnd_toStartOf="@id/barrier"
+            app:layout_constraintTop_toBottomOf="@id/titleTxt"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/color_secondary_txt"
+            android:fontFamily="@font/poppins"
+            android:layout_marginEnd="8dp"
+            android:textSize="14sp"
+            android:text="This is a new test notification. We are happy to see you here." />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="timeTxt, image"
+            app:barrierDirection="left"/>
+
+        <TextView
+            android:id="@+id/timeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="9h"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/poppins"
+            android:textSize="16sp"
+            android:textColor="@color/color_secondary_txt" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

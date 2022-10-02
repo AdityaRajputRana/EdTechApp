@@ -17,6 +17,7 @@ import com.quaser.edtechapp.rest.response.AnonymousRP;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,7 +109,12 @@ public class API {
                                 Boolean successful = response.getBoolean("success");
                                 if (successful) {
                                     if (!response.getString("data").isEmpty()) {
-                                        String data = response.getJSONObject("data").toString();
+                                        String data = "";
+                                        if (klass == ArrayList.class){
+                                             data = response.getJSONArray("data").toString();
+                                        } else {
+                                             data = response.getJSONObject("data").toString();
+                                        }
 //                                    String decodedData = HashUtils.fromBase64(data);
                                         listener.convertData(new Gson().fromJson(data, klass));
                                     } else {

@@ -3,6 +3,7 @@ package com.quaser.edtechapp.rest.api;
 import android.app.Activity;
 
 import com.quaser.edtechapp.models.Answer;
+import com.quaser.edtechapp.models.NotificationModel;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddAnswerRQ;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
@@ -33,6 +34,7 @@ import com.quaser.edtechapp.rest.response.TestRP;
 import com.quaser.edtechapp.rest.response.UnitRP;
 import com.quaser.edtechapp.rest.response.VerifiedPaymentRP;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -213,6 +215,18 @@ public class APIMethods {
     public static void getRanklist(int page, APIResponseListener<RanklistRes> listener){
         HomeReq req = new HomeReq(page);
         API.postData(listener, req, EndPoints.rankList, RanklistRes.class);
+    }
+
+    //Noti
+    public static void getNotification(APIResponseListener<ArrayList<NotificationModel>> listener){
+        HomeReq req = new HomeReq();
+        API.postData(listener, req, EndPoints.notification, ArrayList.class);
+    }
+
+    //Paginated notif
+    public static void getNotification(int page, APIResponseListener<ArrayList<NotificationModel>> listener){
+        HomeReq req = new HomeReq(page);
+        API.postData(listener, req, EndPoints.notification, ArrayList.class);
     }
 
 

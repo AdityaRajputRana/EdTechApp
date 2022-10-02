@@ -14,6 +14,7 @@ public class HomeReq {
 
     public HomeReq() {
         this.user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.page = 1;
     }
 
     public HomeReq(int page) {

@@ -1,5 +1,6 @@
 package com.quaser.edtechapp.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Adapter.HomeRVAdapter;
 import com.quaser.edtechapp.LoginActivity;
+import com.quaser.edtechapp.NotificationActivity;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;

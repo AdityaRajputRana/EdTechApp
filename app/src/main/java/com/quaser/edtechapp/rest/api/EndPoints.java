@@ -32,4 +32,6 @@ public class EndPoints {
 
     //Leaderboard
     public static String rankList = "ui/leaderboard/ranklist";
+
+    public static String notification = "ui/notification/list";
 }
