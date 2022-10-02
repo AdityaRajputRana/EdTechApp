@@ -215,6 +215,7 @@ public class LessonActivity extends AppCompatActivity implements LessonListener,
                 }
             });
             alert.create().show();
+            //Todo: send live data to home from here
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
