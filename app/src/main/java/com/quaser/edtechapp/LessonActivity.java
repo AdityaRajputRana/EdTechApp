@@ -1,5 +1,6 @@
 package com.quaser.edtechapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -8,6 +9,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -200,12 +202,27 @@ public class LessonActivity extends AppCompatActivity implements LessonListener,
         //Todo: Instead of indexes, make use of last lesson and make a mechanism to do newly added lesson in between
         UnitData.completeLesson(unitRP.getCompleted_lessons());
         unitRP.setCompleted_lessons(unitRP.getCompleted_lessons()+1);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .remove(getSupportFragmentManager().findFragmentByTag(TAG))
-                .commit();
-        showLessonUI();
-        setUpLesson();
+        if (unitRP.getLesson().size() <= unitRP.getCompleted_lessons()){
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+            View view = inflater.inflate(R.layout.alert_normal, null);
+            alert.setView(view);
+            alert.setCancelable(false);
+            view.findViewById(R.id.actionBtn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LessonActivity.this.finish();
+                }
+            });
+            alert.create().show();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(getSupportFragmentManager().findFragmentByTag(TAG))
+                    .commit();
+            showLessonUI();
+            setUpLesson();
+        }
     }
 
     RevLessonInterface lessonInterface;
