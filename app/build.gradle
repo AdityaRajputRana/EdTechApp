@@ -76,6 +76,8 @@ dependencies {
     implementation 'com.android.support:support-annotations:27.1.1'
     annotationProcessor 'com.android.support:support-annotations:27.1.1'
 
+    implementation 'com.github.framgia:android-emulator-detector:1.4.0'
+
 
 
 }

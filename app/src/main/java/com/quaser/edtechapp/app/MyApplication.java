@@ -1,6 +1,7 @@
 package com.quaser.edtechapp.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.WindowManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.quaser.edtechapp.utils.RootUtil;
 
 public class MyApplication extends Application {
     private static RequestQueue mainRequestQueue;
@@ -19,6 +21,8 @@ public class MyApplication extends Application {
         setupActivityListener();
         mainRequestQueue = Volley.newRequestQueue(getApplicationContext());
     }
+
+
 
     public static RequestQueue getMainRequestQueue() {
         return mainRequestQueue;
