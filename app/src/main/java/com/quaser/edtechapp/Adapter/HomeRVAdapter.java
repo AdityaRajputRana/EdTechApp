@@ -89,6 +89,10 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     String title = unit.getUnit_title() + " unit is locked!";
                     String prereq = findUnitNameFromId(unit.getPrerequisite().getOn());
                     String message = "Please complete " + prereq + " unit in order to un-lock this one.";
+                    if (unit.getPrerequisite().getMessage() != null
+                    && !unit.getPrerequisite().getMessage().isEmpty()){
+                        message = unit.getPrerequisite().getMessage();
+                    }
                     Method.showDialog(activity, title, message, R.raw.locked, true);
                 });
             } else if (unit.getCompleted_lessons() > 0){
