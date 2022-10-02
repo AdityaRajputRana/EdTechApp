@@ -11,10 +11,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
+import com.quaser.edtechapp.LiveData.UnitData;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.response.UnitRP;
@@ -25,6 +29,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     UnitRP unitRP;
     Activity activity;
+    MutableLiveData<UnitRP> mutableLiveData;
 
     @NonNull
     @Override
@@ -37,8 +42,23 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public UnitRVAdapter(UnitRP unitRP, Activity activity) {
         this.unitRP = unitRP;
+//        UnitData.setUnitData(unitRP);
+        mutableLiveData = UnitData.getUnitRPMutableLiveData();
         this.activity = activity;
+        setObserver();
         Log.i("eta unitrp", new Gson().toJson(unitRP));
+    }
+
+    private void setObserver() {
+        mutableLiveData.observe((LifecycleOwner) activity, new Observer<UnitRP>() {
+            @Override
+            public void onChanged(UnitRP newUnit) {
+                int changedItem = unitRP.getCompleted_lessons();
+                unitRP = newUnit;
+                notifyItemChanged(0);
+                notifyItemChanged(changedItem);
+            }
+        });
     }
 
     @Override

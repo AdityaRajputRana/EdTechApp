@@ -147,7 +147,7 @@ public class UnitRP {
 
     ArrayList<ShortLesson> lessons = new ArrayList<ShortLesson>();
 
-    class LastLesson{
+  public static class LastLesson{
         String lesson_id;
 
         public String getLesson_id() {
@@ -186,6 +186,16 @@ public class UnitRP {
         }
 
         public LastLesson() {
+        }
+
+        public LastLesson(String name, int index, String lesson_type){
+            this.lesson_name = name;
+            this.lesson_type = lesson_type;
+            this.start_index = index;
+        }
+
+        public static LastLesson getNewLastLesson(String name, int index, String lesson_type){
+            return new LastLesson(name, index, lesson_type);
         }
     }
 }

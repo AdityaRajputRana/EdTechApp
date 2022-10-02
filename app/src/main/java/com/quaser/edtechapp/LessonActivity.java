@@ -19,6 +19,7 @@ import com.quaser.edtechapp.Helpers.PaymentHelper;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.Interface.RevLessonInterface;
 import com.quaser.edtechapp.LessonFragments.*;
+import com.quaser.edtechapp.LiveData.UnitData;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.UnitRP;
@@ -197,9 +198,8 @@ public class LessonActivity extends AppCompatActivity implements LessonListener,
     @Override
     public void nextLesson() {
         //Todo: Instead of indexes, make use of last lesson and make a mechanism to do newly added lesson in between
-        Log.i("LessonOldCompleted", String.valueOf(unitRP.getCompleted_lessons()));
+        UnitData.completeLesson(unitRP.getCompleted_lessons());
         unitRP.setCompleted_lessons(unitRP.getCompleted_lessons()+1);
-        Log.i("LessonNewCompleted", String.valueOf(unitRP.getCompleted_lessons()));
         getSupportFragmentManager()
                 .beginTransaction()
                 .remove(getSupportFragmentManager().findFragmentByTag(TAG))

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Adapter.UnitRVAdapter;
+import com.quaser.edtechapp.LiveData.UnitData;
 import com.quaser.edtechapp.models.ShortUnit;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
@@ -69,12 +71,22 @@ public class UnitActivity extends AppCompatActivity {
         });
     }
 
-    private void shortRecyclerView() {
-        if (unitRP.isHas_user_started()){
+    private void setUpContinueBtn(){
+        continueBtn.setVisibility(View.GONE);
+        Log.i("UnitLD", "setting cont btn");
+        if (unitRP.getCompleted_lessons() >= unitRP.getLesson().size()){
             continueBtn.setVisibility(View.VISIBLE);
+            continueBtn.setText("Go Back");
+            continueBtn.setOnClickListener(view -> onBackPressed());
+            Log.i("UnitLD", "go back");
+        } else if (unitRP.isHas_user_started() || unitRP.getCompleted_lessons() > 0){
+            continueBtn.setVisibility(View.VISIBLE);
+            continueBtn.setText("Continue Learning");
+            continueBtn.setOnClickListener(view -> startLessonActivity());
         } else {
             if (unitRP.isIs_paid()){
                 if (unitRP.isHas_user_purchased()){
+                    continueBtn.setVisibility(View.VISIBLE);
                     continueBtn.setText("Begin Learning");
                     continueBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -84,9 +96,12 @@ public class UnitActivity extends AppCompatActivity {
                     });
                 } else {
                     continueBtn.setText("Buy Now");
+                    continueBtn.setVisibility(View.GONE);
+                    //Todo: Buy Unit in if not free here.
                 }
             } else {
                 continueBtn.setText("Begin Learning");
+                continueBtn.setVisibility(View.VISIBLE);
                 continueBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -95,12 +110,21 @@ public class UnitActivity extends AppCompatActivity {
                 });
             }
         }
-        continueBtn.setVisibility(View.VISIBLE);
+    }
 
+    private void shortRecyclerView() {
+        //Todo: handle if a new lesson is added in between
+        //Todo: if new lesson is added and old is deleted then also unit is marked complete
+        UnitData.setUnitData(unitRP);
+        UnitData.getUnitRPMutableLiveData().observe(this, newRp -> {
+            unitRP = newRp;
+            setUpContinueBtn();
+        });
         if (unitRP.getUnit_title() == null
         || unitRP.getUnit_title().isEmpty()){
             unitRP.setUnit_title(shortUnit.getUnit_title());
         }
+
         manager = new LinearLayoutManager(this);
         adapter = new UnitRVAdapter(unitRP, this);
         recyclerView.setAdapter(adapter);
