@@ -21,6 +21,7 @@ import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.UnitActivity;
 import com.quaser.edtechapp.models.ShortUnit;
 import com.quaser.edtechapp.rest.response.HomeRP;
+import com.quaser.edtechapp.utils.Method;
 
 public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -84,6 +85,12 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             if (unit.isIs_locked()){
                 holder.lockImg.setVisibility(View.VISIBLE);
+                holder.itemView.setOnClickListener(view -> {
+                    String title = unit.getUnit_title() + " unit is locked!";
+                    String prereq = findUnitNameFromId(unit.getPrerequisite().getOn());
+                    String message = "Please complete " + prereq + " unit in order to un-lock this one.";
+                    Method.showDialog(activity, title, message, R.raw.locked, true);
+                });
             } else if (unit.getCompleted_lessons() > 0){
                 holder.progressBar.setVisibility(View.VISIBLE);
                 holder.progressBar
@@ -93,6 +100,18 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 String progressTxt = String.valueOf(unit.getCompleted_lessons())
                         + " of " + String.valueOf(unit.getTotal_lessons()) + " lessons";
                 holder.progressTxt.setText(progressTxt);
+            }
+
+            if (!unit.isIs_locked()){
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(activity, UnitActivity.class);
+                        String unitStr = new Gson().toJson(unit);
+                        intent.putExtra("SHORT_UNIT", unitStr);
+                        activity.startActivity(intent);
+                    }
+                });
             }
 
             if (unit.getCompleted_lessons() <= 0){
@@ -117,16 +136,16 @@ public class HomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.headlineTxt.setText(headline);
             }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(activity, UnitActivity.class);
-                    String unitStr = new Gson().toJson(unit);
-                    intent.putExtra("SHORT_UNIT", unitStr);
-                    activity.startActivity(intent);
-                }
-            });
+
         }
+    }
+
+    private String findUnitNameFromId(String on) {
+        for (ShortUnit unit: homeRP.getUnits()){
+            if (unit.get_id().equals(on))
+                return unit.getUnit_title();
+        }
+        return "other";
     }
 
     @Override

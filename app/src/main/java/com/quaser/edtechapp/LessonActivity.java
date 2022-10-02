@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Helpers.PaymentHelper;
 import com.quaser.edtechapp.Interface.LessonListener;
@@ -203,11 +204,12 @@ public class LessonActivity extends AppCompatActivity implements LessonListener,
         UnitData.completeLesson(unitRP.getCompleted_lessons());
         unitRP.setCompleted_lessons(unitRP.getCompleted_lessons()+1);
         if (unitRP.getLesson().size() <= unitRP.getCompleted_lessons()){
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialog_rounded);
             LayoutInflater inflater = this.getLayoutInflater();
             View view = inflater.inflate(R.layout.alert_normal, null);
             alert.setView(view);
             alert.setCancelable(false);
+
             view.findViewById(R.id.actionBtn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

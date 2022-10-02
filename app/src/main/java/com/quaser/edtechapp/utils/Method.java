@@ -1,8 +1,20 @@
 package com.quaser.edtechapp.utils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
+import com.quaser.edtechapp.LessonActivity;
+import com.quaser.edtechapp.R;
+
+import org.w3c.dom.Text;
 
 public class Method {
     public static void showFailedAlert(Context context, String message){
@@ -29,6 +41,33 @@ public class Method {
                     }
                 })
                 .show();
+    }
+
+    public static void showDialog(Activity context,
+                                  String title, String message, int lottieIcons, boolean loop){
+        MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(context, R.style.MaterialAlertDialog_rounded);
+        LayoutInflater inflater = context.getLayoutInflater();
+        View view = inflater.inflate(R.layout.alert_normal, null);
+        alert.setView(view);
+        alert.setCancelable(false);
+        TextView titleTxt = view.findViewById(R.id.title);
+        titleTxt.setText(title);
+        TextView messageTxt = view.findViewById(R.id.message);
+        messageTxt.setText(message);
+        alert.setCancelable(true);
+
+        LottieAnimationView animationView = view.findViewById(R.id.animationView);
+        animationView.setAnimation(lottieIcons);
+        animationView.loop(true);
+        androidx.appcompat.app.AlertDialog dialogs = alert.create();
+        dialogs.show();
+
+        view.findViewById(R.id.actionBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogs.dismiss();
+            }
+        });
     }
 
 
