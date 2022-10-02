@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
+        android:paddingBottom="8dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:id="@+id/rankLayout"
@@ -30,10 +30,14 @@
 
             <ImageView
                 android:id="@+id/displayImg"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:layout_width="40dp"
+                android:padding="8dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_profile"
+                android:layout_height="40dp" />
 
             <TextView
+                android:id="@+id/nameTxt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

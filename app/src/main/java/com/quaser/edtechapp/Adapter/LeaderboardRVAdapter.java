@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class LeaderboardRVAdapter extends RecyclerView.Adapter {
 
     RanklistRes ranklistRes;
+    String points = " Points";
 
     public LeaderboardRVAdapter(RanklistRes ranklistRes){
         this.ranklistRes = ranklistRes;
@@ -28,10 +29,22 @@ public class LeaderboardRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0 || position == 1 || position == 2)
+        if (position == 0)
             return 0;
         else
             return 1;
+    }
+
+    public void showProgress(String message){
+        //Todo Show Progress
+    }
+
+    public void hideProgress(String message){
+        //Todo hide progress
+    }
+
+    public void hideProgress(){
+        //Todo hide progress without message
     }
 
     @NonNull
@@ -54,28 +67,35 @@ public class LeaderboardRVAdapter extends RecyclerView.Adapter {
             }
             ArrayList<RankModel> leaderBoard = ranklistRes.getLeaderboard();
 
-            Picasso.get()
+            if (leaderBoard.get(0).getDisplay_picture() != null
+                    && !leaderBoard.get(0).getDisplay_picture().isEmpty())
+                 Picasso.get()
                     .load(leaderBoard.get(0).getDisplay_picture())
                     .transform(new CircleTransform())
                     .into(holder.firstImg);
             holder.firstTxt.setText("1. " +leaderBoard.get(0).getUser_name());
-            holder.firstScore.setText(leaderBoard.get(0).getScore());
+            holder.firstScore.setText(leaderBoard.get(0).getScore() + points);
 
             if (leaderBoard.size() < 2) return;
-            Picasso.get()
+            if (leaderBoard.get(1).getDisplay_picture() != null
+                    && !leaderBoard.get(1).getDisplay_picture().isEmpty())
+                Picasso.get()
                     .load(leaderBoard.get(1).getDisplay_picture())
                     .transform(new CircleTransform())
                     .into(holder.secondImg);
-            holder.secondTxt.setText("1. " +leaderBoard.get(1).getUser_name());
-            holder.secondScore.setText(leaderBoard.get(1).getScore());
+            holder.secondTxt.setText("2. " +leaderBoard.get(1).getUser_name());
+            holder.secondScore.setText(leaderBoard.get(1).getScore() + points);
 
             if (leaderBoard.size() < 3) return;
-            Picasso.get()
+
+            if (leaderBoard.get(2).getDisplay_picture() != null
+                    && !leaderBoard.get(2).getDisplay_picture().isEmpty())
+                Picasso.get()
                     .load(leaderBoard.get(2).getDisplay_picture())
                     .transform(new CircleTransform())
-                    .into(holder.secondImg);
-            holder.secondTxt.setText("1. " +leaderBoard.get(2).getUser_name());
-            holder.secondScore.setText(leaderBoard.get(2).getScore());
+                    .into(holder.thirdImg);
+            holder.thirdTxt.setText("3. " +leaderBoard.get(2).getUser_name());
+            holder.thirdScore.setText(leaderBoard.get(2).getScore() + points );
 
             if (FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()
             != null && !FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString().isEmpty()){
@@ -86,9 +106,28 @@ public class LeaderboardRVAdapter extends RecyclerView.Adapter {
             }
 
             if (ranklistRes.getMy_rank() != null && ranklistRes.getMy_rank().getRank() != -1){
-
+                holder.rankTxt.setText(String.valueOf(ranklistRes.getMy_rank().getRank()));
+                holder.scoreTxt.setText(ranklistRes.getMy_rank().getScore() + points);
+            } else {
+                holder.rankTxt.setText("-");
+                holder.scoreTxt.setText("0" + points);
             }
 
+        }
+        else if (viewHolder instanceof RankViewHolder){
+            RankViewHolder holder = (RankViewHolder) viewHolder;
+            int index = position +2;
+            RankModel rank = ranklistRes.getLeaderboard().get(index);
+            holder.nameTxt.setText(rank.getUser_name());
+            if (rank.getDisplay_picture() != null
+             && !rank.getDisplay_picture().isEmpty()){
+                Picasso.get()
+                        .load(rank.getDisplay_picture())
+                        .transform(new CircleTransform())
+                        .into(holder.displayImg);
+            }
+            holder.scoreTxt.setText(rank.getScore() + points);
+            holder.rankTxt.setText(rank.getRank() + ".");
         }
     }
 

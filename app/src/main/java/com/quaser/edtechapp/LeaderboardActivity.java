@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.quaser.edtechapp.Adapter.LeaderboardRVAdapter;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.RanklistRes;
@@ -21,6 +22,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private LinearLayout topBar;
     private ImageButton backBtn;
     private LinearLayoutManager manager;
+    private LeaderboardRVAdapter adapter;
     private ProgressBar progressBar;
 
     @Override
@@ -38,7 +40,11 @@ public class LeaderboardActivity extends AppCompatActivity {
             @Override
             public void success(RanklistRes response) {
                 progressBar.setVisibility(View.GONE);
-
+                adapter = new LeaderboardRVAdapter(response);
+                manager = new LinearLayoutManager(LeaderboardActivity.this);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(manager);
+                recyclerView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -54,6 +60,8 @@ public class LeaderboardActivity extends AppCompatActivity {
         topBar = findViewById(R.id.topBar);
         backBtn = findViewById(R.id.backBtn);
         progressBar = findViewById(R.id.progressBar);
+
+        backBtn.setOnClickListener(view -> onBackPressed());
     }
 
     private void setScrollListener() {

@@ -2,6 +2,7 @@ package com.quaser.edtechapp.models;
 
 public class RankModel {
     String user_id;
+    String id;
     String user_name;
     int rank;
     int score;

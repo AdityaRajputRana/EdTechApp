@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.quaser.edtechapp.Auth.AuthUtils;
+import com.quaser.edtechapp.LeaderboardActivity;
 import com.quaser.edtechapp.LoginActivity;
 import com.quaser.edtechapp.NameActivity;
 import com.quaser.edtechapp.R;
@@ -56,7 +57,12 @@ public class ProfileFrament extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_frament, container, false);
         findViews(view);
         setUpViews();
+        setListeners();
         return view;
+    }
+
+    private void setListeners() {
+
     }
 
     private void setUpViews() {
@@ -67,7 +73,7 @@ public class ProfileFrament extends Fragment {
         } else {
             signUpTxt.setVisibility(View.GONE);
             if (AuthUtils.dp != null && !AuthUtils.dp.toString().isEmpty())
-            Picasso.get()
+                Picasso.get()
                     .load(AuthUtils.dp)
                     .transform(new CircleTransform())
                     .into(profileImg);
@@ -103,6 +109,11 @@ public class ProfileFrament extends Fragment {
         signUpTxt = view.findViewById(R.id.signUpTxt);
         editProfileTxt = view.findViewById(R.id.editProfileTxt);
         profileImg = view.findViewById(R.id.displayImg);
+
+        view.findViewById(R.id.leaderboardBtn).setOnClickListener(mView -> {
+            Intent intent = new Intent(getActivity(), LeaderboardActivity.class);
+            getActivity().startActivity(intent);
+        });
     }
 
     private void confirmLogout() {

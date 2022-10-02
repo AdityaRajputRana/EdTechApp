@@ -4,12 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_bg"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
    <androidx.constraintlayout.widget.ConstraintLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:id="@+id/topLayout"
+       android:padding="16dp"
        android:background="@drawable/bg_semiround_prim"
        app:layout_constraintTop_toTopOf="parent">
 
@@ -18,31 +19,16 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:id="@+id/firstLayout"
-          android:gravity="center"
+          android:gravity="center_horizontal"
           app:layout_constraintTop_toTopOf="parent"
           android:orientation="vertical"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          android:layout_marginTop="32dp">
-
-         <LinearLayout
-             android:layout_width="90dp"
-             android:layout_height="90dp"
-             android:gravity="center"
-             android:orientation="vertical"
-             android:background="@drawable/bg_leaderboard_circle_gold"
-             >
-
-            <ImageView
-                android:id="@+id/firstImage"
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
-         </LinearLayout>
+          app:layout_constraintEnd_toEndOf="parent">
 
          <LinearLayout
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
+             android:gravity="center_horizontal"
              android:id="@+id/firstTextLayout"
              android:orientation="vertical">
 
@@ -63,23 +49,40 @@
                 android:textColor="@color/color_secondary_txt" />
          </LinearLayout>
 
+         <LinearLayout
+             android:layout_width="120dp"
+             android:layout_height="120dp"
+             android:gravity="center"
+             android:orientation="vertical"
+             android:background="@drawable/bg_leaderboard_circle_gold"
+             >
+
+            <ImageView
+                android:id="@+id/firstImage"
+                android:layout_width="105dp"
+                android:src="@drawable/ic_profile_bg_circle"
+                android:layout_height="105dp" />
+
+         </LinearLayout>
+
+
       </LinearLayout>
 
       <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:id="@+id/secondLayout"
-          android:gravity="center"
           android:elevation="10dp"
-          app:layout_constraintTop_toTopOf="@id/firstLayout"
+          android:gravity="center_horizontal"
+          app:layout_constraintTop_toBottomOf="@id/firstLayout"
           android:orientation="vertical"
           app:layout_constraintEnd_toStartOf="@id/firstLayout"
           android:layout_marginEnd="-16dp"
-          android:layout_marginTop="32dp">
+          android:layout_marginTop="-70dp">
 
          <LinearLayout
-             android:layout_width="90dp"
-             android:layout_height="90dp"
+             android:layout_width="105dp"
+             android:layout_height="105dp"
              android:gravity="center"
              android:orientation="vertical"
              android:background="@drawable/bg_leaderboard_circle_silver"
@@ -87,30 +90,34 @@
 
             <ImageView
                 android:id="@+id/secondImg"
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
+                android:layout_width="93dp"
+                android:src="@drawable/ic_profile_bg_circle"
+                android:layout_height="93dp" />
 
          </LinearLayout>
 
          <LinearLayout
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
+             android:gravity="center_horizontal"
              android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/secondNameTxt"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"
                 android:textColor="@color/color_primary_txt" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/secondScoreTxt"
                 android:fontFamily="@font/poppins"
-                android:textSize="16sp"
+                android:textAlignment="center"
+                android:textSize="14sp"
                 android:textColor="@color/color_secondary_txt" />
          </LinearLayout>
 
@@ -120,17 +127,17 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:id="@+id/thirdLayout"
-          android:gravity="center"
+          android:gravity="center_horizontal"
           android:elevation="5dp"
-          app:layout_constraintTop_toTopOf="@id/firstLayout"
+          app:layout_constraintTop_toBottomOf="@id/firstLayout"
           android:orientation="vertical"
           app:layout_constraintStart_toEndOf="@id/firstLayout"
           android:layout_marginStart="-16dp"
-          android:layout_marginTop="32dp">
+          android:layout_marginTop="-70dp">
 
          <LinearLayout
-             android:layout_width="90dp"
-             android:layout_height="90dp"
+             android:layout_width="105dp"
+             android:layout_height="105dp"
              android:gravity="center"
              android:orientation="vertical"
              android:background="@drawable/bg_leaderboard_circle_bronse"
@@ -138,30 +145,34 @@
 
             <ImageView
                 android:id="@+id/thirdImg"
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
+                android:layout_width="93dp"
+                android:src="@drawable/ic_profile_bg_circle"
+                android:layout_height="93dp" />
 
          </LinearLayout>
 
          <LinearLayout
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
+             android:gravity="center_horizontal"
              android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/thirdNameTxt"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"
                 android:textColor="@color/color_primary_txt" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="105dp"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:id="@+id/thirdScoreTxt"
                 android:fontFamily="@font/poppins"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/color_secondary_txt" />
          </LinearLayout>
 
@@ -208,8 +219,11 @@
 
       <ImageView
           android:id="@+id/displayImg"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent" />
+          android:layout_width="40dp"
+          android:padding="8dp"
+          android:layout_gravity="center"
+          android:src="@drawable/ic_profile"
+          android:layout_height="40dp" />
 
       <TextView
           android:layout_width="0dp"
@@ -241,6 +255,7 @@
    </LinearLayout>
 
    <TextView
+       android:id="@+id/nameTxt"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginStart="8dp"
