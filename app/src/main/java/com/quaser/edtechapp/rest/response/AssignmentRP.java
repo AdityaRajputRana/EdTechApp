@@ -33,6 +33,16 @@ public class AssignmentRP {
     String placeholder;
     String status;
 
+    public String getUnit_title() {
+        return unit_title;
+    }
+
+    String unit_title;
+
+    public String getUnit_id() {
+        return unit_id;
+    }
+
     public boolean is_next_btn_enabled(){
         if (is_completed){
             return true;

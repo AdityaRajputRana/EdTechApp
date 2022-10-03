@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.quaser.edtechapp.AssignmentsActivity;
 import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.LeaderboardActivity;
 import com.quaser.edtechapp.LoginActivity;
@@ -112,6 +113,11 @@ public class ProfileFrament extends Fragment {
 
         view.findViewById(R.id.leaderboardBtn).setOnClickListener(mView -> {
             Intent intent = new Intent(getActivity(), LeaderboardActivity.class);
+            getActivity().startActivity(intent);
+        });
+
+        view.findViewById(R.id.assignmentsBtn).setOnClickListener(mView -> {
+            Intent intent = new Intent(getActivity(), AssignmentsActivity.class);
             getActivity().startActivity(intent);
         });
     }

@@ -19,6 +19,7 @@ import com.quaser.edtechapp.rest.requests.SubscribeEventReq;
 import com.quaser.edtechapp.rest.requests.UnitReq;
 import com.quaser.edtechapp.rest.requests.UploadFileReq;
 import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
+import com.quaser.edtechapp.rest.response.AssignmentListRP;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
 import com.quaser.edtechapp.rest.response.DataRp;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
@@ -227,6 +228,18 @@ public class APIMethods {
     public static void getNotification(int page, APIResponseListener<ArrayList<NotificationModel>> listener){
         HomeReq req = new HomeReq(page);
         API.postData(listener, req, EndPoints.notification, ArrayList.class);
+    }
+
+    //assignment
+    public static void getAssignments(APIResponseListener<AssignmentListRP> listener){
+        HomeReq req = new HomeReq();
+        API.postData(listener, req, EndPoints.assignments, AssignmentListRP.class);
+    }
+
+    //Paginated notif
+    public static void getAssignments(int page, APIResponseListener<AssignmentListRP> listener){
+        HomeReq req = new HomeReq(page);
+        API.postData(listener, req, EndPoints.notification, AssignmentListRP.class);
     }
 
 

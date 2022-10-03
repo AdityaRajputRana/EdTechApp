@@ -34,4 +34,5 @@ public class EndPoints {
     public static String rankList = "ui/leaderboard/ranklist";
 
     public static String notification = "ui/notification/list";
+    public static String assignments = "assignment/user/list";
 }
