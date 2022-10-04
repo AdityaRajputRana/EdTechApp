@@ -62,13 +62,8 @@ public class AssignmentsRVAdapter extends RecyclerView.Adapter<AssignmentsRVAdap
         holder.statusImg.setImageDrawable(context.getDrawable(drawableRes));
 
         holder.statusTxt.setText(status);
+        holder.actionTxt.setVisibility(View.INVISIBLE);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -85,6 +80,7 @@ public class AssignmentsRVAdapter extends RecyclerView.Adapter<AssignmentsRVAdap
         TextView bodyTxt;
         TextView statusTxt;
         ImageView statusImg;
+        TextView actionTxt;
 
         public AssignmentHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,6 +88,7 @@ public class AssignmentsRVAdapter extends RecyclerView.Adapter<AssignmentsRVAdap
             titleTxt = itemView.findViewById(R.id.title);
             bodyTxt = itemView.findViewById(R.id.body);
             statusTxt = itemView.findViewById(R.id.status);
+            actionTxt = itemView.findViewById(R.id.actionTxt);
             statusImg = itemView.findViewById(R.id.statusImg);
         }
     }

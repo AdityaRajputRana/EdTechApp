@@ -144,7 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/purchaseHistoryBtn"
-                android:text="View Purchase History"
+                android:text="View Payment History"
                 android:textAllCaps="false"
                 android:fontFamily="@font/poppins"
                 android:padding="16dp"

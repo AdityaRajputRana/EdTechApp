@@ -78,6 +78,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/actionTxt"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textAlignment="textEnd"

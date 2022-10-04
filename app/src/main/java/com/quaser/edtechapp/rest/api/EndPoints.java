@@ -35,4 +35,5 @@ public class EndPoints {
 
     public static String notification = "ui/notification/list";
     public static String assignments = "assignment/user/list";
+    public static String paymentList = "payment/history";
 }
