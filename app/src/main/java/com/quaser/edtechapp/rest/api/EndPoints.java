@@ -36,4 +36,8 @@ public class EndPoints {
     public static String notification = "ui/notification/list";
     public static String assignments = "assignment/user/list";
     public static String paymentList = "payment/history";
+
+    public static String personalityResult = "ui/personality/get";
+    public static String startPersonalityTest = "ui/personality/startTest";
+    public static String endPersonalityTest = "ui/personality/endTest";
 }

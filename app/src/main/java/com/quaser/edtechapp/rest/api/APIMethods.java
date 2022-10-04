@@ -2,6 +2,7 @@ package com.quaser.edtechapp.rest.api;
 
 import android.app.Activity;
 
+import com.quaser.edtechapp.PersonalityTest.PersonalityTestRP;
 import com.quaser.edtechapp.models.Answer;
 import com.quaser.edtechapp.models.NotificationModel;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
@@ -246,6 +247,12 @@ public class APIMethods {
     public static void getPayments(APIResponseListener<PaymentsListRP> listener){
         HomeReq req = new HomeReq();
         API.postData(listener, req, EndPoints.paymentList, PaymentsListRP.class);
+    }
+
+
+    public static void getPersonalityTest(APIResponseListener<PersonalityTestRP> listener){
+        HomeReq req = new HomeReq();
+        API.postData(listener, req, EndPoints.personalityResult, PersonalityTestRP.class);
     }
 
 
