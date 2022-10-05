@@ -18,7 +18,7 @@ import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.utils.Method;
 
 
-public class PersonalityActivity extends AppCompatActivity {
+public class PersonalityActivity extends AppCompatActivity implements ResultFragment.ResultInterface {
 
     LinearLayout appBarLayout;
     FrameLayout frameLayout;
@@ -51,8 +51,9 @@ public class PersonalityActivity extends AppCompatActivity {
             }
         });
     }
-
+    PersonalityTestRP rp;
     private void processResponse(PersonalityTestRP response) {
+        rp = response;
         if (response.is_test_attempted){
             showResultFragments(response.getPersonality());
         } else {
@@ -79,7 +80,7 @@ public class PersonalityActivity extends AppCompatActivity {
 
     private void showResultFragments(EndPersonalityTestRP personalityTestRP){
         removeFragments();
-        resultFragment = new ResultFragment(personalityTestRP);
+        resultFragment = new ResultFragment(personalityTestRP, this);
         appBarLayout.setVisibility(View.VISIBLE);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -113,5 +114,10 @@ public class PersonalityActivity extends AppCompatActivity {
 
     private void setListeners() {
         findViewById(R.id.backBtn).setOnClickListener(view -> onBackPressed());
+    }
+
+    @Override
+    public void reattemptPersonalityTest() {
+        showStartTestFragment(rp);
     }
 }

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class EndTestModel {
     int index;
-    String id;
+    String test_id;
     ArrayList<EndAnswerModel> answers;
 
     public EndTestModel(int index, @Nullable String id) {
-        this.id = id;
+        this.test_id = id;
         this.index = index;
     }
 
@@ -23,11 +23,11 @@ public class EndTestModel {
     }
 
     public String getId() {
-        return id;
+        return test_id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.test_id = id;
     }
 
     public ArrayList<EndAnswerModel> getAnswers() {

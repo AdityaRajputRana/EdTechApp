@@ -23,6 +23,7 @@ import com.quaser.edtechapp.LeaderboardActivity;
 import com.quaser.edtechapp.LoginActivity;
 import com.quaser.edtechapp.NameActivity;
 import com.quaser.edtechapp.PaymentsActivity;
+import com.quaser.edtechapp.PersonalityTest.PersonalityActivity;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.utils.Transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -124,6 +125,11 @@ public class ProfileFrament extends Fragment {
 
         view.findViewById(R.id.purchaseHistoryBtn).setOnClickListener(mView -> {
             Intent intent = new Intent(getActivity(), PaymentsActivity.class);
+            getActivity().startActivity(intent);
+        });
+
+        view.findViewById(R.id.personalityTestBtn).setOnClickListener(mView -> {
+            Intent intent = new Intent(getActivity(), PersonalityActivity.class);
             getActivity().startActivity(intent);
         });
     }
