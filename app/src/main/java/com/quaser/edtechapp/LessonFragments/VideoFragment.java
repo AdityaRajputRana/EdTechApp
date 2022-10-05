@@ -1,10 +1,13 @@
 package com.quaser.edtechapp.LessonFragments;
 
 import android.app.AlertDialog;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.media.session.PlaybackState;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.text.Layout;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +77,7 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
     ProgressBar progressBar;
 
     MaterialButton continueBtn;
+    ConstraintLayout rootLayout;
 
     private PlayerView playerView;
     private boolean playWhenReady = false;
@@ -108,7 +113,7 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
     @Override
     public void onPause() {
         if (player != null)
-        player.pause();
+            player.pause();
         super.onPause();
     }
 
@@ -236,10 +241,17 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
     boolean isFullScreen = false;
 
     private void fullScreen() {
+        prevHeight = playerView.getLayoutParams().height;
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         listener.fullScreen(this);
         titleTxt.setVisibility(View.GONE);
         bodyTxt.setVisibility(View.GONE);
         controls.setVisibility(View.GONE);
+        rootLayout.setBackgroundColor(Color.BLACK);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+        params.width = params.MATCH_PARENT;
+        params.height = params.MATCH_PARENT;
+        playerView.setLayoutParams(params);
         isFullScreen = true;
     }
 
@@ -346,6 +358,7 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         controls = view.findViewById(R.id.controls);
         fullScreenBtn = controls.findViewById(R.id.fullScreenBtn);
         exo_quality = controls.findViewById(R.id.qualityBtn);
+        rootLayout = view.findViewById(R.id.rootLayout);
         setOnClicks();
     }
 
@@ -358,12 +371,19 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         });
     }
 
+    int prevHeight = 0;
     @Override
     public void reverseFullScreen() {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         titleTxt.setVisibility(View.VISIBLE);
         bodyTxt.setVisibility(View.VISIBLE);
         listener.revFullScreen();
         controls.setVisibility(View.VISIBLE);
+        rootLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.color_bg));
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+        params.width = params.MATCH_PARENT;
+        params.height = (int) (prevHeight);
+        playerView.setLayoutParams(params);
         isFullScreen =false;
     }
 

@@ -58,8 +58,8 @@
             android:exported="false" />
         <activity
             android:name=".LessonActivity"
-            android:configChanges="orientation"
-            android:exported="false" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+        android:exported="false" />
         <activity
             android:name=".ViewQuestionActivity"
             android:exported="false" />
