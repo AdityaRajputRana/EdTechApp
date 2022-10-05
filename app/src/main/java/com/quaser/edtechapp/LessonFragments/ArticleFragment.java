@@ -24,6 +24,8 @@ import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.ArticleLessonRP;
 import com.quaser.edtechapp.utils.Method;
+import com.quaser.edtechapp.utils.WsyswigUtils;
+import com.quaser.edtechapp.wsywig.Editor;
 
 
 public class ArticleFragment extends Fragment implements RevLessonInterface {
@@ -44,6 +46,7 @@ public class ArticleFragment extends Fragment implements RevLessonInterface {
     private LinearLayout fullLayout;
     private TextView head;
     private TextView body;
+    private Editor bodyEditor;
     private TextView title;
     private MaterialButton completeBtn;
     private ImageButton backBtn;
@@ -102,7 +105,16 @@ public class ArticleFragment extends Fragment implements RevLessonInterface {
 
         headTxt.setText(response.getHead());
         head.setText(response.getHead());
-        body.setText(response.getBody());
+
+        if (response.getBody().contains("<!DOCTYPE_HTML>")
+                || response.getBody().contains("<!DOCTYPE html>")){
+            String b = response.getBody().replace("<!DOCTYPE_HTML>", "");
+            bodyEditor.setVisibility(View.VISIBLE);
+            WsyswigUtils.renderBody(bodyEditor, b, getActivity());
+        } else {
+            body.setVisibility(View.VISIBLE);
+            body.setText(response.getBody());
+        }
         headTxt.setVisibility(View.VISIBLE);
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +191,7 @@ public class ArticleFragment extends Fragment implements RevLessonInterface {
 
         shortLayout = view.findViewById(R.id.shortLayout);
         fullLayout = view.findViewById(R.id.fullLayout);
+        bodyEditor = view.findViewById(R.id.bodyEditor);
     }
 
     @Override

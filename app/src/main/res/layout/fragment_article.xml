@@ -145,7 +145,17 @@
                     android:text="Body of the article will go over here"
                     android:fontFamily="@font/poppins"
                     android:textSize="16dp"
+                    android:visibility="gone"
                     android:textColor="@color/color_secondary_txt" />
+
+                <com.quaser.edtechapp.wsywig.Editor
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/bodyEditor"
+                    android:visibility="gone"
+                    app:placeholder="This is body of answer"
+                    app:render_type="Renderer" />
 
 
 
