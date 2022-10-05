@@ -68,7 +68,7 @@
             app:layout_constraintDimensionRatio="1.77777778"
             android:layout_height="0dp"
             app:use_controller="false"
-            app:controller_layout_id="@layout/exo_player_controls"
+            app:controller_layout_id="@layout/exo_full_screen_controls"
             android:layout_gravity="center"/>
 
 <!--        <ImageButton-->

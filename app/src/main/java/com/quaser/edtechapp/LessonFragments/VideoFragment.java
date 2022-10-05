@@ -157,14 +157,11 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         exo_quality.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("VOD", "Quality Click");
                 if (qualityPopup != null) {
-                    Log.i("VOD", "Not null");
                     qualityPopup.show();
                 }
             }
         });
-        Log.i("VOD", "PT3");
 
 
 
@@ -252,6 +249,12 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         params.width = params.MATCH_PARENT;
         params.height = params.MATCH_PARENT;
         playerView.setLayoutParams(params);
+        playerView.setUseController(true);
+        playerView.findViewById(R.id.fBtn).setOnClickListener(view -> toggleFullScreen());
+        playerView.findViewById(R.id.qBtn).setOnClickListener(view -> {
+            if (qualityPopup != null)
+                qualityPopup.show();
+        });
         isFullScreen = true;
     }
 
@@ -384,8 +387,12 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         params.width = params.MATCH_PARENT;
         params.height = (int) (prevHeight);
         playerView.setLayoutParams(params);
+        playerView.setUseController(false);
+        controls.setPlayer(player);
         isFullScreen =false;
     }
+
+    //Todo: The seekbar is un-responsive until an action is taken in player after reverse full screen.
 
     void toggleFullScreen(){
         if (isFullScreen)
