@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TestModel {
     int index;
-    String id;
+    String _id;
     String title;
     PersonalityAlphabetModel positive;
     PersonalityAlphabetModel negative;
@@ -21,7 +21,7 @@ public class TestModel {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public ArrayList<QuestionModel> getQuestions() {

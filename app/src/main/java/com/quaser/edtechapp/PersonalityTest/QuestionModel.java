@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class QuestionModel {
     int index;
-    String id;
+    String _id;
     String question;
     String image;
     String video;
@@ -15,7 +15,7 @@ public class QuestionModel {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public String getQuestion() {

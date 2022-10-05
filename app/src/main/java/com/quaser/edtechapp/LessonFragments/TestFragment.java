@@ -131,6 +131,7 @@ public class TestFragment extends Fragment implements RevLessonInterface{
 
     private void showStartControls() {
         startBtn.setVisibility(View.VISIBLE);
+        bProgressBar.setVisibility(View.GONE);
         startBtn.setOnClickListener(view -> startPersonalityTest());
     }
 
@@ -427,8 +428,12 @@ public class TestFragment extends Fragment implements RevLessonInterface{
 
         Drawable inactiveBg = getActivity().getResources().getDrawable(R.drawable.bg_round_fg);
         inactivateOptions(inactiveBg);
-        ArrayList<TextView> optionTxts = (ArrayList<TextView>) Arrays.asList(optionA, optionB,
-                optionC, optionD, optionE);
+        ArrayList<TextView> optionTxts = new ArrayList<TextView>();
+        optionTxts.add(optionA);
+        optionTxts.add(optionB);
+        optionTxts.add(optionC);
+        optionTxts.add(optionD);
+        optionTxts.add(optionE);
         for (TextView textView: optionTxts)
             textView.setVisibility(View.GONE);
         if (question.getOptions() != null){

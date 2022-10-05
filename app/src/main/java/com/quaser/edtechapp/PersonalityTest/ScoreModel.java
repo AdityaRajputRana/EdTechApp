@@ -43,11 +43,13 @@ public class ScoreModel {
 
     public int getPositiveScore(){
         String ps = positive_score.replace("%","");
-        return Integer.parseInt(ps);
+        float f = Float.valueOf(ps);
+        return (int)f;
     }
 
     public int getNegativeScore(){
         String ps = negative_score.replace("%","");
-        return Integer.parseInt(ps);
+        float f = Float.valueOf(ps);
+        return (int)f;
     }
 }

@@ -9,7 +9,7 @@ public class EndPersonalityTestRP {
     ArrayList<String> traits;
     ArrayList<String> weakness;
     ArrayList<String> strengths;
-    ArrayList<String> career_option;
+    ArrayList<String> career_options;
     ArrayList<ScoreModel> scores;
 
     public EndPersonalityTestRP() {
@@ -39,8 +39,8 @@ public class EndPersonalityTestRP {
         return strengths;
     }
 
-    public ArrayList<String> getCareer_option() {
-        return career_option;
+    public ArrayList<String> getCareer_options() {
+        return career_options;
     }
 
     public ArrayList<ScoreModel> getScores() {

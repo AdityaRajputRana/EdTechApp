@@ -33,7 +33,7 @@
                     android:text="ISTE"
                     android:fontFamily="@font/poppins_semibold"
                     android:textSize="24sp"
-                    android:id="@+id/titleTxt" />
+                    android:id="@+id/headTxt" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                     android:text="Captain America"
                     android:fontFamily="@font/poppins"
                     android:textSize="18sp"
-                    android:id="@+id/headTxt" />
+                    android:id="@+id/titleTxt" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -52,21 +52,21 @@
                     android:textColor="@color/color_secondary_txt"
                     android:text="Lorem Ipsum Lorem Ipsum LoIpsum Lorem Ipsurem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum "
                     android:fontFamily="@font/poppins"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:id="@+id/bodyTxt" />
 
 
 
 
                 <TextView
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_primary_txt"
                     android:text="Detailed Results"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,13 +79,13 @@
 
 
                 <TextView
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_primary_txt"
                     android:text="Strengths"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/strengthsTxt"
@@ -94,7 +94,7 @@
                     android:textColor="@color/color_primary_txt"
                     android:text="Here, we, can, list, the, strengths, of that, personality"
                     android:fontFamily="@font/poppins"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_marginTop="16dp"
@@ -103,7 +103,7 @@
                     android:textColor="@color/color_primary_txt"
                     android:text="Weakness"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/weeknessTxt"
@@ -121,7 +121,7 @@
                     android:textColor="@color/color_primary_txt"
                     android:text="Career Options"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/careerTxt"
@@ -130,7 +130,7 @@
                     android:textColor="@color/color_primary_txt"
                     android:text="Here, we, can, list, the, career options, of that, personality"
                     android:fontFamily="@font/poppins"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="match_parent"
@@ -140,7 +140,7 @@
                     android:text="Re-Take Test"
                     app:cornerRadius="16dp"
                     android:drawableEnd="@drawable/ic_cont_arrow"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:textAllCaps="false"
                     android:fontFamily="@font/poppins_medium"
                     android:textColor="@color/white"

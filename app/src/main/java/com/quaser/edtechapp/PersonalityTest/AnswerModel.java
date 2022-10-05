@@ -2,7 +2,7 @@ package com.quaser.edtechapp.PersonalityTest;
 
 public class AnswerModel {
     int index;
-    String id;
+    String _id;
     String body;
     float weight;
 
@@ -11,7 +11,7 @@ public class AnswerModel {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public String getBody() {

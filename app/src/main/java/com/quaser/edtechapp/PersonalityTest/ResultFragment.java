@@ -85,7 +85,7 @@ public class ResultFragment extends Fragment {
         weaknessTxt.setText(weakness);
 
         String career = "";
-        for (String s: personality.career_option){
+        for (String s: personality.career_options){
             career = career+ ", " + s;
         }
         career = career.substring(2);
