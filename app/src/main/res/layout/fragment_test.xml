@@ -270,6 +270,21 @@
             android:background="@drawable/bg_round_fg"
             android:textColor="@color/color_secondary_txt"
             android:id="@+id/optionD" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="E"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_round_fg"
+            android:textColor="@color/color_secondary_txt"
+            android:id="@+id/optionE" />
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

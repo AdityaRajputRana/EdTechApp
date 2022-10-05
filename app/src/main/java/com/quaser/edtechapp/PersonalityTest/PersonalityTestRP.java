@@ -2,6 +2,8 @@ package com.quaser.edtechapp.PersonalityTest;
 
 public class PersonalityTestRP {
     boolean is_test_attempted;
+    String title;
+    String message;
     EndPersonalityTestRP personality;
 
     public PersonalityTestRP() {

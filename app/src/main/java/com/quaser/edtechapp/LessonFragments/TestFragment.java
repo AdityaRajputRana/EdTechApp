@@ -25,6 +25,14 @@ import com.google.gson.Gson;
 import com.quaser.edtechapp.Auth.AuthUtils;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.Interface.RevLessonInterface;
+import com.quaser.edtechapp.PersonalityTest.AnswerModel;
+import com.quaser.edtechapp.PersonalityTest.EndAnswerModel;
+import com.quaser.edtechapp.PersonalityTest.EndPersonalityTestRP;
+import com.quaser.edtechapp.PersonalityTest.EndTestModel;
+import com.quaser.edtechapp.PersonalityTest.EndTestReq;
+import com.quaser.edtechapp.PersonalityTest.PersonalityTestModel;
+import com.quaser.edtechapp.PersonalityTest.QuestionModel;
+import com.quaser.edtechapp.PersonalityTest.TestModel;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
 import com.quaser.edtechapp.rest.api.API;
@@ -37,6 +45,7 @@ import com.quaser.edtechapp.utils.PieChartUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ir.mahozad.android.PieChart;
 
@@ -75,17 +84,28 @@ public class TestFragment extends Fragment implements RevLessonInterface{
     TextView optionB;
     TextView optionC;
     TextView optionD;
+    TextView optionE;
     ProgressBar progressBar;
     MaterialButton continueBtn;
 
     int currentQuestion = 1;
 
+    PersonalityInterface personalityListener;
 
-
+    public interface PersonalityInterface{
+        void endTest(EndPersonalityTestRP response);
+    }
     public TestFragment(String unitId, ShortLesson shortLesson, LessonListener listener){
         this.unitId = unitId;
         this.shortLesson = shortLesson;
         this.listener = listener;
+    }
+
+    public TestFragment(ShortLesson personalityLesson, PersonalityInterface personalityListener){
+        if (personalityLesson.getType().equals("PersonalityTest")){
+            this.shortLesson = personalityLesson;
+            this.personalityListener = personalityListener;
+        }
     }
 
 
@@ -102,8 +122,16 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         View view = inflater.inflate(R.layout.fragment_test, container, false);
         findViews(view);
         setUpTitles();
-        fetchTest();
+        if (shortLesson.getType().equals("PersonalityTest"))
+            showStartControls();
+        else
+            fetchTest();
         return view;
+    }
+
+    private void showStartControls() {
+        startBtn.setVisibility(View.VISIBLE);
+        startBtn.setOnClickListener(view -> startPersonalityTest());
     }
 
     private void fetchTest() {
@@ -167,14 +195,42 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         });
     }
 
+    private PersonalityTestModel pTestRP;
+
+    private void startPersonalityTest(){
+        briefLayout.setVisibility(View.GONE);
+        screenState = 1;
+        testLayout.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        APIMethods.startPersonalityTest(new APIResponseListener<PersonalityTestModel>() {
+            @Override
+            public void success(PersonalityTestModel response) {
+                progressBar.setVisibility(View.GONE);
+                pTestRP = response;
+                loadTest();
+            }
+
+            @Override
+            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                Method.showFailedAlert(getActivity(), "Failed: "
+                        + code+" - " + message);
+                progressBar.setVisibility(View.GONE);
+                briefLayout.setVisibility(View.VISIBLE);
+                testLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
     private void loadTest() {
         backBtn.setOnClickListener(view -> reverseFullScreen());
         backBtn.setVisibility(View.VISIBLE);
 
-        setCurrentQuestion();
-        initiateTimer();
-        timer.start();
-        timeLeftTxt.setVisibility(View.VISIBLE);
+        if (!shortLesson.getType().equals("PersonalityTest")) {
+            setCurrentQuestion();
+            initiateTimer();
+            timer.start();
+            timeLeftTxt.setVisibility(View.VISIBLE);
+        }
 
         initiateOptions();
         showQuestion();
@@ -231,11 +287,27 @@ public class TestFragment extends Fragment implements RevLessonInterface{
                 continueBtn.setEnabled(true);
             }
         });
+
+        optionE.setOnClickListener(view -> {
+            inactivateOptions(inactiveBg);
+            if (selectedOption.equals("e")) {
+                selectedOption = "-1";
+                continueBtn.setEnabled(false);
+            } else {
+                selectedOption = "e";
+                view.setBackground(activeBg);
+                continueBtn.setEnabled(true);
+            }
+        });
     }
 
     String selectedOption ="-1";
 
     private void showQuestion() {
+        if (shortLesson.getType().equals("PersonalityTest")){
+            showPersonalityQuestion();
+            return;
+        }
         setCurrentQuestion();
         TestRP.Question question = testRP.getQuestions().get(currentQuestion-1);
 
@@ -324,6 +396,130 @@ public class TestFragment extends Fragment implements RevLessonInterface{
 
     }
 
+    private void showPersonalityQuestion() {
+        setCurrentQuestion();
+        int totalPartInTest = 0;
+        for (int i = 0; i < currentPersonalityTest; i++)
+            totalPartInTest = totalPartInTest+pTestRP.getTests().get(i).getQuestions().size();
+        int actualQuestionIndex = currentQuestion - totalPartInTest -1;
+        QuestionModel question = pTestRP.getTests().get(currentPersonalityTest).getQuestions().get(actualQuestionIndex);
+
+        if (question.getQuestion() != null
+                && !question.getQuestion().isEmpty()){
+            questionTitle.setText(question.getQuestion());
+            questionTitle.setVisibility(View.VISIBLE);
+        } else {
+            questionTitle.setVisibility(View.GONE);
+        }
+
+            questionBody.setVisibility(View.GONE);
+
+
+        if (question.getImage() != null
+                && !question.getImage().isEmpty()){
+            Picasso.get()
+                    .load(question.getImage())
+                    .into(questionImage);
+            questionImage.setVisibility(View.VISIBLE);
+        } else {
+            questionImage.setVisibility(View.GONE);
+        }
+
+        Drawable inactiveBg = getActivity().getResources().getDrawable(R.drawable.bg_round_fg);
+        inactivateOptions(inactiveBg);
+        ArrayList<TextView> optionTxts = (ArrayList<TextView>) Arrays.asList(optionA, optionB,
+                optionC, optionD, optionE);
+        for (TextView textView: optionTxts)
+            textView.setVisibility(View.GONE);
+        if (question.getOptions() != null){
+            for (int i = 0; i <question.getOptions().size(); i++) {
+                if (i > 4){
+                    break;
+                }
+                TextView optionTxt = optionTxts.get(i);
+                AnswerModel option = question.getOptions().get(i);
+                optionTxt.setVisibility(View.VISIBLE);
+                optionTxt.setText(option.getBody());
+            }
+        }
+
+        int totalQuestions = 0;
+        for (TestModel test: pTestRP.getTests())
+            totalQuestions = totalQuestions+test.getQuestions().size();
+        if (currentQuestion == totalQuestions){
+            continueBtn.setText("Submit Test");
+            continueBtn.setOnClickListener(view -> {
+                savePersonalityOption();
+                submitTest();
+            });
+        } else {
+            continueBtn.setText("Next Question");
+            continueBtn.setOnClickListener(view -> {
+                savePersonalityOption();
+                showQuestion();
+            });
+        }
+
+        continueBtn.setVisibility(View.VISIBLE);
+        continueBtn.setEnabled(false);
+    }
+
+    EndTestReq endTestReq;
+
+    private void savePersonalityOption() {
+        if (endTestReq == null){
+            endTestReq = new EndTestReq();
+        }
+
+        int totalPartInTest = 0;
+        for (int i = 0; i < currentPersonalityTest; i++)
+            totalPartInTest = totalPartInTest+pTestRP.getTests().get(i).getQuestions().size();
+        int actualQuestionIndex = currentQuestion - totalPartInTest -1;
+
+        while (endTestReq.getTests().size() < currentPersonalityTest+1){
+            endTestReq.getTests().add(new EndTestModel(
+                    endTestReq.getTests().size(), pTestRP.getTests().get(endTestReq.getTests().size()).getId()
+            ));
+        }
+        EndTestModel endTestModel = endTestReq.getTests().get(currentPersonalityTest);
+        EndAnswerModel endAnswerModel = new EndAnswerModel();
+        int answerIndex = -1;
+        switch (selectedOption){
+            case "a":
+                answerIndex = 0;
+                break;
+            case "b":
+                answerIndex = 1;
+                break;
+            case "c":
+                answerIndex = 2;
+                break;
+            case "d":
+                answerIndex = 3;
+                break;
+            case "e":
+                answerIndex = 4;
+                break;
+        }
+
+        endAnswerModel.setOption_index(answerIndex);
+        endAnswerModel.setOption_id(pTestRP
+                .getTests().get(currentPersonalityTest).getQuestions()
+                .get(actualQuestionIndex).getOptions()
+                .get(answerIndex).getId());
+
+        endAnswerModel.setQuestion_index(actualQuestionIndex);
+        endAnswerModel.setQuestion_id(pTestRP
+                .getTests().get(currentPersonalityTest).getQuestions()
+                .get(actualQuestionIndex).getId());
+
+        endTestModel.getAnswers().add(endAnswerModel);
+        if (actualQuestionIndex >= pTestRP.getTests()
+                .get(currentPersonalityTest).getQuestions().size() - 1)
+            currentPersonalityTest++;
+        currentQuestion++;
+    }
+
     private TestRP resultResponse;
 
     private LinearLayout resultLayout;
@@ -355,24 +551,43 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         resultProgressBar.setVisibility(View.VISIBLE);
         resultInfoTxt.setVisibility(View.VISIBLE);
 
-        APIMethods.submitTest(shortLesson.getId(), unitId, questionIds, answers, new APIResponseListener<TestRP>() {
-            @Override
-            public void success(TestRP response) {
-                resultInfoTxt.setVisibility(View.GONE);
-                resultProgressBar.setVisibility(View.GONE);
-                resultResponse = response;
-                showResult();
-            }
+        if (shortLesson.getType().equals("PersonalityTest")){
+            APIMethods.endPersonalityTest(endTestReq, new APIResponseListener<EndPersonalityTestRP>() {
+                @Override
+                public void success(EndPersonalityTestRP response) {
+                    personalityListener.endTest(response);
+                }
 
-            @Override
-            public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
-                resultProgressBar.setVisibility(View.GONE);
-                testLayout.setVisibility(View.VISIBLE);
-                resultLayout.setVisibility(View.GONE);
-                Method.showFailedAlert(getActivity(), "Failed: "
-                        + code+" - " + message);
-            }
-        });
+                @Override
+                public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                    resultProgressBar.setVisibility(View.GONE);
+                    testLayout.setVisibility(View.VISIBLE);
+                    resultLayout.setVisibility(View.GONE);
+                    Method.showFailedAlert(getActivity(), "Failed: "
+                            + code + " - " + message);
+                }
+            });
+        } else {
+
+            APIMethods.submitTest(shortLesson.getId(), unitId, questionIds, answers, new APIResponseListener<TestRP>() {
+                @Override
+                public void success(TestRP response) {
+                    resultInfoTxt.setVisibility(View.GONE);
+                    resultProgressBar.setVisibility(View.GONE);
+                    resultResponse = response;
+                    showResult();
+                }
+
+                @Override
+                public void fail(String code, String message, String redirectLink, boolean retry, boolean cancellable) {
+                    resultProgressBar.setVisibility(View.GONE);
+                    testLayout.setVisibility(View.VISIBLE);
+                    resultLayout.setVisibility(View.GONE);
+                    Method.showFailedAlert(getActivity(), "Failed: "
+                            + code + " - " + message);
+                }
+            });
+        }
     }
 
     private void showResult() {
@@ -417,6 +632,7 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         optionB.setBackground(inactiveBg);
         optionC.setBackground(inactiveBg);
         optionD.setBackground(inactiveBg);
+        optionE.setBackground(inactiveBg);
     }
 
     CountDownTimer timer;
@@ -442,12 +658,18 @@ public class TestFragment extends Fragment implements RevLessonInterface{
     }
 
     private void finishTest() {
-        //Todo: send responses to server and show result.
+        submitTest();
     }
+
+    int currentPersonalityTest = 0;
 
     private void setCurrentQuestion() {
         int totalQues = 0;
-        if (testRP != null
+        if (shortLesson.getType().equals("PersonalityTest")){
+            for (TestModel test: pTestRP.getTests()){
+                totalQues = totalQues+test.getQuestions().size();
+            }
+        } else if (testRP != null
                 && testRP.getQuestions() != null)
             totalQues = testRP.getQuestions().size();
         else
@@ -496,6 +718,7 @@ public class TestFragment extends Fragment implements RevLessonInterface{
         optionB = view.findViewById(R.id.optionB);
         optionC = view.findViewById(R.id.optionC);
         optionD = view.findViewById(R.id.optionD);
+        optionE = view.findViewById(R.id.optionE);
         progressBar = view.findViewById(R.id.progressBar);
         continueBtn = view.findViewById(R.id.continueBtn);
 

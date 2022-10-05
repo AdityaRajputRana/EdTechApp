@@ -1,5 +1,7 @@
 package com.quaser.edtechapp.PersonalityTest;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
 public class EndTestModel {
@@ -7,7 +9,9 @@ public class EndTestModel {
     String id;
     ArrayList<EndAnswerModel> answers;
 
-    public EndTestModel() {
+    public EndTestModel(int index, @Nullable String id) {
+        this.id = id;
+        this.index = index;
     }
 
     public int getIndex() {
@@ -27,6 +31,9 @@ public class EndTestModel {
     }
 
     public ArrayList<EndAnswerModel> getAnswers() {
+        if (answers == null){
+            answers = new ArrayList<EndAnswerModel>();
+        }
         return answers;
     }
 
