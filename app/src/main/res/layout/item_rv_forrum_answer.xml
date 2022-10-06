@@ -7,6 +7,40 @@
     android:background="@color/color_fg"
     android:layout_height="wrap_content">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="8dp"
+        android:id="@+id/userInfoLayout">
+
+        <ImageView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_display_picture"
+            android:scaleType="centerCrop"
+            android:id="@+id/userDisplayImg" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/userDisplayImg"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/userNameTxt"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="14sp"
+            android:text="Anonymous User"
+            android:textColor="@color/color_secondary_txt" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <TextView
         android:id="@+id/likeTxt"
         android:layout_width="wrap_content"
@@ -21,7 +55,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/userInfoLayout" />
 
     <com.quaser.edtechapp.wsywig.Editor
         android:layout_width="0dp"
@@ -32,7 +66,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/likeTxt"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userInfoLayout"
         app:placeholder="This is body of answer"
         app:render_type="Renderer"></com.quaser.edtechapp.wsywig.Editor>
 

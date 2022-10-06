@@ -16,6 +16,14 @@ public class Answer {
     int total_upvotes;
     String head;
     boolean unliked;
+    String user_name;
+    String display_picture;
+
+    public String getDisplay_picture(){
+        return display_picture;
+    }
+    public String getUser_name(){return user_name;}
+
 
     public String get_id() {
         return _id;

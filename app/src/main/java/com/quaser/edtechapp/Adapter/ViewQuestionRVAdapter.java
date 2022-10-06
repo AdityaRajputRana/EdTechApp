@@ -185,6 +185,15 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_like, 0, 0);
 
 
+            if (answer.getDisplay_picture() != null && !answer.getDisplay_picture().isEmpty())
+                Picasso.get()
+                        .load(answer.getDisplay_picture())
+                        .transform(new CircleTransform())
+                        .into(holder.userDisplayImg);
+            if (answer.getUser_name() != null && !answer.getUser_name().isEmpty())
+                holder.userDisplayName.setText(answer.getUser_name());
+
+
             holder.upvotesTxt.setOnClickListener(view -> {
                 answer.setIs_liked(!answer.isIs_liked());
                 if (answer.isIs_liked())
@@ -221,9 +230,11 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         else
                             holder.upvotesTxt.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_like, 0, 0);
 
-                            Method.showFailedAlert(context, code + " - "+  message);
+                        Method.showFailedAlert(context, code + " - "+  message);
                     }
                 });
+
+
             });
 
         }
@@ -302,11 +313,16 @@ public class ViewQuestionRVAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView upvotesTxt;
         Editor body;
 
+        ImageView userDisplayImg;
+        TextView userDisplayName;
+
         public AnswerViewHolder(@NonNull View itemView) {
             super(itemView);
 
             body = itemView.findViewById(R.id.bodyTxt);
             upvotesTxt = itemView.findViewById(R.id.likeTxt);
+            userDisplayImg = itemView.findViewById(R.id.userDisplayImg);
+            userDisplayName = itemView.findViewById(R.id.userNameTxt);
         }
     }
 }
