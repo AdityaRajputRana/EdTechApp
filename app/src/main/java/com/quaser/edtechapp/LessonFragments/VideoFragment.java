@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.text.Layout;
 import android.util.Log;
 import android.util.Pair;
@@ -52,6 +53,7 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.quaser.edtechapp.Interface.LessonListener;
 import com.quaser.edtechapp.Interface.RevLessonInterface;
@@ -62,7 +64,10 @@ import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.VideoLessonRP;
 import com.quaser.edtechapp.utils.Method;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class VideoFragment extends Fragment implements RevLessonInterface {
@@ -93,6 +98,11 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
     private DefaultTrackSelector trackSelector;
 
     private AppCompatImageView fullScreenBtn;
+
+
+    private TextView piracyTxt1;
+    private TextView piracyTxt2;
+    private TextView piracyTxt3;
 
     private void releasePlayer() {
         if (player != null) {
@@ -229,10 +239,85 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         shortLesson.setShort_description(response.getShort_description());
         setUpTitles();
         setUpMediaSource();
+        setUpPiracyProtection();
 
 //        continueBtn.setText(R.string.full_screen);
 //        continueBtn.setVisibility(View.VISIBLE);
 //        continueBtn.setOnClickListener(view -> fullScreen());
+    }
+
+    private Handler piracyHandler;
+    private Runnable piracyRunnable;
+    private void setUpPiracyProtection() {
+        piracyHandler = new Handler();
+        piracyRunnable = new Runnable() {
+            @Override
+            public void run() {
+                showRandomUserInfoOnVideo();
+                int random = new Random().nextInt(20);
+                random = random + 10;
+                long time = random*1000;
+                piracyHandler.postDelayed(piracyRunnable, time);
+            }
+        };
+        int random = new Random().nextInt(25);
+        random = random + 20;
+        long time = random*1000;
+        piracyHandler.postDelayed(piracyRunnable, time);
+    }
+
+    private void showRandomUserInfoOnVideo() {
+        int random = new Random().nextInt(3);
+        String textToShow = "";
+        int textRand = new Random().nextInt(3);
+        if (textRand == 0) {
+            textToShow = FirebaseAuth.getInstance()
+                    .getCurrentUser().getUid();
+            if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() != null
+            && !FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().isEmpty()){
+                textToShow = textToShow + "\n" + FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+            }
+        } else if (textRand == 1){
+            textToShow = FirebaseAuth.getInstance()
+                    .getCurrentUser().getUid();
+            if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() != null
+                    && !FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().isEmpty()){
+                textToShow = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+            }
+        } else {
+            textToShow = FirebaseAuth.getInstance()
+                    .getCurrentUser().getUid();
+        }
+
+        TextView randomTxtView;
+        if (random == 0)
+            randomTxtView = piracyTxt1;
+        else if (random == 1)
+            randomTxtView = piracyTxt2;
+        else
+            randomTxtView = piracyTxt3;
+
+        String finalTextToShow = textToShow;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                randomTxtView.setText(finalTextToShow);
+                randomTxtView.setVisibility(View.VISIBLE);
+            }
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                randomTxtView.setVisibility(View.GONE);
+            }
+        }, 6000);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (piracyHandler != null && piracyRunnable != null)
+            piracyHandler.removeCallbacks(piracyRunnable);
     }
 
     boolean isFullScreen = false;
@@ -362,6 +447,10 @@ public class VideoFragment extends Fragment implements RevLessonInterface {
         fullScreenBtn = controls.findViewById(R.id.fullScreenBtn);
         exo_quality = controls.findViewById(R.id.qualityBtn);
         rootLayout = view.findViewById(R.id.rootLayout);
+
+        piracyTxt1 = view.findViewById(R.id.piracyTxt1);
+        piracyTxt2 = view.findViewById(R.id.piracyTxt2);
+        piracyTxt3 = view.findViewById(R.id.piracyTxt3);
         setOnClicks();
     }
 

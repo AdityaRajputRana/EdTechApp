@@ -15,6 +15,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.quaser.edtechapp.R;
+import com.quaser.edtechapp.utils.Transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 
@@ -64,6 +65,7 @@ public class ResultFragment extends Fragment {
             Picasso.get()
                     .load(FirebaseAuth.getInstance()
                             .getCurrentUser().getPhotoUrl().toString())
+                    .transform(new CircleTransform())
                     .into(displayImg);
 
         titleTxt.setText(personality.title);
@@ -71,25 +73,31 @@ public class ResultFragment extends Fragment {
         bodyTxt.setText(personality.body);
 
         String strengths = "";
-        for (String s: personality.strengths){
-            strengths = strengths + ", " + s;
+        if (personality.strengths != null) {
+            for (String s : personality.strengths) {
+                strengths = strengths + ", " + s;
+            }
+            strengths = strengths.substring(2);
+            strengthsTxt.setText(strengths);
         }
-        strengths = strengths.substring(2);
-        strengthsTxt.setText(strengths);
 
         String weakness = "";
-        for (String s: personality.weakness){
-            weakness = weakness + ", " + s;
+        if (personality.weakness != null) {
+            for (String s : personality.weakness) {
+                weakness = weakness + ", " + s;
+            }
+            weakness = weakness.substring(2);
+            weaknessTxt.setText(weakness);
         }
-        weakness = weakness.substring(2);
-        weaknessTxt.setText(weakness);
 
         String career = "";
-        for (String s: personality.career_options){
-            career = career+ ", " + s;
+        if (personality.career_options != null) {
+            for (String s : personality.career_options) {
+                career = career + ", " + s;
+            }
+            career = career.substring(2);
+            careerTxt.setText(career);
         }
-        career = career.substring(2);
-        careerTxt.setText(career);
 
         LayoutInflater inflater = LayoutInflater.from(scoreLayout.getContext());
         for (ScoreModel scoreModel: personality.scores){

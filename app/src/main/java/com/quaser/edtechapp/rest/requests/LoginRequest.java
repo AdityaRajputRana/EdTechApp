@@ -9,6 +9,7 @@ public class LoginRequest {
     String user_id;
     String phone_number;
     String name;
+    String device_id; //Todo:SL inflate this
     public LoginRequest(){
         user_id = AuthUtils.getUserId();
         this.phone_number = FirebaseAuth.getInstance().getCurrentUser()

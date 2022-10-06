@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
+
     private boolean isAnoSignUp = false;
 
     @Override
@@ -161,7 +162,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 startProgress("Phone number verified! Logging you in.");
                                 login(task.getResult().getAdditionalUserInfo().isNewUser());
-                                // Todo: Communicate to our server and login
                             } else {
                                 if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                     wrongCode();
@@ -180,6 +180,10 @@ public class LoginActivity extends AppCompatActivity {
         APIMethods.login(new APIResponseListener<LoginRP>() {
             @Override
             public void success(LoginRP response) {
+                //Todo: Check here is server login success or failed due to secondary device
+                //if failed show a message with input and save it to server with new device id.
+                //Make repective change in LoginRP
+                //Save the login
                 Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                 if (newUser || response.isIs_new_user()){
                     userCreatedOnServer = true;

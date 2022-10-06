@@ -71,6 +71,52 @@
             app:controller_layout_id="@layout/exo_full_screen_controls"
             android:layout_gravity="center"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/piracyTxt1"
+            app:layout_constraintTop_toTopOf="@id/exoPlayer"
+            app:layout_constraintStart_toStartOf="@id/exoPlayer"
+            android:fontFamily="@font/poppins_light"
+            android:elevation="20dp"
+            android:text="Phone Number here"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:layout_margin="18dp"
+            android:textColor="@color/color_secondary_txt" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/piracyTxt2"
+            app:layout_constraintTop_toTopOf="@id/exoPlayer"
+            app:layout_constraintStart_toStartOf="@id/exoPlayer"
+            android:elevation="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/exoPlayer"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Phone Number here"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:fontFamily="@font/poppins_light"
+            android:layout_margin="18dp"
+            android:textColor="@color/color_secondary_txt" />
+
+        <TextView
+            android:id="@+id/piracyTxt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:fontFamily="@font/poppins_light"
+            android:elevation="20dp"
+            android:visibility="gone"
+            android:text="Phone Number here"
+            app:layout_constraintVertical_bias="0.3"
+            android:textColor="@color/color_secondary_txt"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/exoPlayer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header" />
+
 <!--        <ImageButton-->
 <!--            android:id="@+id/qualityBtn"-->
 <!--            android:layout_width="35dp"-->
