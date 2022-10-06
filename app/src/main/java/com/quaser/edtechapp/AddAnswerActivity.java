@@ -3,12 +3,16 @@ package com.quaser.edtechapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -29,6 +33,7 @@ import com.quaser.edtechapp.wsywig.EditorListener;
 import com.quaser.edtechapp.wsywig.models.EditorTextStyle;
 import com.quaser.edtechapp.wsywig.models.Node;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -113,6 +118,20 @@ public class AddAnswerActivity extends AppCompatActivity {
 
         AddAnswerRQ addAnswerRQ = new AddAnswerRQ(imageUrl, head, answer, answer, editor.getContentAsSerialized(), mediaInput, questionId   );
         postAnswer(addAnswerRQ);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                editor.insertImage(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void postAnswer(AddAnswerRQ addAnswerRQ) {
@@ -224,35 +243,6 @@ public class AddAnswerActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.action_color).setVisibility(View.GONE);
-
-
-//            findViewById(R.id.action_color).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    new ColorPickerPopup.Builder(AddAnswerActivity.this)
-//                            .initialColor(Color.RED) // Set initial color
-//                            .enableAlpha(true) // Enable alpha slider or not
-//                            .okTitle("Choose")
-//                            .cancelTitle("Cancel")
-//                            .showIndicator(true)
-//                            .showValue(true)
-//                            .build()
-//                            .show(findViewById(android.R.id.content), new ColorPickerPopup.ColorPickerObserver() {
-//                                @Override
-//                                public void onColorPicked(int color) {
-//                                    Toast.makeText(EditorTestActivity.this, "picked" + colorHex(color), Toast.LENGTH_LONG).show();
-//                                    editor.updateTextColor(colorHex(color));
-//                                }
-//
-//                                @Override
-//                                public void onColor(int color, boolean fromUser) {
-//
-//                                }
-//                            });
-//
-//
-//                }
-//            });
 
         findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
             @Override

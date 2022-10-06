@@ -8,6 +8,63 @@
     android:orientation="horizontal">
 
 
+
+
+    <ImageButton
+        android:id="@+id/action_bold"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:maxHeight="20dp"
+        android:maxWidth="20dp"
+        android:src="@drawable/icon_bold" />
+
+    <ImageButton
+        android:id="@+id/action_Italic"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:maxHeight="20dp"
+        android:maxWidth="20dp"
+        android:src="@drawable/icon_italic" />
+    <ImageButton
+        android:id="@+id/action_hr"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:maxHeight="20dp"
+        android:maxWidth="20dp"
+        android:src="@drawable/icon_hr" />
+
+
+
+    <ImageButton
+        android:id="@+id/action_insert_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:maxHeight="20dp"
+        android:maxWidth="20dp"
+        android:src="@drawable/icon_image" />
+
+    <ImageButton
+        android:id="@+id/action_bulleted"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:maxHeight="20dp"
+        android:maxWidth="20dp"
+        android:src="@drawable/icon_bullet_list" />
+
+    <ImageButton
+        android:id="@+id/action_unordered_numbered"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:maxHeight="20dp"
+        android:maxWidth="20dp"
+        android:src="@drawable/icon_numbered_list" />
+
     <Button
         android:id="@+id/action_h1"
         android:layout_width="40dp"
@@ -43,24 +100,6 @@
         android:textColor="#444444"
         android:textSize="16sp"
         android:textStyle="bold" />
-
-    <ImageButton
-        android:id="@+id/action_bold"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:maxHeight="20dp"
-        android:maxWidth="20dp"
-        android:src="@drawable/icon_bold" />
-
-    <ImageButton
-        android:id="@+id/action_Italic"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:maxHeight="20dp"
-        android:maxWidth="20dp"
-        android:src="@drawable/icon_italic" />
 
     <ImageButton
         android:id="@+id/action_indent"
@@ -102,43 +141,9 @@
         android:src="@drawable/highlight" />
 
 
-    <ImageButton
-        android:id="@+id/action_bulleted"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:maxHeight="20dp"
-        android:maxWidth="20dp"
-        android:src="@drawable/icon_bullet_list" />
-
-    <ImageButton
-        android:id="@+id/action_unordered_numbered"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:maxHeight="20dp"
-        android:maxWidth="20dp"
-        android:src="@drawable/icon_numbered_list" />
-
-    <ImageButton
-        android:id="@+id/action_hr"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:maxHeight="20dp"
-        android:maxWidth="20dp"
-        android:src="@drawable/icon_hr" />
 
 
 
-    <ImageButton
-        android:id="@+id/action_insert_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:maxHeight="20dp"
-        android:maxWidth="20dp"
-        android:src="@drawable/icon_image" />
 
 
     <ImageButton
