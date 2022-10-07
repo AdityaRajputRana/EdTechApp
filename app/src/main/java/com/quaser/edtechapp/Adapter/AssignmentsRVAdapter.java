@@ -1,6 +1,7 @@
 package com.quaser.edtechapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.quaser.edtechapp.FrameActivity;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.rest.response.AssignmentListRP;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
@@ -64,6 +67,12 @@ public class AssignmentsRVAdapter extends RecyclerView.Adapter<AssignmentsRVAdap
         holder.statusTxt.setText(status);
         holder.actionTxt.setVisibility(View.INVISIBLE);
 
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, FrameActivity.class);
+            intent.putExtra("type", "assignment");
+            intent.putExtra("assignment", new Gson().toJson(assignmentRP));
+            context.startActivity(intent);
+        });
     }
 
     @Override

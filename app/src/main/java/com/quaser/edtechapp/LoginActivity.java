@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -177,19 +178,29 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(boolean newUser) {
             userCreatedOnFirebase = true;
-        APIMethods.login(new APIResponseListener<LoginRP>() {
+        APIMethods.login(this, new APIResponseListener<LoginRP>() {
             @Override
             public void success(LoginRP response) {
                 //Todo: Check here is server login success or failed due to secondary device
                 //if failed show a message with input and save it to server with new device id.
-                //Make repective change in LoginRP
                 //Save the login
                 Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                 if (newUser || response.isIs_new_user()){
+                    AuthUtils.setDeviceIdVerified(LoginActivity.this, true);
                     userCreatedOnServer = true;
                     startNameActivity();
-                } else
-                    startMainActivity();
+                } else {
+                    AuthUtils.setDeviceIdVerified(LoginActivity.this, response.isDevice_id_matched());
+                    if (response.isDevice_id_matched()){
+                        startMainActivity();
+                    } else {
+                        LoginActivity.this
+                                .startActivity(new Intent(
+                                        LoginActivity.this, DeviceChangeActivity.class
+                                ));
+                        LoginActivity.this.finish();
+                    }
+                }
             }
 
             @Override
@@ -213,7 +224,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && !isAnoSignUp){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && !isAnoSignUp
+        && userCreatedOnServer && AuthUtils.isDeviceIdVerified(this)){
             startMainActivity();
         }
     }
@@ -355,6 +367,7 @@ public class LoginActivity extends AppCompatActivity {
     private void startNameActivity() {
         if (userCreatedOnServer || isAnoSignUp) {
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                AuthUtils.setDeviceIdVerified(this, true);
                 Intent intent = new Intent(this, NameActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -368,6 +381,7 @@ public class LoginActivity extends AppCompatActivity {
     private void startMainActivity() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             AuthUtils.nameAdded(this);
+            AuthUtils.setDeviceIdVerified(this, true);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             this.finish();

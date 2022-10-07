@@ -108,7 +108,8 @@ public class API {
                                 Log.i("Lesson Response", response.toString());
                                 Boolean successful = response.getBoolean("success");
                                 if (successful) {
-                                    if (!response.getString("data").isEmpty()) {
+                                    if (response.getString("data") != null
+                                    && !response.getString("data").isEmpty()) {
                                         String data = "";
                                         if (klass == ArrayList.class){
                                              data = response.getJSONArray("data").toString();
@@ -118,7 +119,7 @@ public class API {
 //                                    String decodedData = HashUtils.fromBase64(data);
                                         listener.convertData(new Gson().fromJson(data, klass));
                                     } else {
-                                        listener.convertData("");
+                                        listener.convertData(null);
                                     }
                                 } else {
                                     listener.fail("2", response.getString("message"), "", true, false);

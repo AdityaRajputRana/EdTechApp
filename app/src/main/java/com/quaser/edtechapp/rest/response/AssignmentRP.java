@@ -30,6 +30,7 @@ public class AssignmentRP {
     String sample;
 
     String assignment_url;
+    String prev_assignment_url;
     String placeholder;
     String status;
 
@@ -60,6 +61,10 @@ public class AssignmentRP {
 
     public String getAssignment_url() {
         return assignment_url;
+    }
+
+    public String getPrev_assignment_url() {
+        return prev_assignment_url;
     }
 
 

@@ -103,4 +103,14 @@ public class AuthUtils {
         }
         return mPref;
     }
+
+    public static void setDeviceIdVerified(Context context, boolean isVerified){
+        getSharedPref(context).edit()
+                .putBoolean("isDeviceIDVerified", isVerified)
+                .commit();
+    }
+
+    public static boolean isDeviceIdVerified(Context context){
+        return getSharedPref(context).getBoolean("isDeviceIDVerified", false);
+    }
 }

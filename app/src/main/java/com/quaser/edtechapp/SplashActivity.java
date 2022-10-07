@@ -75,6 +75,10 @@ public class SplashActivity extends AppCompatActivity {
         if (isOnboarded){
             boolean isLoggedIn = AuthUtils.getInstance().isLoggedIn();
             if (isLoggedIn) {
+                if (!AuthUtils.isDeviceIdVerified(this)){
+                    startDeviceChangeActivity();
+                    return;
+                }
                 if (!AuthUtils.isNameAdded(this))
                     startActivity(new Intent(this, NameActivity.class));
                 else
@@ -85,6 +89,13 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             startActivity(new Intent(this, OnBoardingActivity.class));
         }
+        this.finish();
+    }
+
+    private void startDeviceChangeActivity() {
+        startActivity(new Intent(
+                this, DeviceChangeActivity.class
+        ));
         this.finish();
     }
 }

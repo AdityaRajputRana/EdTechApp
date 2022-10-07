@@ -11,6 +11,7 @@ import com.quaser.edtechapp.models.NotificationModel;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddAnswerRQ;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
+import com.quaser.edtechapp.rest.requests.ChangeDeviceReq;
 import com.quaser.edtechapp.rest.requests.ForumReq;
 import com.quaser.edtechapp.rest.requests.SubmitAssignmentReq;
 import com.quaser.edtechapp.rest.requests.SubmitTestReq;
@@ -25,7 +26,9 @@ import com.quaser.edtechapp.rest.requests.UploadFileReq;
 import com.quaser.edtechapp.rest.requests.VerifyLessonPaymentReq;
 import com.quaser.edtechapp.rest.response.AssignmentListRP;
 import com.quaser.edtechapp.rest.response.AssignmentRP;
+import com.quaser.edtechapp.rest.response.ChangeDeviceRP;
 import com.quaser.edtechapp.rest.response.DataRp;
+import com.quaser.edtechapp.rest.response.DeviceChangeRP;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
 import com.quaser.edtechapp.rest.response.LoginRP;
@@ -39,6 +42,7 @@ import com.quaser.edtechapp.rest.response.TagsRP;
 import com.quaser.edtechapp.rest.response.TestRP;
 import com.quaser.edtechapp.rest.response.UnitRP;
 import com.quaser.edtechapp.rest.response.VerifiedPaymentRP;
+import com.quaser.edtechapp.utils.Tools;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -55,8 +59,8 @@ public class APIMethods {
         API.postData(listener, "{}", EndPoints.tags, TagsRP.class);
     }
 
-    public static void login(APIResponseListener<LoginRP> listener){
-        LoginRequest req = new LoginRequest();
+    public static void login(Activity activity, APIResponseListener<LoginRP> listener){
+        LoginRequest req = new LoginRequest(activity);
         API.postData(listener, req, EndPoints.login, LoginRP.class);
     }
 
@@ -265,6 +269,16 @@ public class APIMethods {
 
     public static void endPersonalityTest(EndTestReq req, APIResponseListener<EndPersonalityTestRP> listener){
         API.postData(listener, req, EndPoints.endPersonalityTest, EndPersonalityTestRP.class);
+    }
+
+    public static void isDeviceChanged(APIResponseListener<DeviceChangeRP> listener){
+        HomeReq req = new HomeReq();
+        API.postData(listener, req, EndPoints.isDeviceChanged, DeviceChangeRP.class);
+    }
+
+    public static void changeDevice(Activity activity, String message, APIResponseListener<ChangeDeviceRP> listener){
+        ChangeDeviceReq req = new ChangeDeviceReq(Tools.getUniqueDeviceId(activity), message);
+        API.postData(listener, req, EndPoints.changeDevice, ChangeDeviceRP.class);
     }
 
 

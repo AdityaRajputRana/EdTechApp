@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/color_bg"
+    android:orientation="vertical"
+    tools:context=".DeviceChangeActivity">
+
+
+
+    <LinearLayout
+        android:id="@+id/submitLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleTxt"
+        android:textColor="@color/color_primary_txt"
+        android:text="Looks like you are logging into a new device"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/bodyEt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:gravity="top"
+        android:hint="Explain the reason for logging into here. Our team will reach out to you soon"
+        android:layout_weight="1"
+        android:fontFamily="@font/poppins"
+        android:textSize="16sp"
+        android:textColor="@color/color_secondary_txt"
+        android:background="@drawable/bg_round_fg"
+        android:layout_marginTop="8dp" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:visibility="gone"
+        android:id="@+id/submitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:backgroundTint="@color/color_cta"
+        android:text="Submit"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins"
+        android:layout_marginTop="8dp"
+        android:drawableRight="@drawable/ic_cont_arrow"
+        android:paddingStart="48dp"
+        app:cornerRadius="16dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logOutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Log out"
+        android:textColor="@color/color_cta"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins"
+        app:cornerRadius="16dp" />
+
+
+</LinearLayout>
