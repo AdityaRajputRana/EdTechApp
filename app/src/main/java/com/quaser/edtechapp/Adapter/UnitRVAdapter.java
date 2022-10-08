@@ -189,11 +189,30 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.viewAllBtn.setText("View All");
                 holder.viewAllBtn.setOnClickListener(view -> {
                     rvState =1;
+//                    notifyItemRangeChanged(1, 4);
+//                    notifyItemRangeInserted(5, unitRP.getLesson().size()-4);
+//                    notifyItemChanged(unitRP.getLesson().size()+1);
+                    if (firstFilteredLesson != 0)
+                        notifyItemRangeInserted(1, firstFilteredLesson);
+                    if (unitRP.getLesson().size() - firstFilteredLesson - 4 > 0)
+                        notifyItemRangeInserted(firstFilteredLesson+5, unitRP.getLesson().size() - firstFilteredLesson - 4);
+                    notifyItemChanged(unitRP.getLesson().size()+1);
+
                 });
             } else {
                 holder.viewAllBtn.setText("View Less");
                 holder.viewAllBtn.setOnClickListener(view -> {
                     rvState =0;
+//                    notifyItemRangeChanged(1, 4);
+//                    notifyItemRangeRemoved(5, unitRP.getLesson().size()-4);
+//                    notifyItemChanged(5);
+
+                    if (firstFilteredLesson != 0)
+                        notifyItemRangeRemoved(1, firstFilteredLesson);
+                    if (unitRP.getLesson().size() - firstFilteredLesson - 4 > 0)
+                        notifyItemRangeRemoved(5, unitRP.getLesson().size() - firstFilteredLesson - 4);
+                    notifyItemChanged(5);
+
                 });
             }
         }
