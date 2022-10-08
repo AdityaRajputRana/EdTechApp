@@ -27,7 +27,7 @@ public class UnitRP {
     boolean is_paid;
     boolean has_user_purchased = false;
     boolean has_user_started = false;
-    ArrayList<ShortAssignment> assignments = new ArrayList<ShortAssignment>();
+    ArrayList<AssignmentRP> assignments = new ArrayList<AssignmentRP>();
     LastLesson start_at;
     ArrayList<ShortLesson> additionals;
 
@@ -123,11 +123,11 @@ public class UnitRP {
         this.has_user_started = has_user_started;
     }
 
-    public ArrayList<ShortAssignment> getAssignments() {
+    public ArrayList<AssignmentRP> getAssignments() {
         return assignments;
     }
 
-    public void setAssignments(ArrayList<ShortAssignment> assignments) {
+    public void setAssignments(ArrayList<AssignmentRP> assignments) {
         this.assignments = assignments;
     }
 

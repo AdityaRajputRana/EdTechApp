@@ -1,6 +1,7 @@
 package com.quaser.edtechapp.Adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +16,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
+import com.quaser.edtechapp.FrameActivity;
 import com.quaser.edtechapp.LiveData.UnitData;
 import com.quaser.edtechapp.R;
 import com.quaser.edtechapp.models.ShortLesson;
+import com.quaser.edtechapp.rest.response.AssignmentListRP;
 import com.quaser.edtechapp.rest.response.UnitRP;
 
 import org.w3c.dom.Text;
@@ -30,6 +34,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 
 public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -41,6 +46,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     int firstFilteredLesson = 0;
     private void filterLessons(){
         filteredLessons = new ArrayList<ShortLesson>();
+        firstFilteredLesson = unitRP.getLesson().size();
         boolean gotActive = false;
         for (int i = 0; i < unitRP.getLesson().size(); i++){
             if (filteredLessons.size() >3){
@@ -107,7 +113,12 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 unitRP = newUnit;
                 filterLessons();
                 notifyItemChanged(0);
-                notifyItemChanged(changedItem);
+                if (rvState == 0){
+                    int k = Math.min(unitRP.getLesson().size(), 4);
+                    notifyItemRangeChanged(1, 4);
+                } else {
+                    notifyItemRangeChanged(1, unitRP.getLesson().size());
+                }
             }
         });
     }
@@ -213,6 +224,106 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         notifyItemRangeRemoved(5, unitRP.getLesson().size() - firstFilteredLesson - 4);
                     notifyItemChanged(5);
 
+                });
+            }
+        }
+        else if (mHolder instanceof AssignmentsViewHolder){
+            AssignmentsViewHolder holder = (AssignmentsViewHolder) mHolder;
+            AssignmentListRP rp = new AssignmentListRP(unitRP.getAssignments());
+            AssignmentsRVAdapter adapter = new AssignmentsRVAdapter(rp, activity);
+            LinearLayoutManager manager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+            holder.recyclerView.setAdapter(adapter);
+            holder.recyclerView.setLayoutManager(manager);
+        }
+        else if (mHolder instanceof AdditionalViewHolder){
+            AdditionalViewHolder holder = (AdditionalViewHolder) mHolder;
+
+            int alpha, beta, gama;
+            alpha = beta = gama = 0;
+
+            if (unitRP.getLesson() != null)
+                alpha = unitRP.getLesson().size();
+            if (unitRP.getAssignments() != null) //Todo get this from api
+                beta = unitRP.getAssignments().size();
+            if (unitRP.getAdditionals() != null)
+                gama = unitRP.getAdditionals().size();
+
+            int k = Math.min(alpha, 4);
+            if (rvState == 1){
+                k = alpha;
+            }
+
+            int p = position - 1 - k - (alpha>4?1:0) - (beta>0?1:0);
+
+            if (p==0){
+                holder.additionalTitleTxt.setVisibility(View.VISIBLE);
+            } else
+                holder.additionalTitleTxt.setVisibility(View.GONE);
+
+            ArrayList<ShortLesson> adsnl = unitRP.getAdditionals();
+
+            int index = p*2;
+
+            holder.titleTxt1.setText(adsnl.get(index).getName());
+            holder.typeTxt1.setText(adsnl.get(index).getType().substring(0, 1).toUpperCase(Locale.ROOT)
+            + adsnl.get(index).getType().substring(1));
+
+            int rid = R.drawable.ic_baseline_play_lesson_24;
+            switch (adsnl.get(index).getType()){
+                case "video":
+                    rid = R.drawable.ic_baseline_play_arrow_24;
+                    break;
+                case "test":
+                    rid = R.drawable.ic_baseline_question_answer_24;
+                    break;
+                case "article":
+                    rid = R.drawable.ic_baseline_article_24;
+                    break;
+                case "assignment":
+                    rid = R.drawable.ic_lesson_assignment;
+                    break;
+            }
+            holder.iconImg1.setImageDrawable(activity.getDrawable(rid));
+            ShortLesson s1 = adsnl.get(p);
+            holder.layout1.setOnClickListener(view -> {
+                Intent intent = new Intent(activity, FrameActivity.class);
+                intent.putExtra("type", "SHORT_LESSON");
+                intent.putExtra("SHORT_LESSON", new Gson().toJson(s1));
+                activity.startActivity(intent);
+            });
+
+            index++;
+            if (index >= adsnl.size()){
+                holder.layout2.setVisibility(View.GONE);
+            } else {
+                holder.layout2.setVisibility(View.VISIBLE);
+                holder.titleTxt2.setText(adsnl.get(index).getName());
+                holder.typeTxt2.setText(adsnl.get(index).getType().substring(0, 1).toUpperCase(Locale.ROOT)
+                        + adsnl.get(index).getType().substring(1));
+
+                rid = R.drawable.ic_baseline_play_lesson_24;
+                switch (adsnl.get(index).getType()){
+                    case "video":
+                        rid = R.drawable.ic_baseline_play_arrow_24;
+                        break;
+                    case "test":
+                        rid = R.drawable.ic_baseline_question_answer_24;
+                        break;
+                    case "article":
+                        rid = R.drawable.ic_baseline_article_24;
+                        break;
+                    case "assignment":
+                        rid = R.drawable.ic_lesson_assignment;
+                        break;
+                }
+                holder.iconImg2.setImageDrawable(activity.getDrawable(rid));
+                ShortLesson s2 = adsnl.get(p);
+                holder.layout2.setOnClickListener(view -> {
+                    Intent intent = new Intent(activity, FrameActivity.class);
+                    intent.putExtra("type", "SHORT_LESSON");
+                    intent.putExtra("unit_id", unitRP.get_id());
+                    intent.putExtra("SHORT_LESSON", new Gson().toJson(s2));
+                    activity.startActivity(intent);
                 });
             }
         }

@@ -26,4 +26,12 @@ public class AssignmentListRP {
 
     public AssignmentListRP() {
     }
+
+    public AssignmentListRP(ArrayList<AssignmentRP> assignments) {
+        this.assignments = assignments;
+        this.page = 1;
+        this.pages = 1;
+        if (assignments != null)
+            this.count = assignments.size();
+    }
 }
