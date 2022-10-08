@@ -27,11 +27,50 @@ import com.quaser.edtechapp.rest.response.UnitRP;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     UnitRP unitRP;
     Activity activity;
     MutableLiveData<UnitRP> mutableLiveData;
+
+    ArrayList<ShortLesson> filteredLessons = new ArrayList<ShortLesson>();
+    int firstFilteredLesson = 0;
+    private void filterLessons(){
+        filteredLessons = new ArrayList<ShortLesson>();
+        boolean gotActive = false;
+        for (int i = 0; i < unitRP.getLesson().size(); i++){
+            if (filteredLessons.size() >3){
+                break;
+            }
+            if (gotActive){
+                filteredLessons.add(unitRP.getLesson().get(i));
+            } else {
+                if (!unitRP.getLesson().get(i).isIs_complete()){
+                    firstFilteredLesson = i;
+                    if (i>0) {
+                        filteredLessons.add(unitRP.getLesson().get(i - 1));
+                        firstFilteredLesson = i-1;
+                    }
+                    filteredLessons.add(unitRP.getLesson().get(i));
+                    gotActive = true;
+                }
+            }
+        }
+        while (filteredLessons.size() < 4){
+            if (firstFilteredLesson == 0){
+                break;
+            } else {
+                firstFilteredLesson--;
+                Collections.reverse(filteredLessons);
+                filteredLessons.add(unitRP.getLesson().get(firstFilteredLesson));
+                Collections.reverse(filteredLessons);
+            }
+        }
+    }
 
     @NonNull
     @Override
@@ -50,6 +89,9 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public UnitRVAdapter(UnitRP unitRP, Activity activity) {
         this.unitRP = unitRP;
+        if (unitRP.getLesson() != null){
+            filterLessons();
+        }
 //        UnitData.setUnitData(unitRP);
         mutableLiveData = UnitData.getUnitRPMutableLiveData();
         this.activity = activity;
@@ -63,6 +105,7 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             public void onChanged(UnitRP newUnit) {
                 int changedItem = unitRP.getCompleted_lessons();
                 unitRP = newUnit;
+                filterLessons();
                 notifyItemChanged(0);
                 notifyItemChanged(changedItem);
             }
@@ -104,16 +147,24 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_active_ball));
             } else if (position > 0){
                 ShortLesson previousLesson = unitRP.getLesson().get(position-1);
+                if (rvState == 0){
+                    previousLesson = filteredLessons.get(position-1);
+                }
                 if (previousLesson.isIs_complete()){
                     holder.topProgress.setBackgroundColor(activity.getResources()
                             .getColor(R.color.color_accent1_blue));
                     holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_active_ball));
+                    holder.titleTxt.setTextColor(activity.getColor(R.color.color_accent1_blue));
                 }
             }
             ShortLesson lesson = unitRP.getLesson().get(position);
+            if (rvState == 0){
+                lesson = filteredLessons.get(position);
+            }
             if (lesson.isIs_complete()){
                 holder.topProgress.setBackgroundColor(activity.getResources()
                         .getColor(R.color.color_accent1_blue));
+                holder.titleTxt.setTextColor(activity.getColor(R.color.color_secondary_txt));
                 holder.indicatorImg.setImageDrawable(activity.getDrawable(R.drawable.ic_tick));
                 holder.bottomProgress.setBackgroundColor(activity.getResources()
                         .getColor(R.color.color_accent1_blue));
@@ -124,6 +175,26 @@ public class UnitRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.bodyTxt.setText(lesson.getShort_description());
             } else {
                 holder.bodyTxt.setVisibility(View.GONE);
+            }
+
+            int mRealIndex = unitRP.getLesson().indexOf(lesson);
+            if (mRealIndex+1>= unitRP.getLesson().size())
+                holder.bottomProgress.setVisibility(View.GONE);
+            else
+                holder.bottomProgress.setVisibility(View.VISIBLE);
+        }
+        else if (mHolder instanceof ViewAllViewHolder){
+            ViewAllViewHolder holder = (ViewAllViewHolder) mHolder;
+            if (rvState == 0){
+                holder.viewAllBtn.setText("View All");
+                holder.viewAllBtn.setOnClickListener(view -> {
+                    rvState =1;
+                });
+            } else {
+                holder.viewAllBtn.setText("View Less");
+                holder.viewAllBtn.setOnClickListener(view -> {
+                    rvState =0;
+                });
             }
         }
     }
