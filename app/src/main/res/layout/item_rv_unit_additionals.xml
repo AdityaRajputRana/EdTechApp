@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_bg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout1"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@id/barrier"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:layout_margin="4dp"
+        android:background="@drawable/bg_round_fg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/layout2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/backgroundImg1"
+            android:src="@drawable/ic_bg_circle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/iconImg1"
+            android:src="@drawable/ic_baseline_play_arrow_24"
+            app:tint="@color/color_cta"
+            app:layout_constraintEnd_toEndOf="@id/backgroundImg1"
+            app:layout_constraintTop_toTopOf="@id/backgroundImg1"
+            app:layout_constraintBottom_toBottomOf="@id/backgroundImg1"
+            app:layout_constraintStart_toStartOf="@id/backgroundImg1" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="2dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/backgroundImg1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/titleTxt1"
+                android:text="Title Lesson here"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/color_primary_txt"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/typeTxt1"
+                android:text="Video"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/color_secondary_txt"
+                android:textSize="14sp"
+                android:layout_marginStart="2dp" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout2"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/layout1"
+        android:padding="8dp"
+        android:layout_margin="4dp"
+        android:background="@drawable/bg_round_fg"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/backgroundImg2"
+            android:src="@drawable/ic_bg_circle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/iconImg2"
+            android:src="@drawable/ic_baseline_play_arrow_24"
+            app:tint="@color/color_cta"
+            app:layout_constraintEnd_toEndOf="@id/backgroundImg2"
+            app:layout_constraintTop_toTopOf="@id/backgroundImg2"
+            app:layout_constraintBottom_toBottomOf="@id/backgroundImg2"
+            app:layout_constraintStart_toStartOf="@id/backgroundImg2" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="2dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/backgroundImg2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/titleTxt2"
+            android:text="Title Lesson here"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/color_primary_txt"
+            android:textSize="14sp"
+             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/typeTxt2"
+            android:text="Video"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/color_secondary_txt"
+            android:textSize="14sp"
+            android:layout_marginStart="2dp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
