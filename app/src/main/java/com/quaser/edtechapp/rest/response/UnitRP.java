@@ -29,6 +29,11 @@ public class UnitRP {
     boolean has_user_started = false;
     ArrayList<ShortAssignment> assignments = new ArrayList<ShortAssignment>();
     LastLesson start_at;
+    ArrayList<ShortLesson> additionals;
+
+    public ArrayList<ShortLesson> getAdditionals() {
+        return additionals;
+    }
 
     public String getUnit_title() {
         return unit_title;
