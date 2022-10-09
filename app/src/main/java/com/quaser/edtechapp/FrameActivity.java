@@ -215,6 +215,7 @@ public class FrameActivity extends AppCompatActivity implements LessonListener, 
         ));
     }
 
+
     @Override
     public void onPaymentError(int i, String s, PaymentData paymentData) {
         PaymentHelper.getInstance().fail(s);
