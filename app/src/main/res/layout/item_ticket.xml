@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@id/titleHead"
         android:textSize="16sp"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/black" />
+        android:textColor="@color/color_primary_txt" />
 
     <TextView
         android:id="@+id/locationHead"
@@ -59,11 +59,11 @@
         android:id="@+id/locationTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Vivekanand Auditorium, XYZ, New Delhi"
         app:layout_constraintTop_toBottomOf="@id/locationHead"
         android:textSize="18sp"
+        android:text="-"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/black" />
+        android:textColor="@color/color_primary_txt" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -92,7 +92,7 @@
             android:text="Not Submitted"
             android:textSize="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/black" />
+            android:textColor="@color/color_primary_txt" />
 
 
         <TextView
@@ -110,7 +110,7 @@
             android:text="-"
             android:textSize="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/black" />
+            android:textColor="@color/color_primary_txt" />
 
         <TextView
             android:layout_width="match_parent"
@@ -127,7 +127,7 @@
             android:text="Free"
             android:textSize="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/black" />
+            android:textColor="@color/color_primary_txt" />
 
     </LinearLayout>
 
@@ -157,7 +157,7 @@
             android:text="Not Submitted"
             android:textSize="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/black" />
+            android:textColor="@color/color_primary_txt" />
 
         <TextView
             android:layout_width="match_parent"
@@ -174,12 +174,12 @@
             android:text="-"
             android:textSize="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/black" />
+            android:textColor="@color/color_primary_txt" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order"
+            android:text="Order ID"
             android:textSize="16sp"
             android:fontFamily="@font/poppins"
             android:textColor="@color/color_secondary_txt" />
@@ -188,10 +188,10 @@
             android:id="@+id/orderTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2165405"
+            android:text="-"
             android:textSize="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/black" />
+            android:textColor="@color/color_primary_txt" />
     </LinearLayout>
 
     <LinearLayout

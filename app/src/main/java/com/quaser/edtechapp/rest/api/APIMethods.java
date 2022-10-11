@@ -12,6 +12,7 @@ import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.requests.AddAnswerRQ;
 import com.quaser.edtechapp.rest.requests.AddQuestionRq;
 import com.quaser.edtechapp.rest.requests.ChangeDeviceReq;
+import com.quaser.edtechapp.rest.requests.EventReq;
 import com.quaser.edtechapp.rest.requests.ForumReq;
 import com.quaser.edtechapp.rest.requests.SubmitAssignmentReq;
 import com.quaser.edtechapp.rest.requests.SubmitTestReq;
@@ -29,6 +30,7 @@ import com.quaser.edtechapp.rest.response.AssignmentRP;
 import com.quaser.edtechapp.rest.response.ChangeDeviceRP;
 import com.quaser.edtechapp.rest.response.DataRp;
 import com.quaser.edtechapp.rest.response.DeviceChangeRP;
+import com.quaser.edtechapp.rest.response.EventDetailsRP;
 import com.quaser.edtechapp.rest.response.ForumHomeRP;
 import com.quaser.edtechapp.rest.response.LessonOrderIdRp;
 import com.quaser.edtechapp.rest.response.LoginRP;
@@ -37,6 +39,7 @@ import com.quaser.edtechapp.rest.response.QuestionRP;
 import com.quaser.edtechapp.rest.response.AnonymousRP;
 import com.quaser.edtechapp.rest.response.HomeRP;
 import com.quaser.edtechapp.rest.response.RanklistRes;
+import com.quaser.edtechapp.rest.response.SubbedEvents;
 import com.quaser.edtechapp.rest.response.SubscribeEventRP;
 import com.quaser.edtechapp.rest.response.TagsRP;
 import com.quaser.edtechapp.rest.response.TestRP;
@@ -244,6 +247,19 @@ public class APIMethods {
         HomeReq req = new HomeReq();
         API.postData(listener, req, EndPoints.assignments, AssignmentListRP.class);
     }
+
+    //Events
+    public static void getSubbedEvents(APIResponseListener<SubbedEvents> listener){
+        HomeReq req = new HomeReq();
+        API.postData(listener, req, EndPoints.subbedEvents, SubbedEvents.class);
+    }
+
+    public static void getEventDetails(String eventId, APIResponseListener<EventDetailsRP> listener){
+        EventReq req = new EventReq(eventId);
+        API.postData(listener, req, EndPoints.eventDetails, EventDetailsRP.class);
+    }
+
+
 
     //Paginated notif
     public static void getAssignments(int page, APIResponseListener<AssignmentListRP> listener){

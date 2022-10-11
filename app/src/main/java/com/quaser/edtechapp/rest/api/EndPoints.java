@@ -42,4 +42,6 @@ public class EndPoints {
     public static String personalityResult = "ui/personality/get";
     public static String startPersonalityTest = "ui/personality/startTest";
     public static String endPersonalityTest = "ui/personality/endTest";
+    public static String subbedEvents = "ui/user/events";
+    public static String eventDetails = "events/getDetails";
 }

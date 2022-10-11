@@ -6,12 +6,17 @@ public class DateTime {
     String month;
     int year;
     String day;
+    String time;
 
     public DateTime() {
     }
 
+
     public String getDate_full() {
         return date_full;
+    }
+    public String getTime() {
+        return time;
     }
 
     public int getDate() {
