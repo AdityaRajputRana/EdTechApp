@@ -17,6 +17,14 @@ public class AuthUtils {
         return authUtils;
     }
 
+    public static String getPrimName(){
+        if (FirebaseAuth.getInstance().getCurrentUser().isAnonymous()){
+            return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        } else {
+            return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        }
+    }
+
     public static String getFormattedPhoneNum(){
         if (phoneNum.contains("+91")){
             String p1 = phoneNum.substring(3, 8);

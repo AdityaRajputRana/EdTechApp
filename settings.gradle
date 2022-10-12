@@ -17,3 +17,5 @@ dependencyResolutionManagement {
 rootProject.name = "EdTechApp"
 include ':app'
 
+include ':commonlib'
+include ':mobilertc'
