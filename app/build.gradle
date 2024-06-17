@@ -79,8 +79,8 @@ dependencies {
     implementation 'com.github.framgia:android-emulator-detector:1.4.0'
     implementation "com.airbnb.android:lottie:3.4.0"
 
-    implementation project(path: ':mobilertc')
-    implementation project(path: ':commonlib')
+//    implementation project(path: ':mobilertc')
+//    implementation project(path: ':commonlib')
 
 
 

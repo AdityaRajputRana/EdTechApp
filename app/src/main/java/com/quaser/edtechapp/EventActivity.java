@@ -11,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
-import com.quaser.edtechapp.Helpers.MeetingsHelper;
 import com.quaser.edtechapp.rest.api.APIMethods;
 import com.quaser.edtechapp.rest.api.interfaces.APIResponseListener;
 import com.quaser.edtechapp.rest.response.EventDetailsRP;
@@ -90,19 +89,7 @@ public class EventActivity extends AppCompatActivity {
             event.getId() != null){
                 continueBtn.setVisibility(View.VISIBLE);
                 continueBtn.setText("Launch Meeting");
-                continueBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        MeetingsHelper helper = new MeetingsHelper(EventActivity.this);
-                        helper.initialiseMeeting(event.getSdk(), event.getKey(), event.getId(), event.getPw(), new MeetingsHelper.Listener() {
-                            @Override
-                            public void hideProgress() {
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                });
+
             } else if (event.getMeet_link() != null
             && !event.getMeet_link().isEmpty()){
                 continueBtn.setText("Open Meeting");

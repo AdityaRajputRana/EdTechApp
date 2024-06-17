@@ -10,9 +10,14 @@ import com.google.firebase.auth.FirebaseAuth;
 public class AuthUtils {
     private static AuthUtils authUtils;
     private static SharedPreferences mPref;
+    public static String phoneNum ;
+
     public static AuthUtils getInstance(){
         if (authUtils == null){
             authUtils = new AuthUtils();
+            if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+                phoneNum=FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+            }
         }
         return authUtils;
     }
@@ -34,16 +39,15 @@ public class AuthUtils {
         return phoneNum;
     }
 
-    public static String phoneNum = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
     private static String dp(){
         if (isAnonymousUser) {
             return "";
         }
-        if (FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()
-        == null){
+        if (FirebaseAuth.getInstance().getCurrentUser()== null || FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()==null){
             return "";
         }
-        String url = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+        String url=FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+
         Log.i("Profile Req", url);
         return url;
     }
