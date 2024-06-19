@@ -25,45 +25,9 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        runApp();
 
         super.onCreate(savedInstanceState);
-
-            if (RootUtil.isDeviceRooted()){
-                new AlertDialog.Builder(this)
-                        .setTitle("Cannot run on your device")
-                        .setMessage("It seems like your device is rooted or you are running the app on " +
-                                "emulator/virtual device. We don't allow our apps to be running on emulators/rooted" +
-                                " devices.\nIf you think this happened by mistake, Please contact us")
-                        .setCancelable(false)
-                        .show();
-                return;
-            }
-
-        EmulatorDetector.with(this)
-                .setDebug(true)
-                .detect(new EmulatorDetector.OnEmulatorDetectorListener() {
-                    @Override
-                    public void onResult(boolean isEmulator) {
-                        if (isEmulator){
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    new AlertDialog.Builder(SplashActivity.this)
-                                            .setTitle("Emulators are not allowed for security purposes")
-                                            .setMessage("It seems like your device is rooted or you are running the app on " +
-                                                    "emulator/virtual device. We don't allow our apps to be running on emulators/rooted" +
-                                                    " devices.\nIf you think this happened by mistake, Please contact us")
-                                            .setCancelable(false)
-                                            .show();
-                                }
-                            });
-
-
-                        } else {
-                            runApp();
-                        }
-                    }
-                });
 
     }
 
